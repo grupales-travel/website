@@ -9,7 +9,7 @@ export function middleware(req: NextRequest) {
 
   // Verifica la cookie de sesión
   const session = req.cookies.get("admin_session")?.value;
-  if (session !== process.env.NEXTAUTH_SECRET) {
+  if (!session) {
     const loginUrl = req.nextUrl.clone();
     loginUrl.pathname = "/admin/login";
     return NextResponse.redirect(loginUrl);
