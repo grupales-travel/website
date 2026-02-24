@@ -28,9 +28,9 @@ export default function DestinationHero({ destination }: Props) {
           alt={destination.title}
           fill
           priority
+          unoptimized
           className="object-cover"
           sizes="100vw"
-          quality={80}
           placeholder="blur"
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxRTE4MTAiLz48L3N2Zz4="
         />

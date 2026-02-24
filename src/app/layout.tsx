@@ -42,15 +42,7 @@ export default function RootLayout({
     <html lang="es" className={`${barlow.variable}`}>
       <head>
         {/* Preconnect a CDNs de imágenes — establece TCP+TLS antes de necesitarla */}
-        <link rel="preconnect" href="https://grupalestravel.com.ar" />
         <link rel="preconnect" href="https://osbogszltteyokksbshk.supabase.co" />
-        {/* Preload de la imagen fallback del hero — mejora LCP */}
-        <link
-          rel="preload"
-          as="image"
-          href="https://grupalestravel.com.ar/wp-content/uploads/2024/11/alma-europea-q2jelpfed7gmkgrwmkmavjweh1waz3cmq833kz0cm0.jpg"
-          fetchPriority="high"
-        />
       </head>
       <body className="antialiased">
         <SmoothScrollProvider>{children}</SmoothScrollProvider>

@@ -68,7 +68,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
               alt={img.alt || "Grupales Travel Hero"}
               fill
               priority={i === 0}
-              quality={90}
+              unoptimized
               className="object-cover object-center"
               sizes="100vw"
               placeholder="blur"
