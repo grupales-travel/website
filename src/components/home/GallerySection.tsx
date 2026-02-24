@@ -50,11 +50,12 @@ function MarqueeRow({
               className="flex-shrink-0 rounded-2xl overflow-hidden"
               style={{ width: ITEM_SIZE, height: ITEM_SIZE }}
             >
-              <div
-                className="w-full h-full bg-cover bg-center bg-no-repeat bg-[#d9bf8f]"
-                style={{ backgroundImage: `url('${photo.src}')` }}
-                role="img"
-                aria-label={photo.alt}
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover bg-[#d9bf8f]"
               />
             </div>
           ))}

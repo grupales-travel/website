@@ -14,8 +14,6 @@ export default function BenefitsBanner() {
                         alt="Beneficios de nuestras salidas grupales"
                         fill
                         className="object-cover"
-                        priority
-                        unoptimized
                     />
 
                     {/* Badge Overlay - Centered */}
@@ -27,7 +25,6 @@ export default function BenefitsBanner() {
                                 width={800}
                                 height={200}
                                 className="object-contain drop-shadow-xl"
-                                unoptimized
                             />
                         </div>
                     </div>
