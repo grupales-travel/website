@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Destination } from "@/types";
@@ -34,9 +35,14 @@ export default function DestinationCard({
         <div className="relative rounded-2xl overflow-hidden aspect-[15/16] bg-[#2d2418]">
 
           {/* Imagen con zoom en hover */}
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-700 ease-out group-hover:scale-110"
-            style={{ backgroundImage: `url('${destination.thumbnailImage || destination.heroImage}')` }}
+          <Image
+            src={destination.thumbnailImage || destination.heroImage}
+            alt={destination.title}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            priority={index < 4}
+            quality={75}
           />
 
           {/* Badge dinámico */}

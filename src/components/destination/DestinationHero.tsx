@@ -30,7 +30,7 @@ export default function DestinationHero({ destination }: Props) {
           priority
           className="object-cover"
           sizes="100vw"
-          unoptimized
+          quality={80}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1E1810]/50 to-transparent" />
