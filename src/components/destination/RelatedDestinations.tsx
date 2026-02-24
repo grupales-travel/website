@@ -10,9 +10,20 @@ interface Props {
 
 export default function RelatedDestinations({ current, allDestinations }: Props) {
   const source = allDestinations ?? DESTINATIONS;
-  const related = source.filter(
-    (d) => d.active && d.id !== current.id && d.year === current.year
-  ).slice(0, 4);
+
+  // Filtra activos excluyendo el actual
+  const candidates = source.filter((d) => d.active && d.id !== current.id);
+
+  // Ordena: misma región primero, luego por cercanía de fecha
+  const related = candidates
+    .map((d) => ({
+      dest: d,
+      sameRegion: d.region === current.region ? 0 : 1,
+      yearDiff: Math.abs(d.year - current.year),
+    }))
+    .sort((a, b) => a.sameRegion - b.sameRegion || a.yearDiff - b.yearDiff)
+    .slice(0, 4)
+    .map((r) => r.dest);
 
   if (related.length === 0) return null;
 
