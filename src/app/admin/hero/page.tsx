@@ -1,6 +1,8 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import HeroImageManager from "@/components/admin/HeroImageManager";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminHeroPage() {
   const { data } = await supabaseAdmin
     .from("hero_images")

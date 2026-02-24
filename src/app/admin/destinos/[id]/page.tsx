@@ -4,6 +4,8 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import DestinationForm from "@/components/admin/DestinationForm";
 import DeleteDestinationButton from "@/components/admin/DeleteDestinationButton";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: Promise<{ id: string }>;
 }

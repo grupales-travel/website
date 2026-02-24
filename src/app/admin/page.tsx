@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getAllDestinationsAdmin } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminInicio() {
   const destinations = await getAllDestinationsAdmin().catch(() => []);
 
