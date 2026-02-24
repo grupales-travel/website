@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-function isAuthorized(req: NextRequest) {
-  return req.cookies.get("admin_session")?.value === process.env.NEXTAUTH_SECRET;
-}
-
 // GET /api/admin-setup-storage
 // Visitar una vez para configurar los buckets de Storage correctamente.
 export async function GET(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
   const ALLOWED_MIME = [
     "image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif",

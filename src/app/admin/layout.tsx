@@ -32,14 +32,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ))}
         </nav>
 
-        <div className="px-3 py-5 border-t border-white/10 flex flex-col gap-1">
+        <div className="px-3 py-5 border-t border-white/10">
           <Link href="/" target="_blank"
             className="px-3 py-2 rounded-lg text-white/40 text-[13px] font-medium hover:bg-white/5 hover:text-white transition-colors duration-150">
             Ver sitio web
-          </Link>
-          <Link href="/api/admin-logout"
-            className="px-3 py-2 rounded-lg text-red-400/70 text-[13px] font-medium hover:bg-red-500/10 hover:text-red-400 transition-colors duration-150">
-            Cerrar sesión
           </Link>
         </div>
       </aside>

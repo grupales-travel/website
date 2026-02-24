@@ -2,15 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
 
-// Verifica que la petición viene del admin (tiene cookie de sesión)
-function isAuthorized(req: NextRequest) {
-  const session = req.cookies.get("admin_session")?.value;
-  return session === process.env.NEXTAUTH_SECRET;
-}
-
 // POST — crear destino
 export async function POST(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
 
@@ -31,7 +24,6 @@ export async function POST(req: NextRequest) {
 
 // PUT — actualizar destino por id
 export async function PUT(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
@@ -56,7 +48,6 @@ export async function PUT(req: NextRequest) {
 
 // DELETE — eliminar destino por id
 export async function DELETE(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });

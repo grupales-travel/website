@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-function isAuthorized(req: NextRequest) {
-  return req.cookies.get("admin_session")?.value === process.env.NEXTAUTH_SECRET;
-}
-
 // POST /api/admin-upload-url
 // Body: { folder, slug, ext }
 // Returns a signed URL to upload directly from the browser to Supabase Storage.
 // This bypasses Next.js body size limits completely.
 export async function POST(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
   const { folder, slug, ext } = await req.json();
   if (!folder || !slug || !ext) {

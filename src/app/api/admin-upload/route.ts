@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-function isAuthorized(req: NextRequest) {
-  return req.cookies.get("admin_session")?.value === process.env.NEXTAUTH_SECRET;
-}
-
 // POST /api/admin-upload
 // FormData: file, folder (backgrounds|portadas|maps|pdfs|videos), slug
 export async function POST(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
 
   const fd     = await req.formData();
   const file   = fd.get("file") as File | null;

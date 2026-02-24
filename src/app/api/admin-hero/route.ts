@@ -1,18 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-function isAuthorized(req: NextRequest) {
-  const session = req.cookies.get("admin_session")?.value;
-  return session === process.env.NEXTAUTH_SECRET;
-}
-
 function getPublicUrl(storagePath: string) {
   return supabaseAdmin.storage.from("hero-images").getPublicUrl(storagePath).data.publicUrl;
 }
 
 // POST — subir imagen nueva
 export async function POST(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
 
   const formData = await req.formData();
   const file  = formData.get("file") as File | null;
@@ -50,7 +45,7 @@ export async function POST(req: NextRequest) {
 
 // PUT — editar alt / active de una imagen
 export async function PUT(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
@@ -67,7 +62,7 @@ export async function PUT(req: NextRequest) {
 
 // PATCH — reordenar en batch: [{ id, order }, ...]
 export async function PATCH(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
 
   const items: { id: number; order: number }[] = await req.json();
   await Promise.all(
@@ -80,7 +75,7 @@ export async function PATCH(req: NextRequest) {
 
 // DELETE — eliminar imagen del bucket y de la tabla
 export async function DELETE(req: NextRequest) {
-  if (!isAuthorized(req)) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
