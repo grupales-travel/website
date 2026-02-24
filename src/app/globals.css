@@ -1,26 +1,271 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ============================================
+   DESIGN SYSTEM — GRUPALES TRAVEL
+   Estética: Ultra Premium, Cálida, Exclusiva
+   ============================================ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* --- COLORS --- */
+  --color-gold-primary: #a66d03;
+  --color-gold-secondary: #bf8b2a;
+  --color-gold-light: #d9bf8f;
+  --color-gold-pale: #f5e6cc;
+  --color-gold-dark: #7a5002;
+
+  --color-dark: #1E1810;
+  --color-dark-800: #2d2418;
+  --color-dark-700: #3d3020;
+
+  --color-cream: #f5e6cc;
+  --color-cream-light: #fdf6ec;
+  --color-warm-gray: #f2f2f2;
+  --color-warm-white: #fafaf8;
+
+  /* --- FONTS --- */
+  --font-heading: var(--font-barlow);
+  --font-body: var(--font-barlow);
+
+  /* --- BORDER RADIUS --- */
+  --radius-card: 1.25rem;
+  --radius-btn: 9999px;
+  --radius-badge: 0.5rem;
+
+  /* --- SHADOWS (doradas en lugar de grises) --- */
+  --shadow-gold-sm: 0 2px 8px rgba(166, 109, 3, 0.15);
+  --shadow-gold: 0 8px 32px rgba(166, 109, 3, 0.2);
+  --shadow-gold-lg: 0 16px 64px rgba(166, 109, 3, 0.25);
+  --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-dark-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+  --background: #fafaf8;
+  --foreground: #1E1810;
+  color-scheme: light;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Aumentado por pedido del usuario */
+  scroll-behavior: auto;
+  /* Lenis maneja el scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-barlow), system-ui, sans-serif;
+  font-size: 1.125rem;
+  /* 18px — Barlow Condensed necesita base más grande */
+  letter-spacing: 0.015em;
+  overflow-x: hidden;
+  line-height: 1.65;
+}
+
+/* ============================================
+   TIPOGRAFÍA BASE
+   ============================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-barlow), sans-serif;
+  font-weight: 700;
+}
+
+/* ============================================
+   SELECCIÓN DE TEXTO (branded)
+   ============================================ */
+::selection {
+  background: #a66d03;
+  color: #ffffff;
+}
+
+/* ============================================
+   SCROLLBAR CUSTOM
+   ============================================ */
+/* ── Scrollbar global — delgado y dorado ── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1E1810;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #bf8b2a, #a66d03);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #d9bf8f, #bf8b2a);
+}
+
+/* ── Scrollbar elegante para dropdowns — casi invisible ── */
+.elegant-scrollbar::-webkit-scrollbar {
+  width: 3px;
+}
+
+.elegant-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.elegant-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #d9bf8f, #a66d03);
+  border-radius: 999px;
+}
+
+.elegant-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a66d03;
+}
+
+/* ============================================
+   UTILIDADES CUSTOM
+   ============================================ */
+
+/* Shimmer dorado para botones */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg,
+      #a66d03 0%,
+      #bf8b2a 25%,
+      #d9bf8f 50%,
+      #bf8b2a 75%,
+      #a66d03 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Grain texture sutil — archivo estático, cacheado por el browser */
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/grain.svg");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+/* ============================================
+   MARQUEE — Gallery auto-scroll (GPU only)
+   ============================================ */
+@keyframes marquee-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.marquee-track,
+.marquee-track-reverse {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.marquee-track {
+  animation: marquee-left 40s linear infinite;
+}
+
+.marquee-track-reverse {
+  animation: marquee-right 40s linear infinite;
+}
+
+/* Gold buttons */
+.btn-gold {
+  background: linear-gradient(90deg, #a87911, #cc9a20, #ce9a32, #b47a12);
+  transition: filter 0.25s ease, transform 0.25s ease;
+  color: #fff;
+}
+
+.btn-gold:hover {
+  filter: brightness(1.08);
+}
+
+.btn-gold:disabled {
+  filter: none;
+  opacity: 0.6;
+}
+
+/* Gold gradient text */
+.text-gold-gradient {
+  background: linear-gradient(90deg, #a87911, #cc9a20, #ce9a32, #b47a12);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Overlay dorado en cards */
+.card-gold-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(166, 109, 3, 0.75) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: inherit;
+}
+
+.card-gold-overlay:hover::after {
+  opacity: 1;
+}
+
+/* Fade in global */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
 }
