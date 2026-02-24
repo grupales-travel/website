@@ -38,9 +38,9 @@ function MarqueeRow({
   const setWidth = photos.length * ITEM_SIZE + photos.length * GAP;
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden touch-action-pan-y" style={{ touchAction: "pan-y" }}>
       <div
-        className={direction === "left" ? "marquee-track" : "marquee-track-reverse"}
+        className={`pointer-events-none ${direction === "left" ? "marquee-track" : "marquee-track-reverse"}`}
         style={{ width: setWidth * 3 }}
       >
         <div className="flex gap-4">

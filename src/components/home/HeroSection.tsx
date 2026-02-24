@@ -50,7 +50,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen min-h-[680px] overflow-hidden"
+      className="relative w-full h-screen min-h-[680px] overflow-hidden bg-[#1E1810]"
     >
       {/* ── Fondo estático + crossfade GPU ── */}
       <div className="absolute inset-0">
@@ -67,10 +67,12 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
               src={img.publicUrl}
               alt={img.alt || "Grupales Travel Hero"}
               fill
-              priority={i === 0} // Precarga ultra-rápida de la primera foto
-              quality={90} // Máxima fidelidad
+              priority={i === 0}
+              quality={90}
               className="object-cover object-center"
               sizes="100vw"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxRTE4MTAiLz48L3N2Zz4="
             />
           </motion.div>
         ))}

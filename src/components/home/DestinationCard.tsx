@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useCallback } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -18,6 +19,18 @@ export default function DestinationCard({
 
   const isPartner = destination.partner;
   const href = `/destinos/${destination.slug}`;
+  const prefetched = useRef(false);
+
+  const prefetchHeroImage = useCallback(() => {
+    if (prefetched.current) return;
+    prefetched.current = true;
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = destination.heroImage;
+    (link as HTMLLinkElement & { fetchPriority: string }).fetchPriority = "high";
+    document.head.appendChild(link);
+  }, [destination.heroImage]);
 
   return (
     <motion.div
@@ -31,6 +44,8 @@ export default function DestinationCard({
       <Link
         href={href}
         className="group block"
+        onMouseEnter={prefetchHeroImage}
+        onTouchStart={prefetchHeroImage}
       >
         <div className="relative rounded-2xl overflow-hidden aspect-[15/16] bg-[#2d2418]">
 

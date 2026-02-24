@@ -1,3 +1,4 @@
+import { preload } from "react-dom";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getDestinationBySlugDB, getActiveDestinations } from "@/lib/supabase";
@@ -61,6 +62,10 @@ export default async function DestinationPage({ params }: Props) {
   if (!destination || !destination.active) {
     notFound();
   }
+
+  // Inyecta <link rel="preload"> en el HTML — el browser baja la imagen
+  // en paralelo con el JS, antes de que React hidrate
+  preload(destination.heroImage, { as: "image", fetchPriority: "high" });
 
   return (
     <>

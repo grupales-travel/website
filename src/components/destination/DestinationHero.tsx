@@ -20,7 +20,7 @@ export default function DestinationHero({ destination }: Props) {
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
-    <section ref={ref} className="relative w-full h-[90vh] min-h-[580px] overflow-hidden">
+    <section ref={ref} className="relative w-full h-[90vh] min-h-[580px] overflow-hidden bg-[#1E1810]">
       {/* Background parallax */}
       <motion.div style={{ y: bgY }} className="absolute inset-0 scale-110">
         <Image
@@ -31,6 +31,8 @@ export default function DestinationHero({ destination }: Props) {
           className="object-cover"
           sizes="100vw"
           quality={80}
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxRTE4MTAiLz48L3N2Zz4="
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1E1810]/50 to-transparent" />

@@ -41,6 +41,9 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${barlow.variable}`}>
       <head>
+        {/* Preconnect a CDNs de imágenes — establece TCP+TLS antes de necesitarla */}
+        <link rel="preconnect" href="https://grupalestravel.com.ar" />
+        <link rel="preconnect" href="https://osbogszltteyokksbshk.supabase.co" />
         {/* Preload de la imagen fallback del hero — mejora LCP */}
         <link
           rel="preload"
