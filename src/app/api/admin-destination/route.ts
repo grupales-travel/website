@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
+import { requireAuth } from "@/lib/supabase-server";
 
 // POST — crear destino
 export async function POST(req: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const body = await req.json();
 
@@ -24,6 +27,8 @@ export async function POST(req: NextRequest) {
 
 // PUT — actualizar destino por id
 export async function PUT(req: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
@@ -48,6 +53,8 @@ export async function PUT(req: NextRequest) {
 
 // DELETE — eliminar destino por id
 export async function DELETE(req: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });

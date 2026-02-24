@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { requireAuth } from "@/lib/supabase-server";
 
 // POST /api/admin-upload
 // FormData: file, folder (backgrounds|portadas|maps|pdfs|videos), slug
 export async function POST(req: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const fd     = await req.formData();
   const file   = fd.get("file") as File | null;

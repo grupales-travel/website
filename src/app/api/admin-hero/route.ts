@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { requireAuth } from "@/lib/supabase-server";
 
 function getPublicUrl(storagePath: string) {
   return supabaseAdmin.storage.from("hero-images").getPublicUrl(storagePath).data.publicUrl;
@@ -7,7 +8,8 @@ function getPublicUrl(storagePath: string) {
 
 // POST — subir imagen nueva
 export async function POST(req: NextRequest) {
-
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const formData = await req.formData();
   const file  = formData.get("file") as File | null;
@@ -45,7 +47,8 @@ export async function POST(req: NextRequest) {
 
 // PUT — editar alt / active de una imagen
 export async function PUT(req: NextRequest) {
-
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
@@ -62,7 +65,8 @@ export async function PUT(req: NextRequest) {
 
 // PATCH — reordenar en batch: [{ id, order }, ...]
 export async function PATCH(req: NextRequest) {
-
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const items: { id: number; order: number }[] = await req.json();
   await Promise.all(
@@ -75,7 +79,8 @@ export async function PATCH(req: NextRequest) {
 
 // DELETE — eliminar imagen del bucket y de la tabla
 export async function DELETE(req: NextRequest) {
-
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const id = req.nextUrl.searchParams.get("id");
   if (!id) return NextResponse.json({ error: "Falta el id" }, { status: 400 });

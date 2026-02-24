@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { requireAuth } from "@/lib/supabase-server";
 
 // POST /api/admin-upload-url
 // Body: { folder, slug, ext }
 // Returns a signed URL to upload directly from the browser to Supabase Storage.
 // This bypasses Next.js body size limits completely.
 export async function POST(req: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const { folder, slug, ext } = await req.json();
   if (!folder || !slug || !ext) {

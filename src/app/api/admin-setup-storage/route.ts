@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { requireAuth } from "@/lib/supabase-server";
 
 // GET /api/admin-setup-storage
 // Visitar una vez para configurar los buckets de Storage correctamente.
 export async function GET(req: NextRequest) {
+  const authError = await requireAuth();
+  if (authError) return authError;
 
   const ALLOWED_MIME = [
     "image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif",

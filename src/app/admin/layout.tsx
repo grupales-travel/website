@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Inter } from "next/font/google";
+import LogoutButton from "@/components/admin/LogoutButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,11 +33,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ))}
         </nav>
 
-        <div className="px-3 py-5 border-t border-white/10">
+        <div className="px-3 py-5 border-t border-white/10 flex flex-col gap-1">
           <Link href="/" target="_blank"
             className="px-3 py-2 rounded-lg text-white/40 text-[13px] font-medium hover:bg-white/5 hover:text-white transition-colors duration-150">
             Ver sitio web
           </Link>
+          <LogoutButton />
         </div>
       </aside>
 
