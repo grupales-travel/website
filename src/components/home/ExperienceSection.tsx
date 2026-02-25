@@ -23,7 +23,7 @@ const STATS = [
 
 export default function ExperienceSection() {
   return (
-    <section className="py-12 md:py-16 px-6 bg-[#f5e6cc] overflow-hidden relative">
+    <section className="py-10 md:py-14 lg:py-16 px-6 bg-[#f5e6cc] overflow-hidden relative">
       {/* Radial warm glow hacia la imagen */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_75%_at_80%_50%,rgba(166,109,3,0.09),transparent)] pointer-events-none" />
 
@@ -53,7 +53,7 @@ export default function ExperienceSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.08 }}
-              className="text-5xl md:text-6xl font-black uppercase text-[#5c3317] leading-[0.82] mb-7"
+              className="text-4xl md:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.82] mb-5 md:mb-7"
             >
               Viví tu experiencia
               <br />
@@ -61,7 +61,7 @@ export default function ExperienceSection() {
             </motion.h2>
 
             {/* Ventajas — texto más grande */}
-            <div className="grid grid-cols-2 gap-2 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6 md:mb-8">
               {ADVANTAGES.map((adv, i) => (
                 <motion.div
                   key={adv.id}
@@ -133,7 +133,7 @@ export default function ExperienceSection() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.85, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
-            className="relative h-full min-h-[420px] rounded-3xl overflow-hidden"
+            className="relative h-full min-h-[280px] md:min-h-[420px] rounded-3xl overflow-hidden"
           >
             {/* Marco dorado offset decorativo */}
             <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-3xl border border-[#a66d03]/30 pointer-events-none -z-10" />

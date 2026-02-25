@@ -20,7 +20,7 @@ export default function DestinationHero({ destination }: Props) {
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
-    <section ref={ref} className="relative w-full h-[90vh] min-h-[580px] overflow-hidden bg-[#1E1810]">
+    <section ref={ref} className="relative w-full h-[80vh] md:h-[90vh] min-h-[520px] overflow-hidden bg-[#1E1810]">
       {/* Background parallax */}
       <motion.div style={{ y: bgY }} className="absolute inset-0 scale-110">
         <Image
@@ -46,7 +46,7 @@ export default function DestinationHero({ destination }: Props) {
       {/* Content */}
       <motion.div
         style={{ opacity }}
-        className="relative z-20 h-full flex flex-col justify-end pb-16 px-6 max-w-7xl mx-auto"
+        className="relative z-20 h-full flex flex-col justify-end pb-8 md:pb-16 px-6 max-w-7xl mx-auto"
       >
         {/* Label */}
         <div className="flex items-center gap-3 mb-5">
@@ -58,7 +58,7 @@ export default function DestinationHero({ destination }: Props) {
 
         {/* Título */}
         <h1
-          className="text-5xl md:text-7xl font-black uppercase leading-[0.83] tracking-tight mb-6 max-w-3xl"
+          className="text-4xl sm:text-5xl md:text-7xl font-black uppercase leading-[0.83] tracking-tight mb-5 md:mb-6 max-w-3xl"
           style={{ color: "#f5e6cc" }}
         >
           {destination.title}
@@ -66,7 +66,7 @@ export default function DestinationHero({ destination }: Props) {
 
         {/* Stats — texto plano con iconos */}
         <div
-          className="flex flex-wrap items-center gap-x-3 md:gap-x-4 gap-y-4 mb-10"
+          className="flex flex-wrap items-center gap-x-3 md:gap-x-4 gap-y-3 mb-6 md:mb-10"
         >
           {[
             { icon: <Globe size={22} strokeWidth={1.5} />, label: `${destination.countries} ${destination.countries === 1 ? "país" : "países"}` },
@@ -85,12 +85,12 @@ export default function DestinationHero({ destination }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row gap-3">
           <a
             href={destination.itineraryPdfUrl || "#itinerario"}
             target={destination.itineraryPdfUrl ? "_blank" : undefined}
             rel={destination.itineraryPdfUrl ? "noopener noreferrer" : undefined}
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-bold uppercase tracking-widest hover:bg-white/20 transition-colors duration-300"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-bold uppercase tracking-widest hover:bg-white/20 transition-colors duration-300"
           >
             <FileText size={16} />
             Ver itinerario
@@ -100,7 +100,7 @@ export default function DestinationHero({ destination }: Props) {
             href={destination.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full btn-gold text-white text-sm font-bold uppercase tracking-widest"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full btn-gold text-white text-sm font-bold uppercase tracking-widest"
           >
             <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
             Consultar disponibilidad

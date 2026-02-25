@@ -193,7 +193,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
      SECTION MODE: sección blanca (homepage)
   ───────────────────────────────────────────────── */
   return (
-    <section className="py-16 md:py-20 px-6 bg-white relative">
+    <section className="py-12 md:py-16 lg:py-20 px-6 bg-white relative">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
@@ -217,7 +217,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-6xl font-black uppercase text-[#5c3317] leading-[0.87]"
+            className="text-4xl md:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.87]"
           >
             Todos nuestros{" "}
             <span className="text-gold-gradient">destinos</span>

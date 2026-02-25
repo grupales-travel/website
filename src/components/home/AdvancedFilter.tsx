@@ -76,11 +76,11 @@ export default function AdvancedFilter({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className="relative flex items-center justify-center gap-3 flex-wrap"
+          className="relative flex items-center justify-center gap-2 sm:gap-3 flex-wrap"
         >
 
           {/* ── Búsqueda ── */}
-          <div className="relative flex-grow max-w-[280px]">
+          <div className="relative w-full sm:flex-grow sm:max-w-[280px]">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
               <Search size={16} className="text-[#1E1810]/40" />
             </div>

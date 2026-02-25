@@ -6,7 +6,7 @@ import { COMPANY, OFFICES } from "@/data/company";
 
 export default function ContactCTA() {
   return (
-    <section className="relative py-14 md:py-16 px-6 overflow-hidden bg-[#1E1810]">
+    <section className="relative py-10 md:py-14 lg:py-16 px-6 overflow-hidden bg-[#1E1810]">
       {/* Gradient sutil */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(166,109,3,0.15),transparent)] pointer-events-none" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#a66d03]/60 to-transparent" />
@@ -14,7 +14,7 @@ export default function ContactCTA() {
       <div className="relative max-w-6xl mx-auto">
 
         {/* ── Título ── */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 md:mb-8">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ export default function ContactCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black uppercase leading-[0.92]"
+            className="text-4xl md:text-5xl lg:text-7xl font-black uppercase leading-[0.92]"
             style={{ color: "#f5e6cc" }}
           >
             Comunicate con <span className="text-gold-gradient">nosotros</span>
@@ -65,7 +65,7 @@ export default function ContactCTA() {
                 <div className="w-10 h-10 rounded-full bg-[#a66d03]/20 flex items-center justify-center group-hover:bg-[#a66d03] transition-colors duration-200 shrink-0">
                   <Phone size={16} className="text-[#a66d03] group-hover:text-white transition-colors" />
                 </div>
-                <span className="text-xl font-black text-white/80 group-hover:text-[#d9bf8f] transition-colors duration-200 tracking-wide">
+                <span className="text-base md:text-lg font-black text-white/80 group-hover:text-[#d9bf8f] transition-colors duration-200 tracking-wide">
                   {office.phone}
                 </span>
               </a>
@@ -76,7 +76,7 @@ export default function ContactCTA() {
                   <div className="w-10 h-10 rounded-full bg-[#a66d03]/20 flex items-center justify-center shrink-0">
                     <MapPin size={16} className="text-[#a66d03]" />
                   </div>
-                  <span className="text-xl font-black text-white/80 tracking-wide">
+                  <span className="text-base md:text-lg font-black text-white/80 tracking-wide">
                     {office.address}
                   </span>
                 </div>

@@ -70,11 +70,18 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-barlow), system-ui, sans-serif;
-  font-size: 1.125rem;
-  /* 18px — Barlow Condensed necesita base más grande */
+  font-size: 1rem;
+  /* 16px en mobile */
   letter-spacing: 0.015em;
   overflow-x: hidden;
   line-height: 1.65;
+}
+
+@media (min-width: 640px) {
+  body {
+    font-size: 1.125rem;
+    /* 18px en sm+ — Barlow Condensed necesita base más grande */
+  }
 }
 
 /* ============================================

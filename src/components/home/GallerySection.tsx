@@ -67,10 +67,10 @@ function MarqueeRow({
 
 export default function GallerySection() {
   return (
-    <section className="py-24 md:py-28 bg-[#f2f2f2] overflow-hidden">
+    <section className="py-14 md:py-24 bg-[#f2f2f2] overflow-hidden">
 
       {/* Header */}
-      <div className="px-6 max-w-7xl mx-auto mb-14 text-center">
+      <div className="px-6 max-w-7xl mx-auto mb-8 md:mb-14 text-center">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -90,7 +90,7 @@ export default function GallerySection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl md:text-5xl font-black uppercase text-[#5c3317] leading-tight"
+          className="text-3xl md:text-4xl lg:text-5xl font-black uppercase text-[#5c3317] leading-tight"
         >
           La experiencia{" "}
           <span className="text-gold-gradient">lo es todo</span>

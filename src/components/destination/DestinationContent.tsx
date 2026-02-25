@@ -213,12 +213,12 @@ export default function DestinationContent({ destination }: Props) {
   const itineraryDays = destination.itineraryDays ?? [];
 
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-10 md:py-16 lg:py-20 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
 
           {/* ── Main ─────────────────────────────────────── */}
-          <div className="lg:col-span-2 flex flex-col gap-14">
+          <div className="lg:col-span-2 flex flex-col gap-10 lg:gap-14 order-last lg:order-first">
 
             {/* Descripción */}
             <div>
@@ -320,7 +320,7 @@ export default function DestinationContent({ destination }: Props) {
           </div>
 
           {/* ── Sidebar ──────────────────────────────────── */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 order-first lg:order-last">
             <div className="sticky top-24 flex flex-col gap-4">
 
               {/* CTA principal */}

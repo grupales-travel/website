@@ -111,12 +111,12 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
       {/* ── Contenido — fade-out al hacer scroll (solo opacity, no y) ── */}
       <motion.div
         style={{ opacity: contentOpacity }}
-        className="relative z-20 h-full flex flex-col justify-center px-6 max-w-7xl mx-auto pt-28"
+        className="relative z-20 h-full flex flex-col justify-center px-6 max-w-7xl mx-auto pt-20 md:pt-28"
       >
         <div className="max-w-3xl">
 
           {/* Headline — animaciones rápidas para que aparezca inmediatamente */}
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.88] tracking-tight mb-5">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.88] tracking-tight mb-4 md:mb-5">
             {WORDS.map((word, i) => (
               <motion.span
                 key={word}
@@ -143,7 +143,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-white/65 text-xl md:text-2xl leading-tight max-w-xl mb-6 font-light"
+            className="text-white/65 text-base sm:text-xl md:text-2xl leading-tight max-w-xl mb-5 md:mb-6 font-light"
           >
             Coordinadores desde Argentina · Vuelos incluidos · Excursiones en español.
             Descubrí el mundo sin preocuparte por nada.
@@ -184,7 +184,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="flex items-center gap-8 mt-8"
+            className="flex items-center gap-4 sm:gap-8 mt-6 md:mt-8 flex-wrap"
           >
             {[
               { value: "+500", label: "Viajeros" },
@@ -192,7 +192,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
               { value: "+8", label: "Años" },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col items-center">
-                <span className="text-3xl md:text-4xl font-black text-[#f5e6cc]/80 leading-none">
+                <span className="text-2xl md:text-4xl font-black text-[#f5e6cc]/80 leading-none">
                   {stat.value}
                 </span>
                 <span className="text-white/35 text-sm uppercase tracking-widest mt-1">

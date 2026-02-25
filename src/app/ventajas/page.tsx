@@ -56,7 +56,7 @@ export default function BeneficiosPage() {
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
             {STATS.map((stat, i) => (
               <AnimatedSection key={stat.label} delay={i * 0.07} direction="up" className="flex flex-col items-center justify-center text-center">
-                <p className="text-4xl font-black text-[#a66d03] leading-none mb-1">
+                <p className="text-3xl md:text-4xl font-black text-[#a66d03] leading-none mb-1">
                   {stat.value}
                 </p>
                 <p className="text-[#1E1810]/55 text-sm font-bold uppercase tracking-widest">

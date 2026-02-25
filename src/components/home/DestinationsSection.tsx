@@ -23,11 +23,11 @@ export default function DestinationsSection({ destinations }: Props) {
   return (
     <section
       id="destinos"
-      className="py-24 md:py-32 px-6 bg-[#f5e6cc]/25"
+      className="py-14 md:py-24 lg:py-32 px-6 bg-[#f5e6cc]/25"
     >
       <div className="max-w-7xl mx-auto">
         {/* Header - Salidas Destacadas (Solo Propias) */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-14">
           <div>
             <motion.div
               initial={{ opacity: 0 }}
@@ -47,7 +47,7 @@ export default function DestinationsSection({ destinations }: Props) {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl md:text-6xl font-black uppercase text-[#5c3317] leading-[1.0]"
+              className="text-4xl md:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[1.0]"
             >
               Descubrí nuestras
               <br />

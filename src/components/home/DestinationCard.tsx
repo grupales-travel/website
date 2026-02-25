@@ -90,10 +90,23 @@ export default function DestinationCard({
             );
           })()}
 
+          {/* Overlay inferior siempre visible — desaparece en hover desktop */}
+          <div className="absolute inset-x-0 bottom-0 z-10 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent rounded-b-2xl" />
+            <div className="relative px-3 pb-3.5 pt-10">
+              <p className="text-white font-black text-xs sm:text-sm uppercase leading-tight tracking-wide line-clamp-2 drop-shadow-md">
+                {destination.title}
+              </p>
+              <p className="text-[#d9bf8f] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest mt-0.5 drop-shadow-md">
+                {destination.departureDate}
+              </p>
+            </div>
+          </div>
+
           {/* Overlay en hover para que destaque el texto */}
           <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-          {/* Contenido centrado (solo visible en hover) */}
+          {/* Contenido centrado (solo visible en hover — desktop) */}
           <div className="absolute inset-0 p-4 sm:p-6 z-10 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-all duration-300">
 
             <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex flex-col items-center justify-center w-full h-full">
@@ -111,7 +124,6 @@ export default function DestinationCard({
 
               <div className="mt-1">
                 <span className="flex items-center gap-2 px-5 py-2.5 rounded-full btn-gold text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest shadow-lg shadow-black/20 group-hover:scale-105 transition-transform duration-300">
-                  <img src="/wp-icon.png" alt="" className="w-3 h-3 object-contain opacity-0 hidden" /> {/* Espaciador si queremos icono despues */}
                   VER ITINERARIO
                 </span>
               </div>
