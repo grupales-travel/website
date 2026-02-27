@@ -93,14 +93,6 @@ export default function DestinationCard({
           {/* Overlay inferior siempre visible — desaparece en hover desktop */}
           <div className="absolute inset-x-0 bottom-0 z-10 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent rounded-b-2xl" />
-            <div className="relative px-3 pb-3.5 pt-10">
-              <p className="text-white font-black text-xs sm:text-sm uppercase leading-tight tracking-wide line-clamp-2 drop-shadow-md">
-                {destination.title}
-              </p>
-              <p className="text-[#d9bf8f] text-[10px] sm:text-[11px] font-bold uppercase tracking-widest mt-0.5 drop-shadow-md">
-                {destination.departureDate}
-              </p>
-            </div>
           </div>
 
           {/* Overlay en hover para que destaque el texto */}
