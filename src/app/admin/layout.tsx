@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Inter } from "next/font/google";
 import { Menu, X } from "lucide-react";
 import LogoutButton from "@/components/admin/LogoutButton";
@@ -15,7 +16,14 @@ const NAV_ITEMS = [
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isLogin = pathname === "/admin/login";
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Login page: render children without any admin chrome
+  if (isLogin) {
+    return <div className={`${inter.className} text-white`}>{children}</div>;
+  }
 
   const sidebarContent = (
     <>

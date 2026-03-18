@@ -29,7 +29,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1E1810] flex items-center justify-center px-4">
+    <div className="h-screen overflow-hidden bg-[#1E1810] flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-black uppercase text-[#f5e6cc] tracking-widest">
@@ -47,8 +47,9 @@ export default function AdminLoginPage() {
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full bg-white/8 border border-white/15 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#a66d03] transition-colors"
+              className="w-full bg-white/8 border border-white/15 rounded-lg px-4 py-2.5 text-white text-base outline-none focus:border-[#a66d03] transition-colors"
               required
+              autoComplete="email"
             />
           </div>
 
@@ -60,8 +61,9 @@ export default function AdminLoginPage() {
               type="password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full bg-white/8 border border-white/15 rounded-lg px-4 py-2.5 text-white text-sm outline-none focus:border-[#a66d03] transition-colors"
+              className="w-full bg-white/8 border border-white/15 rounded-lg px-4 py-2.5 text-white text-base outline-none focus:border-[#a66d03] transition-colors"
               required
+              autoComplete="current-password"
             />
           </div>
 
