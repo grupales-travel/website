@@ -250,22 +250,18 @@ export default function DestinationContent({ destination }: Props) {
                   <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">Mapa del recorrido</span>
                 </div>
                 <div
-                  className="rounded-2xl overflow-hidden border border-[#a66d03]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group lg:cursor-pointer shadow-sm"
-                  onClick={() => {
-                    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
-                      setMapMode("expanded");
-                    }
-                  }}
+                  className="rounded-2xl overflow-hidden border border-[#a66d03]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group cursor-pointer shadow-sm"
+                  onClick={() => setMapMode("expanded")}
                 >
                   <Image
                     src={destination.mapImageUrl}
                     alt={`Mapa del recorrido ${destination.title}`}
                     fill
-                    className="object-contain lg:group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, 60vw"
                     unoptimized
                   />
-                  <div className="absolute inset-0 bg-black/0 hidden lg:flex lg:group-hover:bg-black/20 transition-colors duration-300 items-center justify-center opacity-0 group-hover:opacity-100">
+                  <div className="absolute inset-0 bg-black/0 hidden lg:flex group-hover:bg-black/20 transition-colors duration-300 items-center justify-center opacity-0 group-hover:opacity-100">
                     <div className="bg-white/90 p-3 rounded-full text-[#a66d03] shadow-lg">
                       <Maximize2 size={22} />
                     </div>
@@ -373,25 +369,27 @@ export default function DestinationContent({ destination }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[99999] flex items-center justify-center"
-              style={{ height: "100dvh", background: "rgba(245,230,204,0.97)", backdropFilter: "blur(8px)" }}
+              className="fixed inset-0 z-[99999] flex flex-col items-center justify-center p-4 sm:p-12"
+              style={{ background: "rgba(245,230,204,0.97)", backdropFilter: "blur(8px)" }}
             >
               {/* X cerrar — círculo marrón con X clarita, siempre visible encima de la imagen */}
               <button
                 onClick={() => setMapMode(null)}
-                className="absolute top-4 right-4 z-[100000] w-11 h-11 flex items-center justify-center rounded-full shadow-lg transition-opacity duration-200 hover:opacity-80"
-              style={{ background: "#5c3317" }}
-            >
-              <X size={20} color="#f5e6cc" />
-            </button>
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[100000] w-11 h-11 flex items-center justify-center rounded-full shadow-lg transition-opacity duration-200 hover:opacity-80"
+                style={{ background: "#5c3317" }}
+              >
+                <X size={20} color="#f5e6cc" />
+              </button>
 
-            <img
-              src={destination.mapImageUrl}
-              alt={`Mapa del recorrido ${destination.title}`}
-              className="max-w-full max-h-full object-contain p-4"
-              draggable={false}
-            />
-          </motion.div>
+              <div className="relative w-full h-full max-h-full max-w-6xl flex items-center justify-center rounded-3xl overflow-hidden shadow-2xl bg-white/70 border-2 border-[#a66d03]/40">
+                <img
+                  src={destination.mapImageUrl}
+                  alt={`Mapa del recorrido ${destination.title}`}
+                  className="max-w-full max-h-full object-contain"
+                  draggable={false}
+                />
+              </div>
+            </motion.div>
         )}
         </AnimatePresence>
       , document.body)}
