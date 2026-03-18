@@ -12,7 +12,7 @@ import { Destination } from "@/types";
 
 // ─── Helpers de video ────────────────────────────────────────────────────────
 
-function getVideoEmbed(url: string) {
+function getVideoEmbed(url: string, isPreview = false) {
   if (url.includes("instagram.com")) {
     const cleanUrl = url.split("?")[0].replace(/\/$/, "");
     return { type: "instagram", embedUrl: `${cleanUrl}/embed` };
@@ -20,9 +20,15 @@ function getVideoEmbed(url: string) {
   const ytMatch = url.match(/(?:youtube\.com\/shorts\/|youtu\.be\/|youtube\.com\/watch\?v=)([^&?]+)/);
   if (ytMatch?.[1]) {
     const videoId = ytMatch[1];
+    if (isPreview) {
+      return {
+        type: "youtube",
+        embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=0`,
+      };
+    }
     return {
       type: "youtube",
-      embedUrl: `https://www.youtube.com/embed/${videoId}?mute=0&controls=1&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=1`,
+      embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=1`,
     };
   }
   return { type: "video", embedUrl: url };
@@ -36,14 +42,17 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
   const [isMuted, setIsMuted] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const embed = getVideoEmbed(url);
+  const embed = getVideoEmbed(url, true);
 
   const ytCommand = (func: string, args: any[] = []) => {
     iframeRef.current?.contentWindow?.postMessage(JSON.stringify({ event: "command", func, args }), "*");
   };
 
-  const handleTogglePlay = () => {
-    if (embed.type === "youtube") return;
+  const handleTogglePlay = (e?: React.MouseEvent) => {
+    if (embed.type === "youtube") {
+      if (e) handleExpand(e);
+      return;
+    }
     if (!isActive) {
       setIsActive(true); setIsPlaying(true); setIsMuted(false);
       if (embed.type === "video" && videoRef.current) {
@@ -84,7 +93,7 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
         {embed.type === "video" ? (
           <video ref={videoRef} src={url} className="w-full h-full object-cover" preload="metadata" playsInline muted={isMuted} loop />
         ) : embed.type === "youtube" ? (
-          <div className="absolute inset-0 z-10">
+          <div className="absolute inset-0 z-10 pointer-events-none">
             <iframe ref={iframeRef} src={embed.embedUrl} className="w-full h-full" style={{ border: "none" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen loading="lazy" tabIndex={-1} />
           </div>
         ) : (
@@ -98,11 +107,9 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
           {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
         </button>
       )}
-      {embed.type !== "youtube" && (
-        <button onClick={handleExpand} className="absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white">
-          <Maximize2 size={16} />
-        </button>
-      )}
+      <button onClick={handleExpand} className="absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white">
+        <Maximize2 size={16} />
+      </button>
     </div>
   );
 }
@@ -341,19 +348,19 @@ export default function DestinationContent({ destination }: Props) {
               >
                 <X size={18} />
               </button>
-              {getVideoEmbed(activeVideo).type === "video" ? (
-                <video src={activeVideo} className="w-full h-full object-contain bg-black" controls playsInline />
-              ) : getVideoEmbed(activeVideo).type === "youtube" ? (
+              {getVideoEmbed(activeVideo, false).type === "video" ? (
+                <video src={activeVideo} className="w-full h-full object-contain bg-black" controls playsInline autoPlay />
+              ) : getVideoEmbed(activeVideo, false).type === "youtube" ? (
                 <iframe
-                  src={getVideoEmbed(activeVideo).embedUrl}
-                  className="w-full h-full border-0"
+                  src={getVideoEmbed(activeVideo, false).embedUrl}
+                  className="w-full h-full border-0 bg-black"
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                 />
               ) : (
                 <iframe
-                  src={getVideoEmbed(activeVideo).embedUrl}
-                  className="w-full h-full border-0"
+                  src={getVideoEmbed(activeVideo, false).embedUrl}
+                  className="w-full h-full border-0 bg-black"
                   allowFullScreen
                   allow="clipboard-write; encrypted-media; picture-in-picture; web-share"
                 />
