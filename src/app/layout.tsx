@@ -43,6 +43,8 @@ export default function RootLayout({
       <head>
         {/* Preconnect a CDNs de imágenes — establece TCP+TLS antes de necesitarla */}
         <link rel="preconnect" href="https://osbogszltteyokksbshk.supabase.co" />
+        {/* Evita que iOS/Android auto-detecten direcciones y teléfonos como hipervínculos */}
+        <meta name="format-detection" content="address=no" />
       </head>
       <body className="antialiased">
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
