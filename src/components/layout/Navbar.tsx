@@ -38,11 +38,34 @@ export default function Navbar() {
 
   useEffect(() => {
     if (mobileOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
       document.body.style.overflow = "hidden";
     } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
       document.body.style.overflow = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.overflow = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    };
   }, [mobileOpen]);
 
   return (
@@ -148,6 +171,7 @@ export default function Navbar() {
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
             className="fixed inset-0 z-[95] flex flex-col bg-[#1E1810]"
+            style={{ touchAction: "none" }}
           >
             <div className="h-1 w-full bg-gradient-to-r from-[#a66d03] via-[#bf8b2a] to-[#a66d03]" />
             <div className="flex-1 flex flex-col justify-center px-8 py-20">
