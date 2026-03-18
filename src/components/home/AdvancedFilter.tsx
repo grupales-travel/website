@@ -34,76 +34,78 @@ export default function AdvancedFilter({
     year: CURRENT_YEAR,
   });
 
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [searchOpen, setSearchOpen] = useState(false);
+  // Un único panel abierto: "search" | "region" | "month" | "year" | null
+  const [openPanel, setOpenPanel] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (searchOpen) searchInputRef.current?.focus();
-  }, [searchOpen]);
+    if (openPanel === "search") searchInputRef.current?.focus();
+  }, [openPanel]);
 
-  // Click-outside: overlay approach — infalible
+  // Click fuera → cerrar todo
   useEffect(() => {
-    if (!openDropdown) return;
-    function handleMouseDown(e: MouseEvent) {
+    if (!openPanel) return;
+    function handle(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-        setOpenDropdown(null);
+        setOpenPanel(null);
       }
     }
-    document.addEventListener("mousedown", handleMouseDown);
-    return () => document.removeEventListener("mousedown", handleMouseDown);
-  }, [openDropdown]);
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [openPanel]);
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);
-    setOpenDropdown(null);
+    setOpenPanel(null);
   };
 
-  const toggleDropdown = (key: string) => {
-    setOpenDropdown(openDropdown === key ? null : key);
+  const togglePanel = (key: string) => {
+    setOpenPanel(openPanel === key ? null : key);
   };
 
   return (
     <>
-      {/* Overlay transparente — cierra el dropdown al clickar fuera */}
-      {openDropdown && (
+      {/* Backdrop: cierra cualquier panel abierto */}
+      {openPanel && (
         <div
-          className="fixed inset-0 z-30"
-          onMouseDown={() => setOpenDropdown(null)}
+          className="fixed inset-0 z-[45]"
+          onMouseDown={() => setOpenPanel(null)}
         />
       )}
 
-      <div className="w-full mb-8 relative z-[35]" ref={containerRef}>
+      <div className="w-full mb-8 relative z-[50]" ref={containerRef}>
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className="relative flex flex-col gap-2"
+          transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          className="relative"
         >
-          {/* ── Fila principal de filtros ── */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+          {/* ── Fila única de filtros ── */}
+          <div className="flex items-center justify-center gap-2">
 
-            {/* Búsqueda — ícono en mobile, input completo en sm+ */}
+            {/* Lupa (mobile) */}
             <div className="sm:hidden">
               <motion.button
-                onClick={() => setSearchOpen(!searchOpen)}
-                whileTap={{ scale: 0.97 }}
-                className={`flex items-center justify-center w-[46px] h-[46px] rounded-full transition-all duration-200 ${
-                  filters.search || searchOpen
-                    ? "text-white shadow-[0_4px_20px_rgba(92,51,23,0.32)]"
-                    : "bg-white text-[#1E1810]/65 shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)]"
-                }`}
-                style={filters.search || searchOpen ? { backgroundColor: "#5c3317" } : {}}
+                onClick={() => togglePanel("search")}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.1 }}
+                className="flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-100"
+                style={
+                  filters.search || openPanel === "search"
+                    ? { backgroundColor: "#5c3317", color: "#cd9720" }
+                    : { backgroundColor: "white", color: "rgba(30,24,16,0.55)", boxShadow: "0 1px 4px rgba(0,0,0,0.08)" }
+                }
                 aria-label="Buscar"
               >
-                <Search size={17} className={filters.search || searchOpen ? "text-[#cd9720]" : ""} />
+                <Search size={15} />
               </motion.button>
             </div>
 
+            {/* Input completo (desktop) */}
             <div className="hidden sm:block relative flex-grow max-w-[280px]">
               <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
                 <Search size={16} className="text-[#1E1810]/40" />
@@ -113,138 +115,111 @@ export default function AdvancedFilter({
                 placeholder="Buscar por título..."
                 value={filters.search}
                 onChange={(e) => handleFilterChange("search", e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
+                className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
               />
             </div>
 
-          {/* ── Región ── */}
-          <FilterPill
-            icon={<Globe2 size={16} strokeWidth={2} />}
-            label="Región"
-            value={filters.region ? formatRegion(filters.region) : null}
-            active={!!filters.region}
-            open={openDropdown === "region"}
-            onClick={() => toggleDropdown("region")}
-          >
-            <Sheet>
-              <SheetOption
-                label="Todas las regiones"
-                selected={!filters.region}
-                onClick={() => handleFilterChange("region", "")}
-              />
-              <SheetDivider />
-              {regions.map((r) => (
-                <SheetOption
-                  key={r}
-                  label={formatRegion(r)}
-                  selected={filters.region === r}
-                  onClick={() => handleFilterChange("region", r)}
-                />
-              ))}
-            </Sheet>
-          </FilterPill>
-
-          {/* ── Mes ── */}
-          <FilterPill
-            icon={<CalendarDays size={16} strokeWidth={2} />}
-            label="Mes"
-            value={filters.month || null}
-            active={!!filters.month}
-            open={openDropdown === "month"}
-            onClick={() => toggleDropdown("month")}
-          >
-            <Sheet>
-              <SheetOption
-                label="Todos los meses"
-                selected={!filters.month}
-                onClick={() => handleFilterChange("month", "")}
-              />
-              <SheetDivider />
-              <div className="max-h-64 overflow-y-auto elegant-scrollbar">
-                {months.map((m) => (
-                  <SheetOption
-                    key={m}
-                    label={m}
-                    selected={filters.month === m}
-                    onClick={() => handleFilterChange("month", m)}
-                  />
+            {/* Región */}
+            <FilterPill
+              icon={<Globe2 size={14} strokeWidth={2} />}
+              label="Región"
+              value={filters.region ? formatRegion(filters.region) : null}
+              active={!!filters.region}
+              open={openPanel === "region"}
+              onClick={() => togglePanel("region")}
+              align="left"
+            >
+              <Sheet align="left">
+                <SheetOption label="Todas las regiones" selected={!filters.region} onClick={() => handleFilterChange("region", "")} />
+                <SheetDivider />
+                {regions.map((r) => (
+                  <SheetOption key={r} label={formatRegion(r)} selected={filters.region === r} onClick={() => handleFilterChange("region", r)} />
                 ))}
-              </div>
-            </Sheet>
-          </FilterPill>
+              </Sheet>
+            </FilterPill>
 
-          {/* ── Año ── */}
-          <FilterPill
-            icon={
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-            }
-            label="Año"
-            value={filters.year || null}
-            active={filters.year !== CURRENT_YEAR}
-            open={openDropdown === "year"}
-            onClick={() => toggleDropdown("year")}
-          >
-            <Sheet>
-              <SheetOption
-                label="Todos los años"
-                selected={!filters.year}
-                onClick={() => handleFilterChange("year", "")}
-              />
-              <SheetDivider />
-              {years.map((y) => (
-                <SheetOption
-                  key={y}
-                  label={y.toString()}
-                  selected={filters.year === y.toString()}
-                  onClick={() => handleFilterChange("year", y.toString())}
-                />
-              ))}
-            </Sheet>
-          </FilterPill>
+            {/* Mes */}
+            <FilterPill
+              icon={<CalendarDays size={14} strokeWidth={2} />}
+              label="Mes"
+              value={filters.month || null}
+              active={!!filters.month}
+              open={openPanel === "month"}
+              onClick={() => togglePanel("month")}
+              align="right"
+            >
+              <Sheet align="right">
+                <SheetOption label="Todos los meses" selected={!filters.month} onClick={() => handleFilterChange("month", "")} />
+                <SheetDivider />
+                <div className="max-h-56 overflow-y-auto elegant-scrollbar">
+                  {months.map((m) => (
+                    <SheetOption key={m} label={m} selected={filters.month === m} onClick={() => handleFilterChange("month", m)} />
+                  ))}
+                </div>
+              </Sheet>
+            </FilterPill>
 
+            {/* Año */}
+            <FilterPill
+              icon={
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+              }
+              label="Año"
+              value={filters.year || null}
+              active={filters.year !== CURRENT_YEAR}
+              open={openPanel === "year"}
+              onClick={() => togglePanel("year")}
+              align="right"
+            >
+              <Sheet align="right">
+                <SheetOption label="Todos los años" selected={!filters.year} onClick={() => handleFilterChange("year", "")} />
+                <SheetDivider />
+                {years.map((y) => (
+                  <SheetOption key={y} label={y.toString()} selected={filters.year === y.toString()} onClick={() => handleFilterChange("year", y.toString())} />
+                ))}
+              </Sheet>
+            </FilterPill>
+          </div>
 
-          </div>{/* fin fila principal */}
-
-          {/* ── Búsqueda expandible en mobile ── */}
+          {/* ── Búsqueda overlay en mobile (no empuja contenido) ── */}
           <AnimatePresence>
-            {searchOpen && (
+            {openPanel === "search" && (
               <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-                className="sm:hidden overflow-hidden"
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.15, ease: "easeOut" }}
+                className="absolute top-full left-0 right-0 mt-2 z-[55] sm:hidden"
               >
-                <div className="relative pt-1">
-                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none pt-1">
-                    <Search size={16} className="text-[#1E1810]/40" />
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <Search size={15} className="text-[#1E1810]/40" />
                   </div>
                   <input
                     ref={searchInputRef}
                     type="text"
-                    placeholder="Buscar por título..."
+                    placeholder="Buscar destino..."
                     value={filters.search}
                     onChange={(e) => handleFilterChange("search", e.target.value)}
-                    className="w-full pl-11 pr-10 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
+                    className="w-full pl-10 pr-9 py-2.5 rounded-full bg-white text-[#1E1810] text-[14px] font-medium shadow-[0_4px_20px_rgba(0,0,0,0.12)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 placeholder:text-[#1E1810]/40"
                   />
                   {filters.search && (
                     <button
-                      onClick={() => { handleFilterChange("search", ""); setSearchOpen(false); }}
-                      className="absolute inset-y-0 right-4 flex items-center pt-1 text-[#1E1810]/40 hover:text-[#1E1810]/70"
+                      onMouseDown={(e) => { e.preventDefault(); handleFilterChange("search", ""); setOpenPanel(null); }}
+                      className="absolute inset-y-0 right-3 flex items-center text-[#1E1810]/40"
                     >
-                      <X size={15} />
+                      <X size={14} />
                     </button>
                   )}
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-
         </motion.div>
       </div>
     </>
@@ -254,13 +229,7 @@ export default function AdvancedFilter({
 /* ─── FilterPill ──────────────────────────────────────────── */
 
 function FilterPill({
-  icon,
-  label,
-  value,
-  active,
-  open,
-  onClick,
-  children,
+  icon, label, value, active, open, onClick, align, children,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -268,47 +237,44 @@ function FilterPill({
   active: boolean;
   open: boolean;
   onClick: () => void;
+  align: "left" | "right";
   children: React.ReactNode;
 }) {
   const isDark = active || open;
 
   return (
-    <div className="relative z-40">
+    <div className="relative z-[50]">
       <motion.button
         onClick={onClick}
-        whileTap={{ scale: 0.97 }}
-        transition={{ type: "spring", stiffness: 500, damping: 35 }}
+        whileTap={{ scale: 0.96 }}
+        transition={{ duration: 0.1 }}
         className={`
-          flex items-center gap-3 pl-5 pr-4 py-3 rounded-full cursor-pointer select-none
-          transition-all duration-200 ease-out
+          flex items-center gap-1.5 sm:gap-3
+          pl-3 pr-2 py-2 sm:pl-5 sm:pr-4 sm:py-3
+          rounded-full cursor-pointer select-none
+          transition-colors duration-100
           ${isDark
-            ? "text-white shadow-[0_4px_20px_rgba(92,51,23,0.32)]"
-            : "bg-white text-[#1E1810]/65 shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)] hover:text-[#1E1810] hover:shadow-[0_2px_8px_rgba(0,0,0,0.10),_0_6px_20px_rgba(0,0,0,0.07)]"
+            ? "text-white"
+            : "bg-white text-[#1E1810]/65 shadow-[0_1px_4px_rgba(0,0,0,0.08)] hover:text-[#1E1810]"
           }
         `}
-        style={isDark ? { backgroundColor: "#5c3317" } : {}}
+        style={isDark ? { backgroundColor: "#5c3317", boxShadow: "0 4px_20px_rgba(92,51,23,0.3)" } : {}}
       >
-        {/* Icon */}
-        <span className={`shrink-0 transition-colors duration-200 ${isDark ? "text-[#cd9720]" : "text-[#1E1810]/35"}`}>
+        <span className={`shrink-0 ${isDark ? "text-[#cd9720]" : "text-[#1E1810]/35"}`}>
           {icon}
         </span>
-
-        {/* Label / Value */}
-        <span className="text-[15px] font-semibold leading-none whitespace-nowrap">
-          {value ? value : label}
+        <span className="text-[12px] sm:text-[15px] font-semibold leading-none whitespace-nowrap">
+          {value ?? label}
         </span>
-
-        {/* Chevron */}
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
-          transition={{ type: "spring", stiffness: 380, damping: 26 }}
-          className={`shrink-0 transition-colors duration-200 ${isDark ? "text-white/50" : "text-[#1E1810]/25"}`}
+          transition={{ duration: 0.15 }}
+          className={`shrink-0 ${isDark ? "text-white/50" : "text-[#1E1810]/25"}`}
         >
-          <ChevronDown size={14} strokeWidth={2.5} />
+          <ChevronDown size={12} strokeWidth={2.5} />
         </motion.span>
       </motion.button>
 
-      {/* Dropdown */}
       <AnimatePresence>
         {open && children}
       </AnimatePresence>
@@ -316,48 +282,39 @@ function FilterPill({
   );
 }
 
-/* ─── Sheet (dropdown panel) ──────────────────────────────── */
+/* ─── Sheet ────────────────────────────────────────────────── */
 
-function Sheet({ children }: { children: React.ReactNode }) {
+function Sheet({ children, align }: { children: React.ReactNode; align: "left" | "right" }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 6, scale: 0.97 }}
+      initial={{ opacity: 0, y: 4, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 4, scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 500, damping: 36, mass: 0.6 }}
-      className="absolute top-full mt-2 min-w-[200px] z-40 rounded-2xl overflow-hidden"
+      exit={{ opacity: 0, y: 3, scale: 0.99 }}
+      transition={{ duration: 0.12, ease: "easeOut" }}
+      className={`absolute top-full mt-1.5 z-[60] rounded-2xl overflow-hidden ${align === "right" ? "right-0" : "left-0"}`}
       style={{
+        minWidth: "180px",
+        maxWidth: "min(220px, calc(100vw - 2rem))",
         background: "rgba(255,255,255,0.98)",
         backdropFilter: "blur(24px) saturate(1.6)",
         WebkitBackdropFilter: "blur(24px) saturate(1.6)",
-        boxShadow:
-          "0 0 0 0.5px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.10), 0 20px 48px rgba(0,0,0,0.08)",
+        boxShadow: "0 0 0 0.5px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.12), 0 20px 48px rgba(0,0,0,0.08)",
       }}
     >
-      <div className="py-2">
-        {children}
-      </div>
+      <div className="py-2">{children}</div>
     </motion.div>
   );
 }
 
 /* ─── SheetOption ─────────────────────────────────────────── */
 
-function SheetOption({
-  label,
-  selected,
-  onClick,
-}: {
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-}) {
+function SheetOption({ label, selected, onClick }: { label: string; selected: boolean; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
       className={`
-        w-full flex items-center justify-between px-5 py-3 text-left
-        text-[15px] leading-none transition-colors duration-100 cursor-pointer
+        w-full flex items-center justify-between px-4 py-2.5 text-left
+        text-[14px] leading-none transition-colors duration-75 cursor-pointer
         ${selected
           ? "text-[#5c3317] font-semibold bg-[#f5e6cc]/60"
           : "text-[#1E1810]/60 font-medium hover:bg-black/[0.03] hover:text-[#1E1810]/90"
@@ -371,10 +328,10 @@ function SheetOption({
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 500, damping: 28 }}
-            className="ml-5 shrink-0"
+            transition={{ duration: 0.1 }}
+            className="ml-4 shrink-0"
           >
-            <Check size={15} strokeWidth={2.5} className="text-[#cd9720]" />
+            <Check size={14} strokeWidth={2.5} className="text-[#cd9720]" />
           </motion.span>
         )}
       </AnimatePresence>
@@ -385,5 +342,5 @@ function SheetOption({
 /* ─── SheetDivider ────────────────────────────────────────── */
 
 function SheetDivider() {
-  return <div className="h-px mx-4 my-1.5" style={{ background: "rgba(0,0,0,0.06)" }} />;
+  return <div className="h-px mx-4 my-1" style={{ background: "rgba(0,0,0,0.06)" }} />;
 }
