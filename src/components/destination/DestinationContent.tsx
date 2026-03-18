@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useMotionValue, animate } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  CheckCircle, MapPin, FileText, X, Maximize2,
+  CheckCircle, MapPin, FileText, X, Maximize2, Minimize2,
   ChevronLeft, ChevronRight, Volume2, VolumeX, ChevronDown,
 } from "lucide-react";
 import { Destination } from "@/types";
@@ -145,103 +145,10 @@ interface Props { destination: Destination; }
 
 export default function DestinationContent({ destination }: Props) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [isMapOpen, setIsMapOpen] = useState(false);
+  // null = cerrado | "normal" = modal centrado | "expanded" = pantalla completa
+  const [mapMode, setMapMode] = useState<null | "normal" | "expanded">(null);
   const [showAllIncludes, setShowAllIncludes] = useState(false);
   const videoScrollRef = useRef<HTMLDivElement>(null);
-
-  // Map zoom/pan — motion values para performance sin re-renders
-  const mapX = useMotionValue(0);
-  const mapY = useMotionValue(0);
-  const mapScale = useMotionValue(1);
-  const mapScaleRef = useRef(1);
-  const mapModalRef = useRef<HTMLDivElement>(null);
-  const isDraggingMap = useRef(false);
-  const lastMouseRef = useRef<{ x: number; y: number } | null>(null);
-  const lastTouchRef = useRef<{ x: number; y: number } | null>(null);
-  const lastPinchRef = useRef<number | null>(null);
-
-  // Sync scale ref
-  useEffect(() => {
-    const unsub = mapScale.on("change", v => { mapScaleRef.current = v; });
-    return unsub;
-  }, [mapScale]);
-
-  // Opening animation — pan lento desde posición offset
-  useEffect(() => {
-    if (isMapOpen) {
-      mapX.set(-60); mapY.set(40); mapScale.set(1.5);
-      mapScaleRef.current = 1.5;
-      const t = setTimeout(() => {
-        animate(mapX, 0, { duration: 2, ease: [0.25, 0.1, 0.25, 1] });
-        animate(mapY, 0, { duration: 2, ease: [0.25, 0.1, 0.25, 1] });
-        animate(mapScale, 1, { duration: 2, ease: [0.25, 0.1, 0.25, 1] });
-      }, 50);
-      return () => clearTimeout(t);
-    } else {
-      mapX.set(0); mapY.set(0); mapScale.set(1);
-      mapScaleRef.current = 1;
-    }
-  }, [isMapOpen]);
-
-  // Wheel zoom (non-passive)
-  useEffect(() => {
-    const el = mapModalRef.current;
-    if (!el || !isMapOpen) return;
-    const handler = (e: WheelEvent) => {
-      e.preventDefault();
-      const newScale = Math.min(5, Math.max(0.2, mapScaleRef.current * (1 - e.deltaY * 0.002)));
-      mapScale.set(newScale);
-    };
-    el.addEventListener("wheel", handler, { passive: false });
-    return () => el.removeEventListener("wheel", handler);
-  }, [isMapOpen]);
-
-  // Touch zoom/pan (non-passive for pinch)
-  useEffect(() => {
-    const el = mapModalRef.current;
-    if (!el || !isMapOpen) return;
-
-    const onTouchStart = (e: TouchEvent) => {
-      if (e.touches.length === 1) {
-        lastTouchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        lastPinchRef.current = null;
-      } else if (e.touches.length === 2) {
-        lastPinchRef.current = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY,
-        );
-        lastTouchRef.current = null;
-      }
-    };
-
-    const onTouchMove = (e: TouchEvent) => {
-      if (e.touches.length === 1 && lastTouchRef.current) {
-        mapX.set(mapX.get() + e.touches[0].clientX - lastTouchRef.current.x);
-        mapY.set(mapY.get() + e.touches[0].clientY - lastTouchRef.current.y);
-        lastTouchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      } else if (e.touches.length === 2 && lastPinchRef.current !== null) {
-        e.preventDefault();
-        const dist = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY,
-        );
-        const newScale = Math.min(5, Math.max(0.2, mapScaleRef.current * (dist / lastPinchRef.current)));
-        mapScale.set(newScale);
-        lastPinchRef.current = dist;
-      }
-    };
-
-    const onTouchEnd = () => { lastTouchRef.current = null; lastPinchRef.current = null; };
-
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchmove", onTouchMove, { passive: false });
-    el.addEventListener("touchend", onTouchEnd);
-    return () => {
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchmove", onTouchMove);
-      el.removeEventListener("touchend", onTouchEnd);
-    };
-  }, [isMapOpen]);
 
   function scrollVideos(dir: "left" | "right") {
     videoScrollRef.current?.scrollBy({ left: dir === "right" ? 280 : -280, behavior: "smooth" });
@@ -251,10 +158,6 @@ export default function DestinationContent({ destination }: Props) {
   const itineraryDays = destination.itineraryDays ?? [];
   const INCLUDES_PREVIEW = 5;
   const visibleIncludes = showAllIncludes ? includes : includes.slice(0, INCLUDES_PREVIEW);
-
-  function closeMap() {
-    setIsMapOpen(false);
-  }
 
   return (
     <section className="py-10 md:py-16 lg:py-20 px-6 bg-white">
@@ -331,7 +234,7 @@ export default function DestinationContent({ destination }: Props) {
                 </div>
                 <div
                   className="rounded-2xl overflow-hidden border border-[#a66d03]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group cursor-pointer shadow-sm"
-                  onClick={() => setIsMapOpen(true)}
+                  onClick={() => setMapMode("normal")}
                 >
                   <Image
                     src={destination.mapImageUrl}
@@ -438,55 +341,78 @@ export default function DestinationContent({ destination }: Props) {
         )}
       </AnimatePresence>
 
-      {/* ── Modal de mapa — pantalla completa con zoom/pan ─────────────────── */}
+      {/* ── Modal de mapa ────────────────────────────────────────────────────── */}
       <AnimatePresence>
-        {isMapOpen && destination.mapImageUrl && (
+        {mapMode === "normal" && destination.mapImageUrl && (
           <motion.div
+            key="map-normal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setMapMode(null)}
+            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl border-2 border-[#a66d03]/60"
+            >
+              {/* X cerrar */}
+              <button
+                onClick={() => setMapMode(null)}
+                className="absolute top-3 right-14 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-[#a66d03] transition-colors duration-200"
+              >
+                <X size={18} />
+              </button>
+              {/* Expandir */}
+              <button
+                onClick={() => setMapMode("expanded")}
+                className="absolute top-3 right-3 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-[#a66d03] transition-colors duration-200"
+              >
+                <Maximize2 size={18} />
+              </button>
+              <img
+                src={destination.mapImageUrl}
+                alt={`Mapa del recorrido ${destination.title}`}
+                className="w-full h-auto object-contain p-6 bg-[#f5e6cc]/10"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+
+        {mapMode === "expanded" && destination.mapImageUrl && (
+          <motion.div
+            key="map-expanded"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] bg-black flex items-center justify-center"
             style={{ height: "100dvh" }}
           >
-            {/* Botón cerrar */}
+            {/* X cerrar */}
             <button
-              onClick={closeMap}
+              onClick={() => setMapMode(null)}
               className="absolute top-4 right-4 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-[#a66d03] transition-colors duration-200"
             >
               <X size={20} />
             </button>
-
-            {/* Hint zoom */}
-            <p className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 text-white/40 text-xs uppercase tracking-widest pointer-events-none select-none">
-              Pellizca para hacer zoom · Arrastrá para mover
-            </p>
-
-            {/* Zona interactiva */}
-            <div
-              ref={mapModalRef}
-              className="w-full h-full flex items-center justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none"
-              onMouseDown={(e) => { isDraggingMap.current = true; lastMouseRef.current = { x: e.clientX, y: e.clientY }; }}
-              onMouseMove={(e) => {
-                if (!isDraggingMap.current || !lastMouseRef.current) return;
-                mapX.set(mapX.get() + e.clientX - lastMouseRef.current.x);
-                mapY.set(mapY.get() + e.clientY - lastMouseRef.current.y);
-                lastMouseRef.current = { x: e.clientX, y: e.clientY };
-              }}
-              onMouseUp={() => { isDraggingMap.current = false; }}
-              onMouseLeave={() => { isDraggingMap.current = false; }}
+            {/* Reducir */}
+            <button
+              onClick={() => setMapMode("normal")}
+              className="absolute top-4 right-[4.5rem] z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-[#a66d03] transition-colors duration-200"
             >
-              <motion.div
-                style={{ x: mapX, y: mapY, scale: mapScale, originX: "50%", originY: "50%" }}
-                className="relative flex items-center justify-center"
-              >
-                <img
-                  src={destination.mapImageUrl}
-                  alt={`Mapa del recorrido ${destination.title}`}
-                  className="max-w-[95vw] max-h-[95dvh] object-contain pointer-events-none"
-                  draggable={false}
-                />
-              </motion.div>
-            </div>
+              <Minimize2 size={20} />
+            </button>
+
+            <img
+              src={destination.mapImageUrl}
+              alt={`Mapa del recorrido ${destination.title}`}
+              className="max-w-full max-h-full object-contain"
+              draggable={false}
+            />
           </motion.div>
         )}
       </AnimatePresence>
