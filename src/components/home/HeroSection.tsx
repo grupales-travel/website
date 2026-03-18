@@ -59,7 +59,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-screen min-h-[680px] overflow-hidden bg-[#1E1810]"
+      className="relative w-full h-[100svh] min-h-[680px] overflow-hidden bg-[#1E1810]"
     >
       {/* ── Fondo estático + crossfade GPU ── */}
       <div className="absolute inset-0">
