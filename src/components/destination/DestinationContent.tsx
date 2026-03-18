@@ -250,14 +250,18 @@ export default function DestinationContent({ destination }: Props) {
                   <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">Mapa del recorrido</span>
                 </div>
                 <div
-                  className="rounded-2xl overflow-hidden border border-[#a66d03]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group cursor-pointer shadow-sm"
-                  onClick={() => setMapMode("expanded")}
+                  className="rounded-2xl overflow-hidden border border-[#a66d03]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group lg:cursor-pointer shadow-sm"
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+                      setMapMode("expanded");
+                    }
+                  }}
                 >
                   <Image
                     src={destination.mapImageUrl}
                     alt={`Mapa del recorrido ${destination.title}`}
                     fill
-                    className="object-contain group-hover:scale-105 transition-transform duration-500"
+                    className="object-contain lg:group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, 60vw"
                     unoptimized
                   />
