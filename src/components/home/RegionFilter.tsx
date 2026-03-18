@@ -136,7 +136,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             alt="Beneficios incluidos"
             width={220}
             height={40}
-            className="h-9 w-auto object-contain block"
+            className="h-6 sm:h-9 w-auto object-contain block"
             style={{ mixBlendMode: "multiply" }}
           />
         </div>
@@ -205,11 +205,11 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             transition={{ duration: 0.5 }}
             className="flex items-center justify-center gap-3 mb-4"
           >
-            <div className="h-px w-10 bg-[#a66d03]" />
-            <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">
+            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
+            <span className="text-[#a66d03] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
               Explorá por región
             </span>
-            <div className="h-px w-10 bg-[#a66d03]" />
+            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
           </motion.div>
 
           <motion.h2
@@ -217,7 +217,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.87]"
+            className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.87] whitespace-nowrap"
           >
             Todos nuestros{" "}
             <span className="text-gold-gradient">destinos</span>

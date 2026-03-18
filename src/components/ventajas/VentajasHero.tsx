@@ -15,18 +15,18 @@ export default function VentajasHero() {
           transition={{ duration: 0.5 }}
           className="flex items-center justify-center gap-3 mb-4"
         >
-          <div className="h-px w-10 bg-[#a66d03]" />
-          <span className="text-[#d9bf8f] text-xs font-bold uppercase tracking-[0.3em]">
+          <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
+          <span className="text-[#d9bf8f] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
             Por qué elegirnos
           </span>
-          <div className="h-px w-10 bg-[#a66d03]" />
+          <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
         </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl md:text-5xl font-black uppercase leading-tight"
+          className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight"
           style={{ color: "#f5e6cc" }}
         >
           Tu viaje, <span className="text-gold-gradient">completamente resuelto</span>

@@ -46,20 +46,20 @@ export default function BeneficiosPage() {
             alt="Beneficios incluidos"
             width={220}
             height={40}
-            className="h-9 w-auto object-contain block"
+            className="h-6 sm:h-9 w-auto object-contain block"
             style={{ mixBlendMode: "multiply" }}
           />
         </div>
 
         {/* Stats */}
         <section className="py-10 px-6 bg-[#f5e6cc]/50 border-b border-[#a66d03]/12">
-          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="max-w-5xl mx-auto grid grid-cols-4 gap-3">
             {STATS.map((stat, i) => (
               <AnimatedSection key={stat.label} delay={i * 0.07} direction="up" className="flex flex-col items-center justify-center text-center">
-                <p className="text-3xl md:text-4xl font-black text-[#a66d03] leading-none mb-1">
+                <p className="text-lg sm:text-3xl md:text-4xl font-black text-[#a66d03] leading-none mb-0.5">
                   {stat.value}
                 </p>
-                <p className="text-[#1E1810]/55 text-sm font-bold uppercase tracking-widest">
+                <p className="text-[#1E1810]/55 text-[8px] sm:text-sm font-bold uppercase tracking-wide leading-tight">
                   {stat.label}
                 </p>
               </AnimatedSection>

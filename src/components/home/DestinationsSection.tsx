@@ -36,8 +36,8 @@ export default function DestinationsSection({ destinations }: Props) {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-3 mb-4"
             >
-              <div className="h-px w-10 bg-[#a66d03]" />
-              <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">
+              <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
+              <span className="text-[#a66d03] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Exclusivas
               </span>
             </motion.div>

@@ -69,7 +69,7 @@ export default function ContactanosPage() {
             alt="Beneficios incluidos en cada viaje"
             width={220}
             height={40}
-            className="h-9 w-auto object-contain block"
+            className="h-6 sm:h-9 w-auto object-contain block"
             style={{ mixBlendMode: "multiply" }}
           />
         </div>

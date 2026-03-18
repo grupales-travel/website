@@ -88,7 +88,7 @@ export default function AdvancedFilter({
         />
       )}
 
-      <div className="w-full mb-8 relative z-[40]" ref={containerRef}>
+      <div className="w-full mb-8 relative z-[50]" ref={containerRef}>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}

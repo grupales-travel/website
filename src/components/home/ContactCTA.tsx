@@ -22,11 +22,11 @@ export default function ContactCTA() {
             transition={{ duration: 0.5 }}
             className="flex items-center justify-center gap-3 mb-3"
           >
-            <div className="h-px w-10 bg-[#a66d03]" />
-            <span className="text-[#d9bf8f] text-sm font-bold uppercase tracking-[0.3em]">
+            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
+            <span className="text-[#d9bf8f] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
               Hablemos
             </span>
-            <div className="h-px w-10 bg-[#a66d03]" />
+            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
           </motion.div>
 
           <motion.h2
@@ -34,7 +34,7 @@ export default function ContactCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-7xl font-black uppercase leading-[0.92]"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black uppercase leading-[0.92] whitespace-nowrap"
             style={{ color: "#f5e6cc" }}
           >
             Comunicate con <span className="text-gold-gradient">nosotros</span>

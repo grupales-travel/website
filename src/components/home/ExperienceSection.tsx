@@ -41,8 +41,8 @@ export default function ExperienceSection() {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-3 mb-4"
             >
-              <div className="h-px w-10 bg-[#a66d03]" />
-              <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">
+              <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
+              <span className="text-[#a66d03] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Por qué elegirnos
               </span>
             </motion.div>
@@ -53,11 +53,9 @@ export default function ExperienceSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.08 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.82] mb-5 md:mb-7"
+              className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.88] mb-4 md:mb-7"
             >
-              Viví tu experiencia
-              <br />
-              <span className="text-[#a66d03]">grupal</span>
+              Viví tu experiencia{" "}<span className="text-[#a66d03]">grupal</span>
             </motion.h2>
 
             {/* Ventajas — texto más grande */}
@@ -109,7 +107,7 @@ export default function ExperienceSection() {
               <div className="h-10 w-px bg-[#a66d03]/20 hidden sm:block" />
 
               {/* Stats a la derecha del botón */}
-              <div className="flex items-center gap-0">
+              <div className="hidden sm:flex items-center gap-0">
                 {STATS.map((s, i) => (
                   <div
                     key={i}
