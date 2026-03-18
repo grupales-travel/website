@@ -30,6 +30,13 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Fijar altura en píxeles al montar — evita que el layout reflow
+  // cuando el browser mobile muestra/oculta su barra de navegación.
+  const [heroHeight, setHeroHeight] = useState<number | null>(null);
+  useEffect(() => {
+    setHeroHeight(window.innerHeight);
+  }, []);
+
   // Solo un useTransform liviano: fade de opacidad al hacer scroll
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -59,7 +66,8 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[100svh] min-h-[680px] overflow-hidden bg-[#1E1810]"
+      className="relative w-full min-h-[680px] overflow-hidden bg-[#1E1810]"
+      style={heroHeight ? { height: heroHeight } : { height: "100svh" }}
     >
       {/* ── Fondo estático + crossfade GPU ── */}
       <div className="absolute inset-0">
