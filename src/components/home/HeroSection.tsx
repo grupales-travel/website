@@ -37,6 +37,15 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
   });
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
+  // Precargar todas las imágenes en caché del browser para que las transiciones sean instantáneas
+  useEffect(() => {
+    images.forEach((img, i) => {
+      if (i === 0) return; // la primera ya carga con priority
+      const preload = new window.Image();
+      preload.src = img.publicUrl;
+    });
+  }, [images]);
+
   // Slideshow automático
   useEffect(() => {
     if (images.length <= 1) return;
