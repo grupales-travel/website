@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { MapPin, Clock, Globe, Calendar, FileText } from "lucide-react";
@@ -12,11 +12,19 @@ interface Props {
 
 export default function DestinationHero({ destination }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+
+  // Altura bloqueada al montar — igual que el home hero.
+  // Evita que el browser chrome (address bar + bottom bar) cause resize al scrollear.
+  const [heroHeight, setHeroHeight] = useState<number | null>(null);
+  useEffect(() => {
+    setHeroHeight(Math.round(window.innerHeight * 0.82));
+  }, []);
+
+  // Solo opacidad del contenido al scrollear — SIN parallax en el fondo
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   const statsItems = [
@@ -51,10 +59,10 @@ export default function DestinationHero({ destination }: Props) {
     <section
       ref={ref}
       className="relative w-full overflow-hidden bg-[#1E1810]"
-      style={{ height: "80svh", minHeight: "520px" }}
+      style={heroHeight ? { height: heroHeight } : { height: "80svh", minHeight: "520px" }}
     >
-      {/* Background parallax */}
-      <motion.div style={{ y: bgY }} className="absolute inset-0 scale-110">
+      {/* Background estático — sin parallax para evitar el efecto de zoom al scrollear */}
+      <div className="absolute inset-0">
         <Image
           src={destination.heroImage}
           alt={destination.title}
@@ -68,7 +76,7 @@ export default function DestinationHero({ destination }: Props) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1E1810]/50 to-transparent" />
-      </motion.div>
+      </div>
 
       {/* Grain */}
       <div
