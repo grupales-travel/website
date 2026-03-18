@@ -3,7 +3,8 @@
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { MapPin, Clock, Globe, Calendar, FileText } from "lucide-react";
+import { MapPin, Clock, Globe, Calendar, FileText, ChevronLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Destination } from "@/types";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 export default function DestinationHero({ destination }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Altura bloqueada al montar — IDÉNTICO al home hero.
   // Debe ser 100% del viewport inicial para que no haya contenido debajo
@@ -63,6 +65,14 @@ export default function DestinationHero({ destination }: Props) {
       className="relative w-full overflow-hidden bg-[#1E1810]"
       style={heroHeight ? { height: heroHeight } : { height: "100svh" }}
     >
+      {/* Back Button */}
+      <button 
+        onClick={() => router.back()}
+        className="absolute top-6 left-6 z-[60] w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20 hover:bg-black/60 transition-colors"
+      >
+        <ChevronLeft size={24} />
+      </button>
+
       {/* Background estático — sin parallax para evitar el efecto de zoom al scrollear */}
       <div className="absolute inset-0">
         <Image
