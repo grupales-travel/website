@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -149,6 +150,22 @@ export default function DestinationContent({ destination }: Props) {
   const [mapMode, setMapMode] = useState<null | "normal" | "expanded">(null);
   const [showAllIncludes, setShowAllIncludes] = useState(false);
   const videoScrollRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (activeVideo || mapMode === "expanded") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [activeVideo, mapMode]);
 
   function scrollVideos(dir: "left" | "right") {
     videoScrollRef.current?.scrollBy({ left: dir === "right" ? 280 : -280, behavior: "smooth" });
@@ -296,15 +313,16 @@ export default function DestinationContent({ destination }: Props) {
       </div>
 
       {/* ── Modal de video ─────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {activeVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActiveVideo(null)}
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-black/95 backdrop-blur-sm"
-          >
+      {mounted && createPortal(
+        <AnimatePresence>
+          {activeVideo && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setActiveVideo(null)}
+              className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+            >
             <motion.div
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -340,22 +358,24 @@ export default function DestinationContent({ destination }: Props) {
           </motion.div>
         )}
       </AnimatePresence>
+      , document.body)}
 
       {/* ── Modal de mapa ────────────────────────────────────────────────────── */}
-      <AnimatePresence>
-        {mapMode === "expanded" && destination.mapImageUrl && (
-          <motion.div
-            key="map-expanded"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] flex items-center justify-center"
-            style={{ height: "100dvh", background: "rgba(245,230,204,0.97)", backdropFilter: "blur(8px)" }}
-          >
-            {/* X cerrar — círculo marrón con X clarita, siempre visible encima de la imagen */}
-            <button
-              onClick={() => setMapMode(null)}
-              className="absolute top-4 right-4 z-50 w-11 h-11 flex items-center justify-center rounded-full shadow-lg transition-opacity duration-200 hover:opacity-80"
+      {mounted && createPortal(
+        <AnimatePresence>
+          {mapMode === "expanded" && destination.mapImageUrl && (
+            <motion.div
+              key="map-expanded"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[99999] flex items-center justify-center"
+              style={{ height: "100dvh", background: "rgba(245,230,204,0.97)", backdropFilter: "blur(8px)" }}
+            >
+              {/* X cerrar — círculo marrón con X clarita, siempre visible encima de la imagen */}
+              <button
+                onClick={() => setMapMode(null)}
+                className="absolute top-4 right-4 z-[100000] w-11 h-11 flex items-center justify-center rounded-full shadow-lg transition-opacity duration-200 hover:opacity-80"
               style={{ background: "#5c3317" }}
             >
               <X size={20} color="#f5e6cc" />
@@ -369,7 +389,8 @@ export default function DestinationContent({ destination }: Props) {
             />
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>
+      , document.body)}
     </section>
   );
 }

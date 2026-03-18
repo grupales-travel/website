@@ -47,8 +47,11 @@ function MarqueeRow({
           {items.map((photo, i) => (
             <div
               key={i}
-              className="flex-shrink-0 rounded-2xl overflow-hidden w-[150px] h-[150px] sm:w-[280px] sm:h-[280px]"
+              className="flex-shrink-0 rounded-2xl overflow-hidden"
+              style={{ width: ITEM_SIZE, height: ITEM_SIZE }}
+            // En mobile se achica via CSS
             >
+              <style>{`@media (max-width: 639px) { .gallery-item { width: ${ITEM_SIZE_MOBILE}px !important; height: ${ITEM_SIZE_MOBILE}px !important; } }`}</style>
               <img
                 src={photo.src}
                 alt={photo.alt}
