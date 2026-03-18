@@ -71,7 +71,7 @@ export default function Navbar() {
   // Cuando el usuario vuelve a la página (ej: después de ir a YouTube),
   // limpiar cualquier bloqueo de body que haya quedado atascado.
   useEffect(() => {
-    const handlePageShow = () => {
+    const restoreBody = () => {
       if (document.body.style.position === "fixed") {
         const scrollY = document.body.style.top;
         document.body.style.position = "";
@@ -82,19 +82,23 @@ export default function Navbar() {
         if (scrollY) {
           window.scrollTo(0, parseInt(scrollY || "0") * -1);
         }
+        setMobileOpen(false);
       }
-      // También resetear overflow por si el modal de video lo dejó
       if (document.body.style.overflow === "hidden") {
         document.body.style.overflow = "";
       }
-      setMobileOpen(false);
+    };
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) restoreBody();
+    };
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") restoreBody();
     };
     window.addEventListener("pageshow", handlePageShow);
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") handlePageShow();
-    });
+    document.addEventListener("visibilitychange", handleVisibility);
     return () => {
       window.removeEventListener("pageshow", handlePageShow);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);
 
