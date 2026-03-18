@@ -133,7 +133,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
         <div className="max-w-3xl">
 
           {/* Headline — animaciones rápidas para que aparezca inmediatamente */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.88] tracking-tight mb-2 md:mb-5">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.88] tracking-tight mb-2 md:mb-5">
             {WORDS.map((word, i) => (
               <motion.span
                 key={word}
@@ -160,7 +160,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-white/65 text-sm sm:text-xl md:text-2xl leading-tight max-w-xl mb-3 md:mb-6 font-light"
+            className="text-white/65 text-sm sm:text-xl md:text-2xl leading-snug max-w-[260px] sm:max-w-xl mb-3 md:mb-6 font-light"
           >
             Coordinadores desde Argentina · Vuelos incluidos · Excursiones en español.
             Descubrí el mundo sin preocuparte por nada.
@@ -171,7 +171,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex flex-row gap-2 sm:gap-4"
+            className="flex flex-col gap-2.5 sm:flex-row sm:gap-4"
           >
             <motion.a
               href="#destinos"
@@ -181,7 +181,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
               }}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-4 py-2.5 sm:px-8 sm:py-4 rounded-full btn-gold text-white text-xs sm:text-sm font-bold uppercase tracking-widest"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-full btn-gold text-white text-xs sm:text-sm font-bold uppercase tracking-widest"
             >
               <Compass size={16} />
               Explorar Destinos
@@ -193,7 +193,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
               rel="noopener noreferrer"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-4 py-2.5 sm:px-8 sm:py-4 rounded-full bg-transparent text-white text-xs sm:text-sm font-bold uppercase tracking-widest border border-white/30 hover:bg-white/10 hover:border-white/60 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 rounded-full bg-transparent text-white text-xs sm:text-sm font-bold uppercase tracking-widest border border-white/30 hover:bg-white/10 hover:border-white/60 transition-all duration-300"
             >
               <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
               Hablar con un Asesor

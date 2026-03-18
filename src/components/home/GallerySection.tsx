@@ -47,8 +47,7 @@ function MarqueeRow({
           {items.map((photo, i) => (
             <div
               key={i}
-              className="flex-shrink-0 rounded-2xl overflow-hidden"
-              style={{ width: ITEM_SIZE, height: ITEM_SIZE }}
+              className="flex-shrink-0 rounded-2xl overflow-hidden w-[150px] h-[150px] sm:w-[280px] sm:h-[280px]"
             >
               <img
                 src={photo.src}

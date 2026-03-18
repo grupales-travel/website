@@ -55,11 +55,19 @@ export default function AdvancedFilter({
     return () => document.removeEventListener("mousedown", handle);
   }, [openPanel]);
 
+  // Para dropdowns (región/mes/año): cierra el panel después de seleccionar
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     onFilterChange(newFilters);
     setOpenPanel(null);
+  };
+
+  // Para búsqueda: filtra sin cerrar el panel
+  const handleSearchChange = (value: string) => {
+    const newFilters = { ...filters, search: value };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
   };
 
   const togglePanel = (key: string) => {
@@ -85,7 +93,7 @@ export default function AdvancedFilter({
           className="relative"
         >
           {/* ── Fila única de filtros ── */}
-          <div className="flex items-center justify-center gap-2">
+          <div className="relative flex items-center justify-center gap-2">
 
             {/* Lupa (mobile) */}
             <div className="sm:hidden">
@@ -104,6 +112,44 @@ export default function AdvancedFilter({
                 <Search size={15} />
               </motion.button>
             </div>
+
+            {/* Barra de búsqueda expandible (mobile) — overlay animado que tapa los filtros */}
+            <AnimatePresence>
+              {openPanel === "search" && (
+                <motion.div
+                  initial={{ width: 36 }}
+                  animate={{ width: "100%" }}
+                  exit={{ width: 36 }}
+                  transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="absolute left-0 top-0 bottom-0 z-20 flex items-center overflow-hidden rounded-full sm:hidden"
+                  style={{
+                    backgroundColor: "white",
+                    boxShadow: "0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <Search size={14} className="absolute left-3 text-[#1E1810]/35 pointer-events-none shrink-0" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Buscar destino..."
+                    value={filters.search}
+                    onChange={(e) => handleSearchChange(e.target.value)}
+                    autoComplete="off"
+                    autoCorrect="off"
+                    autoCapitalize="off"
+                    spellCheck={false}
+                    inputMode="search"
+                    className="w-full h-full pl-8 pr-8 bg-transparent text-[#1E1810] text-[13px] font-medium focus:outline-none placeholder:text-[#1E1810]/40"
+                  />
+                  <button
+                    onMouseDown={(e) => { e.preventDefault(); handleSearchChange(""); setOpenPanel(null); }}
+                    className="absolute right-2.5 text-[#1E1810]/40 flex items-center justify-center w-6 h-6"
+                  >
+                    <X size={13} />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Input completo (desktop) */}
             <div className="hidden sm:block relative flex-grow max-w-[280px]">
@@ -186,40 +232,6 @@ export default function AdvancedFilter({
             </FilterPill>
           </div>
 
-          {/* ── Búsqueda overlay en mobile (no empuja contenido) ── */}
-          <AnimatePresence>
-            {openPanel === "search" && (
-              <motion.div
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
-                className="absolute top-full left-0 right-0 mt-2 z-[55] sm:hidden"
-              >
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                    <Search size={15} className="text-[#1E1810]/40" />
-                  </div>
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Buscar destino..."
-                    value={filters.search}
-                    onChange={(e) => handleFilterChange("search", e.target.value)}
-                    className="w-full pl-10 pr-9 py-2.5 rounded-full bg-white text-[#1E1810] text-[14px] font-medium shadow-[0_4px_20px_rgba(0,0,0,0.12)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 placeholder:text-[#1E1810]/40"
-                  />
-                  {filters.search && (
-                    <button
-                      onMouseDown={(e) => { e.preventDefault(); handleFilterChange("search", ""); setOpenPanel(null); }}
-                      className="absolute inset-y-0 right-3 flex items-center text-[#1E1810]/40"
-                    >
-                      <X size={14} />
-                    </button>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </motion.div>
       </div>
     </>
