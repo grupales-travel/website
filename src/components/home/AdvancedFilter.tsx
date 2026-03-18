@@ -69,6 +69,15 @@ export default function AdvancedFilter({
     setOpenPanel(openPanel === key ? null : key);
   };
 
+  const hasActiveFilters = !!(filters.region || filters.month || filters.year !== CURRENT_YEAR);
+
+  const clearFilters = () => {
+    const cleared = { ...filters, region: "", month: "", year: CURRENT_YEAR };
+    setFilters(cleared);
+    onFilterChange(cleared);
+    setOpenPanel(null);
+  };
+
   return (
     <>
       {/* Backdrop: cierra cualquier panel abierto */}
@@ -79,7 +88,7 @@ export default function AdvancedFilter({
         />
       )}
 
-      <div className="w-full mb-8 relative z-[50]" ref={containerRef}>
+      <div className="w-full mb-8 relative z-[40]" ref={containerRef}>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -196,6 +205,24 @@ export default function AdvancedFilter({
                 ))}
               </Sheet>
             </FilterPill>
+
+            {/* ── X para limpiar región/mes/año ── */}
+            <AnimatePresence>
+              {hasActiveFilters && (
+                <motion.button
+                  key="clear-all"
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.7 }}
+                  transition={{ duration: 0.15 }}
+                  onClick={clearFilters}
+                  className="flex items-center justify-center w-7 h-7 rounded-full bg-[#1E1810]/10 text-[#1E1810]/45 hover:bg-[#1E1810]/18 hover:text-[#1E1810]/70 transition-colors shrink-0"
+                  aria-label="Limpiar filtros"
+                >
+                  <X size={13} />
+                </motion.button>
+              )}
+            </AnimatePresence>
           </div>
 
         </motion.div>

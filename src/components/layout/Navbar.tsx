@@ -44,7 +44,7 @@ export default function Navbar() {
       <header
         style={{ transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+          "fixed top-0 left-0 right-0 z-[100] transition-all duration-500",
           scrolled
             ? "bg-[#1E1810]/95 backdrop-blur-md border-b border-[#a66d03]/30 py-2"
             : "bg-transparent py-3"
@@ -141,7 +141,7 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-            className="fixed inset-0 z-40 flex flex-col bg-[#1E1810]"
+            className="fixed inset-0 z-[95] flex flex-col bg-[#1E1810]"
           >
             <div className="h-1 w-full bg-gradient-to-r from-[#a66d03] via-[#bf8b2a] to-[#a66d03]" />
             <div className="flex-1 flex flex-col justify-center px-8 py-20">

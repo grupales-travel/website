@@ -54,7 +54,7 @@ export default function ContactanosPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl font-black uppercase leading-tight"
+              className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight whitespace-nowrap"
               style={{ color: "#f5e6cc" }}
             >
               Hablemos de <span className="text-gold-gradient">tu próximo viaje</span>

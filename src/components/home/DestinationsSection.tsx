@@ -47,11 +47,11 @@ export default function DestinationsSection({ destinations }: Props) {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[1.0]"
+              className="text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[1.0]"
             >
-              Descubrí nuestras
+              <span className="text-[#5c3317]">Salidas Grupales</span>
               <br />
-              <span className="text-gold-gradient">salidas grupales destacadas</span>
+              <span className="text-gold-gradient">Destacadas</span>
             </motion.h2>
           </div>
 
