@@ -163,17 +163,17 @@ export default function HeroImageManager({ images: init }: Props) {
       </AnimatePresence>
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
-      <div className="flex items-end justify-between mb-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
         <div>
           <p className="text-[#a66d03] text-xs font-bold uppercase tracking-[0.25em] mb-2">Panel de administración</p>
-          <h1 className="text-4xl font-black uppercase text-[#f5e6cc] tracking-wide">Imágenes de portada</h1>
-          <p className="text-white/35 text-base mt-1">
+          <h1 className="text-2xl sm:text-4xl font-black uppercase text-[#f5e6cc] tracking-wide">Imágenes de portada</h1>
+          <p className="text-white/35 text-sm sm:text-base mt-1">
             {images.length} imagen{images.length !== 1 ? "es" : ""} · Arrastrá para reordenar
           </p>
         </div>
         <button
           onClick={openModal}
-          className="px-7 py-3.5 btn-gold text-white text-sm font-bold uppercase tracking-widest rounded-full flex items-center gap-2"
+          className="w-full sm:w-auto px-7 py-3.5 btn-gold text-white text-sm font-bold uppercase tracking-widest rounded-full flex items-center justify-center gap-2"
         >
           <Upload size={15} strokeWidth={2.5} />
           Nueva imagen
@@ -183,8 +183,8 @@ export default function HeroImageManager({ images: init }: Props) {
       {/* ── Lista de imágenes ───────────────────────────────────────────── */}
       <div className="bg-white/5 border border-white/8 rounded-2xl overflow-hidden">
 
-        {/* Cabecera */}
-        <div className="grid grid-cols-[32px_120px_1fr_100px_60px] gap-6 items-center px-6 py-4 border-b border-white/6">
+        {/* Cabecera — solo en desktop */}
+        <div className="hidden lg:grid grid-cols-[32px_120px_1fr_100px_60px] gap-6 items-center px-6 py-4 border-b border-white/6">
           <span />
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/30 text-center">Imagen</p>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/30">Descripción</p>
@@ -211,67 +211,106 @@ export default function HeroImageManager({ images: init }: Props) {
               onDragEnd={onDragEnd}
               onDragOver={(e) => onDragOver(e, img.id)}
               onDrop={() => onDrop(img.id)}
-              className={`grid grid-cols-[32px_120px_1fr_100px_60px] gap-6 items-center px-6 py-4 border-b border-white/4 last:border-0 transition-all duration-150 ${isDragging ? "opacity-30" : "opacity-100"
+              className={`border-b border-white/4 last:border-0 transition-all duration-150 ${isDragging ? "opacity-30" : "opacity-100"
                 } ${isOver ? "bg-[#a66d03]/10 border-l-2 border-l-[#a66d03]" : "hover:bg-white/3"
                 }`}
             >
-              {/* Drag handle */}
-              <div className="cursor-grab active:cursor-grabbing text-white/20 hover:text-white/50 transition-colors">
-                <GripVertical size={18} />
-              </div>
+              {/* Desktop row */}
+              <div className="hidden lg:grid grid-cols-[32px_120px_1fr_100px_60px] gap-6 items-center px-6 py-4">
+                {/* Drag handle */}
+                <div className="cursor-grab active:cursor-grabbing text-white/20 hover:text-white/50 transition-colors">
+                  <GripVertical size={18} />
+                </div>
 
-              {/* Thumbnail */}
-              <div
-                className="relative w-full aspect-video rounded-lg overflow-hidden bg-white/8 shrink-0 cursor-pointer group"
-                onClick={() => setPreviewImage(img.publicUrl)}
-              >
-                <Image
-                  src={img.publicUrl}
-                  alt={img.alt || "Imagen"}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  unoptimized
+                {/* Thumbnail */}
+                <div
+                  className="relative w-full aspect-video rounded-lg overflow-hidden bg-white/8 shrink-0 cursor-pointer group"
+                  onClick={() => setPreviewImage(img.publicUrl)}
+                >
+                  <Image src={img.publicUrl} alt={img.alt || "Imagen"} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <p className="text-white text-[10px] font-bold uppercase tracking-widest">Ver</p>
+                  </div>
+                </div>
+
+                {/* Alt text */}
+                <input
+                  defaultValue={img.alt}
+                  onChange={(e) => setImages((prev) => prev.map((i) => i.id === img.id ? { ...i, alt: e.target.value } : i))}
+                  onBlur={(e) => saveAlt(img.id, e.target.value)}
+                  placeholder="Descripción de la imagen..."
+                  className="bg-transparent text-[#f5e6cc] text-[15px] font-medium placeholder:text-white/20 outline-none border-b border-transparent focus:border-white/20 transition-colors py-1 w-full"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <p className="text-white text-[10px] font-bold uppercase tracking-widest">Ver</p>
+
+                {/* Toggle */}
+                <div className="flex flex-col items-center justify-center gap-1.5 h-full">
+                  <button
+                    onClick={() => toggleActive(img.id)}
+                    className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${img.active ? "bg-[#a66d03]" : "bg-white/12"}`}
+                    title={img.active ? "Activa" : "Inactiva"}
+                  >
+                    <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-md transition-all duration-300 ${img.active ? "left-[22px]" : "left-0.5"}`} />
+                  </button>
+                  <p className={`text-[10px] font-bold uppercase tracking-wide ${img.active ? "text-[#a66d03]" : "text-white/25"}`}>
+                    {img.active ? "Activa" : "Inactiva"}
+                  </p>
+                </div>
+
+                {/* Delete */}
+                <div className="flex justify-center h-full items-center">
+                  <button
+                    onClick={() => deleteImage(img.id)}
+                    disabled={deletingId === img.id}
+                    className="w-10 h-10 flex items-center justify-center rounded-lg text-white/25 hover:text-red-400 hover:bg-red-400/10 transition-all duration-200 disabled:opacity-40"
+                  >
+                    <Trash2 size={18} strokeWidth={2} />
+                  </button>
                 </div>
               </div>
 
-              {/* Alt text inline */}
-              <input
-                defaultValue={img.alt}
-                onChange={(e) => setImages((prev) => prev.map((i) => i.id === img.id ? { ...i, alt: e.target.value } : i))}
-                onBlur={(e) => saveAlt(img.id, e.target.value)}
-                placeholder="Descripción de la imagen..."
-                className="bg-transparent text-[#f5e6cc] text-[15px] font-medium placeholder:text-white/20 outline-none border-b border-transparent focus:border-white/20 transition-colors py-1 w-full"
-              />
+              {/* Mobile card */}
+              <div className="lg:hidden p-4 flex gap-4">
+                {/* Drag + Thumbnail */}
+                <div className="flex flex-col items-center gap-2 shrink-0">
+                  <div className="cursor-grab active:cursor-grabbing text-white/20">
+                    <GripVertical size={16} />
+                  </div>
+                  <div
+                    className="relative w-20 aspect-video rounded-lg overflow-hidden bg-white/8 cursor-pointer"
+                    onClick={() => setPreviewImage(img.publicUrl)}
+                  >
+                    <Image src={img.publicUrl} alt={img.alt || "Imagen"} fill className="object-cover" unoptimized />
+                  </div>
+                </div>
 
-              {/* Toggle activo / inactivo */}
-              <div className="flex flex-col items-center justify-center gap-1.5 h-full">
-                <button
-                  onClick={() => toggleActive(img.id)}
-                  className={`relative w-11 h-6 rounded-full transition-colors duration-300 ${img.active ? "bg-[#a66d03]" : "bg-white/12"
-                    }`}
-                  title={img.active ? "Activa — click para desactivar" : "Inactiva — click para activar"}
-                >
-                  <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-md transition-all duration-300 ${img.active ? "left-[22px]" : "left-0.5"
-                    }`} />
-                </button>
-                <p className={`text-[10px] font-bold uppercase tracking-wide ${img.active ? "text-[#a66d03]" : "text-white/25"
-                  }`}>
-                  {img.active ? "Activa" : "Inactiva"}
-                </p>
-              </div>
-
-              {/* Eliminar */}
-              <div className="flex justify-center h-full items-center">
-                <button
-                  onClick={() => deleteImage(img.id)}
-                  disabled={deletingId === img.id}
-                  className="w-10 h-10 flex items-center justify-center rounded-lg text-white/25 hover:text-red-400 hover:bg-red-400/10 transition-all duration-200 disabled:opacity-40"
-                >
-                  <Trash2 size={18} strokeWidth={2} />
-                </button>
+                {/* Info + Actions */}
+                <div className="flex-1 flex flex-col justify-between gap-2 min-w-0">
+                  <input
+                    defaultValue={img.alt}
+                    onChange={(e) => setImages((prev) => prev.map((i) => i.id === img.id ? { ...i, alt: e.target.value } : i))}
+                    onBlur={(e) => saveAlt(img.id, e.target.value)}
+                    placeholder="Descripción..."
+                    className="bg-transparent text-[#f5e6cc] text-sm font-medium placeholder:text-white/20 outline-none border-b border-white/10 focus:border-white/20 transition-colors py-1 w-full"
+                  />
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => toggleActive(img.id)}
+                      className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${img.active ? "bg-[#a66d03]" : "bg-white/12"}`}
+                    >
+                      <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-md transition-all duration-300 ${img.active ? "left-[22px]" : "left-0.5"}`} />
+                    </button>
+                    <span className={`text-[10px] font-bold uppercase ${img.active ? "text-[#a66d03]" : "text-white/25"}`}>
+                      {img.active ? "Activa" : "Inactiva"}
+                    </span>
+                    <button
+                      onClick={() => deleteImage(img.id)}
+                      disabled={deletingId === img.id}
+                      className="ml-auto w-8 h-8 flex items-center justify-center rounded-lg text-white/25 hover:text-red-400 hover:bg-red-400/10 transition-all disabled:opacity-40"
+                    >
+                      <Trash2 size={16} strokeWidth={2} />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           );

@@ -14,12 +14,12 @@ export default async function AdminInicio() {
   ];
 
   return (
-    <div className="p-10">
+    <div className="p-5 md:p-10">
 
       <div className="mb-10">
         <p className="text-[#a66d03] text-xs font-bold uppercase tracking-[0.25em] mb-2">Panel de administración</p>
-        <h1 className="text-4xl font-black uppercase text-[#f5e6cc] tracking-wide">Inicio</h1>
-        <p className="text-white/35 text-lg mt-2">Resumen general del contenido del sitio.</p>
+        <h1 className="text-2xl sm:text-4xl font-black uppercase text-[#f5e6cc] tracking-wide">Inicio</h1>
+        <p className="text-white/35 text-base sm:text-lg mt-2">Resumen general del contenido del sitio.</p>
       </div>
 
       {/* Stats */}

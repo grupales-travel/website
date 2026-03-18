@@ -19,7 +19,7 @@ export default async function AdminHeroPage() {
   }));
 
   return (
-    <div className="p-10 max-w-7xl mx-auto">
+    <div className="p-4 md:p-10 max-w-7xl mx-auto">
       <HeroImageManager images={images} />
     </div>
   );

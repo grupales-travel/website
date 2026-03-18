@@ -133,7 +133,7 @@ export default function DestinationsClient({ initialDestinations }: Props) {
     const uniqueYears = Array.from(new Set(initialDestinations.map(d => d.year))).sort((a, b) => a - b);
 
     return (
-        <div className="p-8 md:p-12 max-w-7xl mx-auto">
+        <div className="p-4 md:p-8 lg:p-12 max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 gap-4">
                 <div>
                     <h1 className="text-3xl font-black uppercase text-[#f5e6cc] tracking-tight">Destinos</h1>

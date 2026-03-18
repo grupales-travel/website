@@ -1029,18 +1029,18 @@ export default function DestinationForm({ initial, id }: Props) {
         </div>
       )}
 
-      <div className="flex gap-3 pb-4">
+      <div className="flex flex-col sm:flex-row gap-3 pb-4">
         <button
           type="submit"
           disabled={saving}
-          className="px-10 py-4 btn-gold text-white text-sm font-bold uppercase tracking-widest rounded-full disabled:opacity-50"
+          className="w-full sm:w-auto px-10 py-4 btn-gold text-white text-sm font-bold uppercase tracking-widest rounded-full disabled:opacity-50"
         >
           {saving ? "Guardando..." : id ? "Guardar cambios" : "Crear destino"}
         </button>
         <button
           type="button"
           onClick={() => router.push("/admin/destinos")}
-          className="px-10 py-4 border border-white/12 text-white/40 text-sm font-bold uppercase tracking-widest rounded-full hover:border-white/25 hover:text-white/65 transition-all"
+          className="w-full sm:w-auto px-10 py-4 border border-white/12 text-white/40 text-sm font-bold uppercase tracking-widest rounded-full hover:border-white/25 hover:text-white/65 transition-all"
         >
           Cancelar
         </button>
