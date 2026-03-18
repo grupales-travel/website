@@ -68,6 +68,36 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
+  // Cuando el usuario vuelve a la página (ej: después de ir a YouTube),
+  // limpiar cualquier bloqueo de body que haya quedado atascado.
+  useEffect(() => {
+    const handlePageShow = () => {
+      if (document.body.style.position === "fixed") {
+        const scrollY = document.body.style.top;
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.overflow = "";
+        if (scrollY) {
+          window.scrollTo(0, parseInt(scrollY || "0") * -1);
+        }
+      }
+      // También resetear overflow por si el modal de video lo dejó
+      if (document.body.style.overflow === "hidden") {
+        document.body.style.overflow = "";
+      }
+      setMobileOpen(false);
+    };
+    window.addEventListener("pageshow", handlePageShow);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") handlePageShow();
+    });
+    return () => {
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, []);
+
   return (
     <>
       <header
