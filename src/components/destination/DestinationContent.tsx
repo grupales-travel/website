@@ -23,7 +23,7 @@ function getVideoEmbed(url: string, isPreview = false) {
     if (isPreview) {
       return {
         type: "youtube",
-        embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=0`,
+        embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1&controls=1&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=1`,
       };
     }
     return {
@@ -88,14 +88,14 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
   return (
     <div
       className="flex-shrink-0 w-48 sm:w-56 md:w-72 aspect-[9/16] rounded-2xl overflow-hidden snap-start bg-[#1E1810] shadow-md relative group/card cursor-pointer"
-      onClick={handleTogglePlay}
+      onClick={embed.type !== "youtube" ? handleTogglePlay : undefined}
     >
       <div className="absolute inset-0 overflow-hidden">
         {embed.type === "video" ? (
           <video ref={videoRef} src={url} className="w-full h-full object-cover" preload="metadata" playsInline muted={isMuted} loop />
         ) : embed.type === "youtube" ? (
-          <div className="absolute inset-0 z-10 pointer-events-none">
-            <iframe ref={iframeRef} src={embed.embedUrl} className="w-full h-full" style={{ border: "none" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen loading="lazy" tabIndex={-1} />
+          <div className="absolute inset-0 z-10">
+            <iframe ref={iframeRef} src={embed.embedUrl} className="w-full h-full" style={{ border: "none" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen loading="lazy" />
           </div>
         ) : (
           <div className="absolute left-0 right-0 pointer-events-none" style={{ top: "-58px", bottom: "-80px" }}>
@@ -108,12 +108,14 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
           {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
         </button>
       )}
-      <button 
-        onClick={(e) => { e.stopPropagation(); onExpand(url); }} 
-        className={`absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white ${isActive ? "opacity-100" : "opacity-0 group-hover/card:opacity-100"}`}
-      >
-        <Maximize2 size={16} />
-      </button>
+      {embed.type !== "youtube" && (
+        <button 
+          onClick={(e) => { e.stopPropagation(); onExpand(url); }} 
+          className={`absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white ${isActive ? "opacity-100" : "opacity-0 group-hover/card:opacity-100"}`}
+        >
+          <Maximize2 size={16} />
+        </button>
+      )}
     </div>
   );
 }
@@ -336,7 +338,7 @@ export default function DestinationContent({ destination }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveVideo(null)}
-              className="fixed top-0 inset-x-0 h-[100vh] z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+              className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-sm"
             >
             <motion.div
               initial={{ scale: 0.92, opacity: 0 }}
@@ -344,7 +346,7 @@ export default function DestinationContent({ destination }: Props) {
               exit={{ scale: 0.92, opacity: 0 }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full h-[100vh] rounded-none sm:h-[92vh] sm:aspect-[9/16] sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl overflow-hidden shadow-2xl"
+              className="relative w-full h-full sm:h-[92vh] sm:aspect-[9/16] sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl overflow-hidden shadow-2xl"
             >
               <button
                 onClick={() => setActiveVideo(null)}
@@ -384,7 +386,7 @@ export default function DestinationContent({ destination }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed top-0 inset-x-0 h-[100vh] z-[99999] flex flex-col items-center justify-center p-4 sm:p-12"
+              className="fixed inset-0 z-[99999] flex flex-col items-center justify-center p-4 sm:p-12"
               style={{ background: "rgba(245,230,204,0.97)", backdropFilter: "blur(8px)" }}
             >
               {/* X cerrar — círculo marrón con X clarita, siempre visible encima de la imagen */}
