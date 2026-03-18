@@ -40,7 +40,7 @@ export default function BeneficiosPage() {
         <VentajasHero />
 
         {/* Banner flotante entre secciones — sin fondo */}
-        <div className="relative z-10 flex justify-center -mt-5 -mb-5 px-6">
+        <div className="relative z-10 flex justify-center -mt-3 sm:-mt-[18px] -mb-3 sm:-mb-[18px] px-6">
           <Image
             src="/iconos-beneficios.png"
             alt="Beneficios incluidos"

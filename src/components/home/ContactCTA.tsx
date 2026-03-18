@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Navigation } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { COMPANY, OFFICES } from "@/data/company";
 
 export default function ContactCTA() {
@@ -34,7 +34,7 @@ export default function ContactCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black uppercase leading-[0.92] whitespace-nowrap"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.92]"
             style={{ color: "#f5e6cc" }}
           >
             Comunicate con <span className="text-gold-gradient">nosotros</span>
@@ -83,30 +83,19 @@ export default function ContactCTA() {
               )}
 
               {/* Acciones */}
-              <div className="flex gap-3 mt-auto pt-2 border-t border-white/8">
-                {office.whatsapp && (
+              {office.whatsapp && (
+                <div className="mt-auto pt-2 border-t border-white/8">
                   <a
                     href={office.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl btn-gold text-white text-sm font-black uppercase tracking-wider shadow-lg shadow-[#a66d03]/30"
+                    className="flex items-center justify-center gap-2 py-3 rounded-xl btn-gold text-white text-sm font-black uppercase tracking-wider shadow-lg shadow-[#a66d03]/30"
                   >
                     <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
                     WhatsApp
                   </a>
-                )}
-                {office.mapsUrl && (
-                  <a
-                    href={office.mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white/8 border border-white/15 text-white/70 text-sm font-bold uppercase tracking-wider hover:bg-white/15 hover:text-white transition-all duration-200"
-                  >
-                    <Navigation size={14} />
-                    Oficina
-                  </a>
-                )}
-              </div>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>

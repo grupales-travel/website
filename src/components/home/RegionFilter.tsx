@@ -111,7 +111,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
               className="flex items-center justify-center gap-3 mb-4"
             >
               <div className="h-px w-10 bg-[#a66d03]" />
-              <span className="text-[#d9bf8f] text-xs font-bold uppercase tracking-[0.3em]">
+              <span className="text-[#d9bf8f] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 {allDestinations.length} destinos confirmados
               </span>
               <div className="h-px w-10 bg-[#a66d03]" />
@@ -130,7 +130,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
         </section>
 
         {/* Banner flotante — sin fondo */}
-        <div className="relative z-10 flex justify-center -mt-5 -mb-5 px-6">
+        <div className="relative z-10 flex justify-center -mt-3 sm:-mt-[18px] -mb-3 sm:-mb-[18px] px-6">
           <Image
             src="/iconos-beneficios.png"
             alt="Beneficios incluidos"
