@@ -23,7 +23,7 @@ function getVideoEmbed(url: string, isPreview = false) {
     if (isPreview) {
       return {
         type: "youtube",
-        embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=0`,
+        embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=0`,
       };
     }
     return {
@@ -49,21 +49,22 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
   };
 
   const handleTogglePlay = (e?: React.MouseEvent) => {
-    if (embed.type === "youtube") {
-      if (e) handleExpand(e);
-      return;
-    }
     if (!isActive) {
       setIsActive(true); setIsPlaying(true); setIsMuted(false);
       if (embed.type === "video" && videoRef.current) {
         videoRef.current.currentTime = 0;
         videoRef.current.muted = false;
         videoRef.current.play();
+      } else if (embed.type === "youtube") {
+        ytCommand("playVideo");
+        ytCommand("unMute");
       }
     } else {
       setIsPlaying(!isPlaying);
       if (embed.type === "video" && videoRef.current) {
         isPlaying ? videoRef.current.pause() : videoRef.current.play();
+      } else if (embed.type === "youtube") {
+        isPlaying ? ytCommand("pauseVideo") : ytCommand("playVideo");
       }
     }
   };
@@ -107,7 +108,10 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
           {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
         </button>
       )}
-      <button onClick={handleExpand} className="absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white">
+      <button 
+        onClick={(e) => { e.stopPropagation(); onExpand(url); }} 
+        className={`absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white ${isActive ? "opacity-100" : "opacity-0 group-hover/card:opacity-100"}`}
+      >
         <Maximize2 size={16} />
       </button>
     </div>
@@ -332,7 +336,7 @@ export default function DestinationContent({ destination }: Props) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveVideo(null)}
-              className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+              className="fixed top-0 inset-x-0 h-[100vh] z-[99999] flex items-center justify-center bg-black/95 backdrop-blur-sm"
             >
             <motion.div
               initial={{ scale: 0.92, opacity: 0 }}
@@ -340,7 +344,7 @@ export default function DestinationContent({ destination }: Props) {
               exit={{ scale: 0.92, opacity: 0 }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full h-[100dvh] rounded-none sm:h-[92vh] sm:aspect-[9/16] sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl overflow-hidden shadow-2xl"
+              className="relative w-full h-[100vh] rounded-none sm:h-[92vh] sm:aspect-[9/16] sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl overflow-hidden shadow-2xl"
             >
               <button
                 onClick={() => setActiveVideo(null)}
@@ -380,7 +384,7 @@ export default function DestinationContent({ destination }: Props) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[99999] flex flex-col items-center justify-center p-4 sm:p-12"
+              className="fixed top-0 inset-x-0 h-[100vh] z-[99999] flex flex-col items-center justify-center p-4 sm:p-12"
               style={{ background: "rgba(245,230,204,0.97)", backdropFilter: "blur(8px)" }}
             >
               {/* X cerrar — círculo marrón con X clarita, siempre visible encima de la imagen */}

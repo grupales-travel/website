@@ -18,8 +18,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  // Altura medida en el momento exacto que se abre el menú.
-  // 100dvh no alcanza en Chrome Android (no cuenta la barra de navegación inferior).
+  // 100vh fijo garantiza que la franja blanca no se asome por debajo al ocultar el nav nativo
   const [menuHeight, setMenuHeight] = useState<number | null>(null);
 
   useEffect(() => {
@@ -39,7 +38,6 @@ export default function Navbar() {
 
   useEffect(() => {
     if (mobileOpen) {
-      setMenuHeight(window.innerHeight);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -150,7 +148,7 @@ export default function Navbar() {
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
             className="fixed inset-x-0 top-0 z-[95] flex flex-col bg-[#1E1810]"
-            style={{ height: menuHeight ? `${menuHeight}px` : "100dvh" }}
+            style={{ height: "100vh" }}
           >
             <div className="h-1 w-full bg-gradient-to-r from-[#a66d03] via-[#bf8b2a] to-[#a66d03]" />
             <div className="flex-1 flex flex-col justify-center px-8 py-20">
