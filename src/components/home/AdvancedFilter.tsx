@@ -163,7 +163,7 @@ export default function AdvancedFilter({
             <FilterPill
               icon={<CalendarDays size={14} strokeWidth={2} />}
               label="Mes"
-              value={filters.month || null}
+              value={filters.month ? filters.month.substring(0, 3) : null}
               active={!!filters.month}
               open={openPanel === "month"}
               onClick={() => togglePanel("month")}
