@@ -22,6 +22,7 @@ const PHOTOS = [
 ];
 
 const ITEM_SIZE = 280;
+const ITEM_SIZE_MOBILE = 150;
 const GAP = 16; // gap-4 = 1rem = 16px
 
 const row1 = PHOTOS.slice(0, 8);
@@ -35,23 +36,29 @@ function MarqueeRow({
   direction: "left" | "right";
 }) {
   const items = [...photos, ...photos, ...photos];
-  const setWidth = photos.length * ITEM_SIZE + photos.length * GAP;
+  const count = photos.length;
+  const widthDesktop = count * ITEM_SIZE + count * GAP;
+  const widthMobile = count * ITEM_SIZE_MOBILE + count * GAP;
 
   return (
     <div className="overflow-hidden touch-action-pan-y" style={{ touchAction: "pan-y" }}>
+      <style>{`
+        .wrapper-${direction} { width: ${widthMobile * 3}px; }
+        .gallery-item-${direction} { width: ${ITEM_SIZE_MOBILE}px; height: ${ITEM_SIZE_MOBILE}px; }
+        @media (min-width: 640px) {
+          .wrapper-${direction} { width: ${widthDesktop * 3}px; }
+          .gallery-item-${direction} { width: ${ITEM_SIZE}px; height: ${ITEM_SIZE}px; }
+        }
+      `}</style>
       <div
-        className={`pointer-events-none ${direction === "left" ? "marquee-track" : "marquee-track-reverse"}`}
-        style={{ width: setWidth * 3 }}
+        className={`pointer-events-none wrapper-${direction} ${direction === "left" ? "marquee-track" : "marquee-track-reverse"}`}
       >
         <div className="flex gap-4">
           {items.map((photo, i) => (
             <div
               key={i}
-              className="flex-shrink-0 rounded-2xl overflow-hidden"
-              style={{ width: ITEM_SIZE, height: ITEM_SIZE }}
-            // En mobile se achica via CSS
+              className={`flex-shrink-0 rounded-2xl overflow-hidden gallery-item-${direction}`}
             >
-              <style>{`@media (max-width: 639px) { .gallery-item { width: ${ITEM_SIZE_MOBILE}px !important; height: ${ITEM_SIZE_MOBILE}px !important; } }`}</style>
               <img
                 src={photo.src}
                 alt={photo.alt}
