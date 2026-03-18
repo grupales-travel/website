@@ -333,11 +333,11 @@ export default function DestinationContent({ destination }: Props) {
               exit={{ scale: 0.92, opacity: 0 }}
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative h-[92vh] aspect-[9/16] max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden shadow-2xl"
+              className="relative w-full h-[100dvh] rounded-none sm:h-[92vh] sm:aspect-[9/16] sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl overflow-hidden shadow-2xl"
             >
               <button
                 onClick={() => setActiveVideo(null)}
-                className="absolute top-3 right-3 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white/80 hover:bg-[#a66d03] hover:text-white transition-colors"
+                className="absolute top-6 right-4 sm:top-3 sm:right-3 z-[60] w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white/80 hover:bg-[#a66d03] hover:text-white transition-colors"
               >
                 <X size={18} />
               </button>
