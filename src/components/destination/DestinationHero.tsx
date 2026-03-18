@@ -13,11 +13,13 @@ interface Props {
 export default function DestinationHero({ destination }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
-  // Altura bloqueada al montar — igual que el home hero.
-  // Evita que el browser chrome (address bar + bottom bar) cause resize al scrollear.
+  // Altura bloqueada al montar — IDÉNTICO al home hero.
+  // Debe ser 100% del viewport inicial para que no haya contenido debajo
+  // del fold visible: cuando el browser chrome aparece/desaparece y el
+  // viewport cambia de tamaño, no hay referencia visual que haga "saltar" la página.
   const [heroHeight, setHeroHeight] = useState<number | null>(null);
   useEffect(() => {
-    setHeroHeight(Math.round(window.innerHeight * 0.82));
+    setHeroHeight(window.innerHeight);
   }, []);
 
   // Solo opacidad del contenido al scrollear — SIN parallax en el fondo
@@ -59,7 +61,7 @@ export default function DestinationHero({ destination }: Props) {
     <section
       ref={ref}
       className="relative w-full overflow-hidden bg-[#1E1810]"
-      style={heroHeight ? { height: heroHeight } : { height: "80svh", minHeight: "520px" }}
+      style={heroHeight ? { height: heroHeight } : { height: "100svh" }}
     >
       {/* Background estático — sin parallax para evitar el efecto de zoom al scrollear */}
       <div className="absolute inset-0">
