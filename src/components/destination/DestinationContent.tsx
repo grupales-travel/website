@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  CheckCircle, MapPin, FileText, X, Maximize2, Minimize2,
+  CheckCircle, MapPin, FileText, X, Maximize2,
   ChevronLeft, ChevronRight, Volume2, VolumeX, ChevronDown,
 } from "lucide-react";
 import { Destination } from "@/types";
@@ -173,7 +173,7 @@ export default function DestinationContent({ destination }: Props) {
                 <div className="h-px w-10 bg-[#a66d03]" />
                 <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">Sobre este viaje</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black uppercase text-[#5c3317] leading-[1.0] mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-[#5c3317] leading-[1.0] mb-6">
                 ¿Por qué elegir <span className="text-gold-gradient">{destination.title}?</span>
               </h2>
               <p className="text-[#1E1810]/65 text-lg leading-relaxed">{destination.description}</p>
@@ -234,7 +234,7 @@ export default function DestinationContent({ destination }: Props) {
                 </div>
                 <div
                   className="rounded-2xl overflow-hidden border border-[#a66d03]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group cursor-pointer shadow-sm"
-                  onClick={() => setMapMode("normal")}
+                  onClick={() => setMapMode("expanded")}
                 >
                   <Image
                     src={destination.mapImageUrl}
@@ -343,74 +343,28 @@ export default function DestinationContent({ destination }: Props) {
 
       {/* ── Modal de mapa ────────────────────────────────────────────────────── */}
       <AnimatePresence>
-        {mapMode === "normal" && destination.mapImageUrl && (
-          <motion.div
-            key="map-normal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setMapMode(null)}
-            className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl border-2 border-[#a66d03]/60"
-            >
-              {/* X cerrar */}
-              <button
-                onClick={() => setMapMode(null)}
-                className="absolute top-3 right-14 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-[#a66d03] transition-colors duration-200"
-              >
-                <X size={18} />
-              </button>
-              {/* Expandir */}
-              <button
-                onClick={() => setMapMode("expanded")}
-                className="absolute top-3 right-3 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-[#a66d03] transition-colors duration-200"
-              >
-                <Maximize2 size={18} />
-              </button>
-              <img
-                src={destination.mapImageUrl}
-                alt={`Mapa del recorrido ${destination.title}`}
-                className="w-full h-auto object-contain p-6 bg-[#f5e6cc]/10"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-
         {mapMode === "expanded" && destination.mapImageUrl && (
           <motion.div
             key="map-expanded"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-black flex items-center justify-center"
-            style={{ height: "100dvh" }}
+            className="fixed inset-0 z-[60] flex items-center justify-center"
+            style={{ height: "100dvh", background: "rgba(245,230,204,0.97)", backdropFilter: "blur(8px)" }}
           >
-            {/* X cerrar */}
+            {/* X cerrar — círculo marrón con X clarita, siempre visible encima de la imagen */}
             <button
               onClick={() => setMapMode(null)}
-              className="absolute top-4 right-4 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-[#a66d03] transition-colors duration-200"
+              className="absolute top-4 right-4 z-50 w-11 h-11 flex items-center justify-center rounded-full shadow-lg transition-opacity duration-200 hover:opacity-80"
+              style={{ background: "#5c3317" }}
             >
-              <X size={20} />
-            </button>
-            {/* Reducir */}
-            <button
-              onClick={() => setMapMode("normal")}
-              className="absolute top-4 right-[4.5rem] z-20 w-11 h-11 flex items-center justify-center rounded-full bg-black/60 text-white hover:bg-[#a66d03] transition-colors duration-200"
-            >
-              <Minimize2 size={20} />
+              <X size={20} color="#f5e6cc" />
             </button>
 
             <img
               src={destination.mapImageUrl}
               alt={`Mapa del recorrido ${destination.title}`}
-              className="max-w-full max-h-full object-contain"
+              className="max-w-full max-h-full object-contain p-4"
               draggable={false}
             />
           </motion.div>
