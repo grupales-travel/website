@@ -36,12 +36,7 @@ export default function AdvancedFilter({
 
   // Un único panel abierto: "search" | "region" | "month" | "year" | null
   const [openPanel, setOpenPanel] = useState<string | null>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (openPanel === "search") searchInputRef.current?.focus();
-  }, [openPanel]);
 
   // Click fuera → cerrar todo
   useEffect(() => {
@@ -92,71 +87,35 @@ export default function AdvancedFilter({
           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
           className="relative"
         >
-          {/* ── Fila única de filtros ── */}
-          <div className="relative flex items-center justify-center gap-2">
-
-            {/* Lupa (mobile) */}
-            <div className="sm:hidden">
-              <motion.button
-                onClick={() => togglePanel("search")}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.1 }}
-                className="flex items-center justify-center w-9 h-9 rounded-full transition-colors duration-100"
-                style={
-                  filters.search || openPanel === "search"
-                    ? { backgroundColor: "#5c3317", color: "#cd9720" }
-                    : { backgroundColor: "white", color: "rgba(30,24,16,0.55)", boxShadow: "0 1px 4px rgba(0,0,0,0.08)" }
-                }
-                aria-label="Buscar"
-              >
-                <Search size={15} />
-              </motion.button>
+          {/* ── Barra de búsqueda (mobile) — siempre visible, encima de los filtros ── */}
+          <div className="sm:hidden relative mb-2">
+            <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
+              <Search size={15} className="text-[#1E1810]/35" />
             </div>
+            <input
+              type="text"
+              placeholder="Buscar destino..."
+              value={filters.search}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              className="w-full pl-9 pr-9 py-2.5 rounded-full bg-white text-[#1E1810] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.08)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/40 placeholder:text-[#1E1810]/40"
+              style={{ fontSize: 16 }}
+            />
+            {filters.search && (
+              <button
+                onMouseDown={(e) => { e.preventDefault(); handleSearchChange(""); }}
+                className="absolute inset-y-0 right-3 flex items-center text-[#1E1810]/35 hover:text-[#1E1810]/70"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
 
-            {/* Barra de búsqueda expandible (mobile) — overlay animado que tapa los filtros */}
-            <AnimatePresence>
-              {openPanel === "search" && (
-                <motion.div
-                  key="search-overlay"
-                  initial={{ width: 36 }}
-                  animate={{ width: "100%" }}
-                  exit={{ width: 36 }}
-                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                  className="absolute left-0 top-0 bottom-0 z-[70] flex items-center overflow-hidden rounded-full sm:hidden"
-                  style={{
-                    backgroundColor: "white",
-                    boxShadow: "0 1px 6px rgba(0,0,0,0.1), 0 4px 20px rgba(0,0,0,0.08)",
-                  }}
-                >
-                  <Search size={14} className="absolute left-3 text-[#1E1810]/35 pointer-events-none shrink-0" />
-                  <input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Buscar destino..."
-                    value={filters.search}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck={false}
-                    inputMode="search"
-                    className="w-full h-full pl-8 pr-8 bg-transparent text-[#1E1810] font-medium focus:outline-none placeholder:text-[#1E1810]/40"
-                    style={{ fontSize: 16 }}
-                  />
-                  <button
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      searchInputRef.current?.blur();
-                      handleSearchChange("");
-                      setOpenPanel(null);
-                    }}
-                    className="absolute right-2.5 text-[#1E1810]/40 flex items-center justify-center w-6 h-6"
-                  >
-                    <X size={13} />
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
+          {/* ── Fila de filtros ── */}
+          <div className="flex items-center justify-center gap-2">
 
             {/* Input completo (desktop) */}
             <div className="hidden sm:block relative flex-grow max-w-[280px]">
@@ -167,7 +126,7 @@ export default function AdvancedFilter({
                 type="text"
                 placeholder="Buscar por título..."
                 value={filters.search}
-                onChange={(e) => handleFilterChange("search", e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
               />
             </div>
