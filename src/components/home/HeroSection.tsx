@@ -175,6 +175,10 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
           >
             <motion.a
               href="#destinos"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("destinos")?.scrollIntoView({ behavior: "smooth" });
+              }}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full btn-gold text-white text-sm font-bold uppercase tracking-widest"

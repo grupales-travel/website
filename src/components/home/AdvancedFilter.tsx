@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Globe2, CalendarDays, ChevronDown, Check, Search } from "lucide-react";
+import { Globe2, CalendarDays, ChevronDown, Check, Search, X } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { formatRegion } from "@/lib/utils";
 
@@ -35,7 +35,13 @@ export default function AdvancedFilter({
   });
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (searchOpen) searchInputRef.current?.focus();
+  }, [searchOpen]);
 
   // Click-outside: overlay approach — infalible
   useEffect(() => {
@@ -76,22 +82,40 @@ export default function AdvancedFilter({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className="relative flex items-center justify-center gap-2 sm:gap-3 flex-wrap"
+          className="relative flex flex-col gap-2"
         >
+          {/* ── Fila principal de filtros ── */}
+          <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
 
-          {/* ── Búsqueda ── */}
-          <div className="relative w-full sm:flex-grow sm:max-w-[280px]">
-            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-              <Search size={16} className="text-[#1E1810]/40" />
+            {/* Búsqueda — ícono en mobile, input completo en sm+ */}
+            <div className="sm:hidden">
+              <motion.button
+                onClick={() => setSearchOpen(!searchOpen)}
+                whileTap={{ scale: 0.97 }}
+                className={`flex items-center justify-center w-[46px] h-[46px] rounded-full transition-all duration-200 ${
+                  filters.search || searchOpen
+                    ? "text-white shadow-[0_4px_20px_rgba(92,51,23,0.32)]"
+                    : "bg-white text-[#1E1810]/65 shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)]"
+                }`}
+                style={filters.search || searchOpen ? { backgroundColor: "#5c3317" } : {}}
+                aria-label="Buscar"
+              >
+                <Search size={17} className={filters.search || searchOpen ? "text-[#cd9720]" : ""} />
+              </motion.button>
             </div>
-            <input
-              type="text"
-              placeholder="Buscar por título..."
-              value={filters.search}
-              onChange={(e) => handleFilterChange("search", e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
-            />
-          </div>
+
+            <div className="hidden sm:block relative flex-grow max-w-[280px]">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                <Search size={16} className="text-[#1E1810]/40" />
+              </div>
+              <input
+                type="text"
+                placeholder="Buscar por título..."
+                value={filters.search}
+                onChange={(e) => handleFilterChange("search", e.target.value)}
+                className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
+              />
+            </div>
 
           {/* ── Región ── */}
           <FilterPill
@@ -183,6 +207,43 @@ export default function AdvancedFilter({
             </Sheet>
           </FilterPill>
 
+
+          </div>{/* fin fila principal */}
+
+          {/* ── Búsqueda expandible en mobile ── */}
+          <AnimatePresence>
+            {searchOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                className="sm:hidden overflow-hidden"
+              >
+                <div className="relative pt-1">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none pt-1">
+                    <Search size={16} className="text-[#1E1810]/40" />
+                  </div>
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Buscar por título..."
+                    value={filters.search}
+                    onChange={(e) => handleFilterChange("search", e.target.value)}
+                    className="w-full pl-11 pr-10 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07),_0_4px_16px_rgba(0,0,0,0.05)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
+                  />
+                  {filters.search && (
+                    <button
+                      onClick={() => { handleFilterChange("search", ""); setSearchOpen(false); }}
+                      className="absolute inset-y-0 right-4 flex items-center pt-1 text-[#1E1810]/40 hover:text-[#1E1810]/70"
+                    >
+                      <X size={15} />
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
         </motion.div>
       </div>

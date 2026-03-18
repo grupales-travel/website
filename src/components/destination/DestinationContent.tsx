@@ -125,7 +125,7 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
 
   return (
     <div
-      className="flex-shrink-0 w-60 md:w-72 aspect-[9/16] rounded-2xl overflow-hidden snap-start bg-[#1E1810] shadow-md relative group/card cursor-pointer"
+      className="flex-shrink-0 w-40 sm:w-52 md:w-72 aspect-[9/16] rounded-2xl overflow-hidden snap-start bg-[#1E1810] shadow-md relative group/card cursor-pointer"
       onClick={handleTogglePlay}
     >
       {/* Contenido del video */}

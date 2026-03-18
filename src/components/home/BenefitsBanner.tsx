@@ -7,7 +7,7 @@ export default function BenefitsBanner() {
     return (
         <section className="relative w-full overflow-hidden border-y-4 border-[#a66d03]">
             <AnimatedSection>
-                <div className="relative w-full aspect-[21/8] sm:aspect-[21/6] md:aspect-[21/5] lg:aspect-[21/4] xl:aspect-[1920/300] min-h-[120px] md:min-h-[180px]">
+                <div className="relative w-full aspect-[21/5] sm:aspect-[21/6] md:aspect-[21/5] lg:aspect-[21/4] xl:aspect-[1920/300] min-h-[100px] md:min-h-[180px]">
                     {/* Background Banner */}
                     <Image
                         src="/benefits-bg.png"
