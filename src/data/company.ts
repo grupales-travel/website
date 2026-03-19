@@ -17,7 +17,7 @@ export const COMPANY = {
 export const OFFICES: OfficeInfo[] = [
   {
     city: "San Luis",
-    phone: "+54 9 266 525-2730",
+    phone: "+54 9 266 486-7440",
     whatsapp: "https://wa.me/5492664867440",
     address: "Pringles 335",
     mapsUrl: "https://maps.app.goo.gl/1sh3LZxdtG22muas8",
