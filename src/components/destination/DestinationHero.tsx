@@ -69,7 +69,7 @@ export default function DestinationHero({ destination }: Props) {
       {/* Back Button */}
       <button 
         onClick={() => router.push("/salidas")}
-        className="absolute top-24 left-6 z-[60] w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20 hover:bg-black/60 transition-colors"
+        className="absolute top-24 left-6 z-[60] w-10 h-10 flex lg:hidden items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20 hover:bg-black/60 transition-colors"
       >
         <ChevronLeft size={24} />
       </button>
