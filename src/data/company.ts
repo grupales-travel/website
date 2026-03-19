@@ -6,7 +6,7 @@ export const COMPANY = {
   description:
     "Somos una agencia de viajes especializada en salidas grupales acompañadas. Desde el 2018 estamos acompañando a nuestros clientes a descubrir el mundo.",
   email: "consultas@grupalestravel.com",
-  whatsapp: "https://wa.link/ggzwq4",
+  whatsapp: "https://wa.me/5493512123128",
   instagram: "https://www.instagram.com/grupalestravel/",
   facebook: "https://www.facebook.com/grupalestravel/",
   founded: 2018,
@@ -18,7 +18,7 @@ export const OFFICES: OfficeInfo[] = [
   {
     city: "San Luis",
     phone: "+54 9 266 525-2730",
-    whatsapp: "https://wa.me/5492665252730",
+    whatsapp: "https://wa.me/5492664867440",
     address: "Pringles 335",
     mapsUrl: "https://maps.app.goo.gl/1sh3LZxdtG22muas8",
   },

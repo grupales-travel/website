@@ -1,7 +1,7 @@
 import { Destination } from "@/types";
 
 const WP_UPLOADS = "https://grupalestravel.com.ar/wp-content/uploads";
-const WA = "https://wa.link/ggzwq4";
+const WA = "https://wa.me/5493512123128";
 
 export const DESTINATIONS: Destination[] = [
   // ─── 2026 ────────────────────────────────────────────────

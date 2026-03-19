@@ -635,7 +635,7 @@ export default function DestinationForm({ initial, id }: Props) {
       cover_path: coverPath,
       map_path: mapPath,
       itinerary_path: itineraryPath,
-      whatsapp_url: "https://wa.link/ggzwq4",
+      whatsapp_url: "https://wa.me/5493512123128",
       video_urls: videos,
       includes,
       active, featured, partner, badge,
