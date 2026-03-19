@@ -58,6 +58,7 @@ export default function DestinationCard({
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             priority={index < 4}
             quality={75}
+            unoptimized={true}
           />
 
           {/* Badge dinámico */}

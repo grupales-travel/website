@@ -3,22 +3,22 @@
 import { motion } from "framer-motion";
 
 const PHOTOS = [
-  { src: "/testimonios/testimonio-1.webp", alt: "Testimonio 1" },
-  { src: "/testimonios/testimonio-2.webp", alt: "Testimonio 2" },
-  { src: "/testimonios/testimonio-3.webp", alt: "Testimonio 3" },
-  { src: "/testimonios/testimonio-4.webp", alt: "Testimonio 4" },
-  { src: "/testimonios/testimonio-5.webp", alt: "Testimonio 5" },
-  { src: "/testimonios/testimonio-7.webp", alt: "Testimonio 7" },
-  { src: "/testimonios/testimonio-8.webp", alt: "Testimonio 8" },
-  { src: "/testimonios/testimonio-9.webp", alt: "Testimonio 9" },
-  { src: "/testimonios/testimonio-10.webp", alt: "Testimonio 10" },
-  { src: "/testimonios/testimonio-11.webp", alt: "Testimonio 11" },
-  { src: "/testimonios/testimonio-12.webp", alt: "Testimonio 12" },
-  { src: "/testimonios/testimonio-13.webp", alt: "Testimonio 13" },
-  { src: "/testimonios/testimonio-14.webp", alt: "Testimonio 14" },
-  { src: "/testimonios/testimonio-15.webp", alt: "Testimonio 15" },
-  { src: "/testimonios/testimonio-16.webp", alt: "Testimonio 16" },
-  { src: "/testimonios/testimonio-17.webp", alt: "Testimonio 17" },
+  { src: "/testimonios/testimonio-1.jpg", alt: "Testimonio 1" },
+  { src: "/testimonios/testimonio-2.jpg", alt: "Testimonio 2" },
+  { src: "/testimonios/testimonio-3.jpg", alt: "Testimonio 3" },
+  { src: "/testimonios/testimonio-4.jpg", alt: "Testimonio 4" },
+  { src: "/testimonios/testimonio-5.jpg", alt: "Testimonio 5" },
+  { src: "/testimonios/testimonio-7.jpg", alt: "Testimonio 7" },
+  { src: "/testimonios/testimonio-8.jpg", alt: "Testimonio 8" },
+  { src: "/testimonios/testimonio-9.jpg", alt: "Testimonio 9" },
+  { src: "/testimonios/testimonio-10.jpg", alt: "Testimonio 10" },
+  { src: "/testimonios/testimonio-11.jpg", alt: "Testimonio 11" },
+  { src: "/testimonios/testimonio-12.jpg", alt: "Testimonio 12" },
+  { src: "/testimonios/testimonio-13.jpg", alt: "Testimonio 13" },
+  { src: "/testimonios/testimonio-14.jpg", alt: "Testimonio 14" },
+  { src: "/testimonios/testimonio-15.jpg", alt: "Testimonio 15" },
+  { src: "/testimonios/testimonio-16.jpg", alt: "Testimonio 16" },
+  { src: "/testimonios/testimonio-17.jpg", alt: "Testimonio 17" },
 ];
 
 const ITEM_SIZE = 280;
