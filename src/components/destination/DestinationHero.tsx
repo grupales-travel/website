@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { MapPin, Clock, Globe, Calendar, FileText, ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Destination } from "@/types";
+import { formatWhatsAppUrl } from "@/lib/utils";
 
 interface Props {
   destination: Destination;
@@ -147,7 +148,7 @@ export default function DestinationHero({ destination }: Props) {
           </a>
 
           <a
-            href={destination.whatsappUrl + "?text=" + encodeURIComponent("Hola, me gustaría recibir más información sobre la salida grupal: " + destination.title)}
+            href={formatWhatsAppUrl(destination.whatsappUrl || "", destination.title)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full btn-gold text-white text-sm font-bold uppercase tracking-widest"

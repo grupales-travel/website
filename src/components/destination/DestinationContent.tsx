@@ -9,6 +9,7 @@ import {
   ChevronLeft, ChevronRight, Volume2, VolumeX, ChevronDown,
 } from "lucide-react";
 import { Destination } from "@/types";
+import { formatWhatsAppUrl } from "@/lib/utils";
 
 // ─── Helpers de video ────────────────────────────────────────────────────────
 
@@ -133,7 +134,7 @@ function CTACard({ destination }: { destination: Destination }) {
         Nuestros asesores responden todas tus preguntas sobre fechas, precios y disponibilidad.
       </p>
       <motion.a
-        href={destination.whatsappUrl + "?text=" + encodeURIComponent("Hola, me gustaría recibir más información sobre la salida grupal: " + destination.title)}
+        href={formatWhatsAppUrl(destination.whatsappUrl || "", destination.title)}
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.03 }}
