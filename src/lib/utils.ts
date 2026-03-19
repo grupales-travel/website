@@ -24,6 +24,12 @@ export function formatWhatsAppUrl(whatsappUrl: string, destinationTitle: string)
   if (!whatsappUrl) return "";
   
   let urlStr = whatsappUrl;
+  
+  // Reemplazar el viejo shortlink que ignora queries por el link directo a Córdoba
+  if (urlStr.includes("wa.link/ggzwq4")) {
+    urlStr = "https://wa.me/5493512123128";
+  }
+
   if (!urlStr.startsWith("http")) {
     urlStr = `https://${urlStr}`;
   }
