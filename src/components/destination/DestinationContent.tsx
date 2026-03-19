@@ -133,7 +133,7 @@ function CTACard({ destination }: { destination: Destination }) {
         Nuestros asesores responden todas tus preguntas sobre fechas, precios y disponibilidad.
       </p>
       <motion.a
-        href={destination.whatsappUrl}
+        href={destination.whatsappUrl + "?text=" + encodeURIComponent("Hola, me gustaría recibir más información sobre la salida grupal: " + destination.title)}
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.03 }}
