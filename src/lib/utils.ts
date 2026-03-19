@@ -19,7 +19,7 @@ export function formatRegion(region: string): string {
 }
 
 export function formatWhatsAppUrl(whatsappUrl: string, destinationTitle: string): string {
-  const message = `Hola, me gustaría recibir más información sobre la salida grupal: ${destinationTitle}`;
+  const message = `Hola quiero mas información de ${destinationTitle}!`;
   
   if (!whatsappUrl) return "";
   
