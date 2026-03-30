@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 import { requireAuth } from "@/lib/supabase-server";
+import { uploadToR2, getPublicUrl } from "@/lib/r2";
 
 // POST /api/admin-upload
 // FormData: file, folder (backgrounds|portadas|maps|pdfs|videos), slug
@@ -19,15 +19,11 @@ export async function POST(req: NextRequest) {
   const storagePath = `${folder}/${slug}.${ext}`;
   const buffer      = Buffer.from(await file.arrayBuffer());
 
-  const { error } = await supabaseAdmin.storage
-    .from("destinations")
-    .upload(storagePath, buffer, { contentType: file.type, upsert: true });
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-
-  const publicUrl = supabaseAdmin.storage
-    .from("destinations")
-    .getPublicUrl(storagePath).data.publicUrl;
-
-  return NextResponse.json({ ok: true, storage_path: storagePath, publicUrl });
+  try {
+    const publicUrl = await uploadToR2(buffer, storagePath, file.type);
+    return NextResponse.json({ ok: true, storage_path: storagePath, publicUrl });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Error al subir archivo";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }

@@ -285,33 +285,23 @@ function FileUploadField({ label, value, folder, accept, slug, type = "image", c
     setErr("");
     setImageError(false);
 
-    const ext = file.name.split(".").pop()?.toLowerCase() ?? "bin";
-    // Agregamos un timestamp para evitar colisiones de "el archivo ya existe"
-    // y resolver problemas de cacheado duro del navegador o CDN.
     const slugToUse = slug ? `${slug}-${Date.now()}` : `upload-${Date.now()}`;
 
-    // Paso 1: pedir token firmado al servidor
-    const res1 = await fetch("/api/admin-upload-url", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ folder, slug: slugToUse, ext }),
-    });
-    if (!res1.ok) {
-      const d = await res1.json();
-      setErr(d.error ?? "Error al preparar la subida");
-      setLoading(false);
-      return;
-    }
-    const { token, storagePath } = await res1.json();
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("folder", folder);
+    fd.append("slug", slugToUse);
 
-    // Paso 2: subir usando el método oficial de supabase-js
-    const { error } = await supabase.storage
-      .from("destinations")
-      .uploadToSignedUrl(storagePath, token, file, { contentType: file.type });
+    const res = await fetch("/api/admin-upload-url", { method: "POST", body: fd });
 
     setLoading(false);
-    if (error) setErr(error.message);
-    else onChange(storagePath);
+    if (!res.ok) {
+      const d = await res.json();
+      setErr(d.error ?? "Error al subir archivo");
+      return;
+    }
+    const { storagePath } = await res.json();
+    onChange(storagePath);
   }
 
   const hasFile = (preview && !imageError) || (type === "pdf" && filename);
@@ -584,35 +574,21 @@ export default function DestinationForm({ initial, id }: Props) {
   async function uploadVideoFile(file: File) {
     setUploadingVideo(true);
 
-    const ext = file.name.split(".").pop()?.toLowerCase() ?? "mp4";
-    const videoSlug = `video-${Date.now()}`;
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("folder", "videos");
+    fd.append("slug", `video-${Date.now()}`);
 
-    // Paso 1: token firmado
-    const res1 = await fetch("/api/admin-upload-url", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ folder: "videos", slug: videoSlug, ext }),
-    });
-
-    if (!res1.ok) {
-      const d = await res1.json().catch(() => ({}));
-      alert(`Error preparando la subida: ${d.error ?? "Sin detalle"}`);
-      setUploadingVideo(false);
-      return;
-    }
-    const { token, storagePath } = await res1.json();
-
-    // Paso 2: subida oficial con supabase-js (maneja headers, MIME, etc.)
-    const { error } = await supabase.storage
-      .from("destinations")
-      .uploadToSignedUrl(storagePath, token, file, { contentType: file.type });
+    const res = await fetch("/api/admin-upload-url", { method: "POST", body: fd });
 
     setUploadingVideo(false);
-    if (error) {
-      alert(`Error al subir el video: ${error.message}`);
-    } else {
-      setVideos((p) => [...p, storagePath]);
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      alert(`Error al subir el video: ${d.error ?? "Sin detalle"}`);
+      return;
     }
+    const { storagePath } = await res.json();
+    setVideos((p) => [...p, storagePath]);
   }
 
   // ── Guardar ────────────────────────────────────────────────────────────────

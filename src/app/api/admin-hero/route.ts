@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { requireAuth } from "@/lib/supabase-server";
-
-function getPublicUrl(storagePath: string) {
-  return supabaseAdmin.storage.from("hero-images").getPublicUrl(storagePath).data.publicUrl;
-}
+import { uploadToR2, deleteFromR2, getPublicUrl } from "@/lib/r2";
 
 // POST — subir imagen nueva
 export async function POST(req: NextRequest) {
@@ -22,11 +19,12 @@ export async function POST(req: NextRequest) {
   const storagePath = `portadas/portada-${Date.now()}.${ext}`;
   const buffer      = Buffer.from(await file.arrayBuffer());
 
-  const { error: uploadError } = await supabaseAdmin.storage
-    .from("hero-images")
-    .upload(storagePath, buffer, { contentType: file.type, upsert: false });
-
-  if (uploadError) return NextResponse.json({ error: uploadError.message }, { status: 500 });
+  try {
+    await uploadToR2(buffer, storagePath, file.type);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Error al subir imagen";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 
   const { data, error: dbError } = await supabaseAdmin
     .from("hero_images")
@@ -35,7 +33,7 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (dbError) {
-    await supabaseAdmin.storage.from("hero-images").remove([storagePath]);
+    await deleteFromR2(storagePath);
     return NextResponse.json({ error: dbError.message }, { status: 500 });
   }
 
@@ -77,7 +75,7 @@ export async function PATCH(req: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
-// DELETE — eliminar imagen del bucket y de la tabla
+// DELETE — eliminar imagen de R2 y de la tabla
 export async function DELETE(req: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
@@ -89,7 +87,7 @@ export async function DELETE(req: NextRequest) {
     .from("hero_images").select("storage_path").eq("id", id).single();
 
   if (img?.storage_path) {
-    await supabaseAdmin.storage.from("hero-images").remove([img.storage_path]);
+    await deleteFromR2(img.storage_path);
   }
 
   const { error } = await supabaseAdmin.from("hero_images").delete().eq("id", id);

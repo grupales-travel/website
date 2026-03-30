@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
+import { getPublicUrl } from "@/lib/r2";
 import HeroImageManager from "@/components/admin/HeroImageManager";
 
 export const dynamic = "force-dynamic";
@@ -15,7 +16,7 @@ export default async function AdminHeroPage() {
     alt: img.alt,
     order: img.order,
     active: img.active,
-    publicUrl: supabaseAdmin.storage.from("hero-images").getPublicUrl(img.storage_path).data.publicUrl,
+    publicUrl: getPublicUrl(img.storage_path),
   }));
 
   return (

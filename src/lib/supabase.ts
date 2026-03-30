@@ -26,10 +26,9 @@ export interface HeroImageResolved extends HeroImage {
 }
 
 export function resolveHeroUrl(storagePath: string): string {
-  const { data } = supabase.storage
-    .from(HERO_BUCKET)
-    .getPublicUrl(storagePath);
-  return data.publicUrl;
+  if (!storagePath) return "";
+  if (storagePath.startsWith("http")) return storagePath;
+  return `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${storagePath}`;
 }
 
 export async function getHeroImages(): Promise<HeroImageResolved[]> {
@@ -88,7 +87,7 @@ export interface SupabaseDestination {
 export function resolveDestUrl(path: string | null): string {
   if (!path) return "";
   if (path.startsWith("http")) return path;
-  return supabase.storage.from(DEST_BUCKET).getPublicUrl(path).data.publicUrl;
+  return `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${path}`;
 }
 
 // Construye el string de fecha para mostrar al usuario.
