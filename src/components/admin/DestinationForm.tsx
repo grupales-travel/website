@@ -286,22 +286,50 @@ function FileUploadField({ label, value, folder, accept, slug, type = "image", c
     setImageError(false);
 
     const slugToUse = slug ? `${slug}-${Date.now()}` : `upload-${Date.now()}`;
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "bin";
+    const isPdfOrVideo = type === "pdf" || file.type === "application/pdf" || file.type.startsWith("video/") || ["pdf", "mp4", "mov", "webm"].includes(ext);
 
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("folder", folder);
-    fd.append("slug", slugToUse);
+    if (isPdfOrVideo) {
+      // PDFs y videos: pedir presigned URL y subir directo a R2
+      const fd = new FormData();
+      fd.append("folder", folder);
+      fd.append("slug", slugToUse);
+      fd.append("ext", ext);
+      fd.append("contentType", file.type);
 
-    const res = await fetch("/api/admin-upload-url", { method: "POST", body: fd });
+      const res = await fetch("/api/admin-upload-url", { method: "POST", body: fd });
+      if (!res.ok) {
+        const d = await res.json();
+        setErr(d.error ?? "Error al preparar subida");
+        setLoading(false);
+        return;
+      }
+      const { presignedUrl, storagePath } = await res.json();
+      const putRes = await fetch(presignedUrl, {
+        method: "PUT",
+        body: file,
+        headers: { "Content-Type": file.type },
+      });
+      setLoading(false);
+      if (!putRes.ok) { setErr("Error al subir archivo"); return; }
+      onChange(storagePath);
+    } else {
+      // Imágenes: subir por servidor con compresión
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("folder", folder);
+      fd.append("slug", slugToUse);
 
-    setLoading(false);
-    if (!res.ok) {
-      const d = await res.json();
-      setErr(d.error ?? "Error al subir archivo");
-      return;
+      const res = await fetch("/api/admin-upload-url", { method: "POST", body: fd });
+      setLoading(false);
+      if (!res.ok) {
+        const d = await res.json();
+        setErr(d.error ?? "Error al subir archivo");
+        return;
+      }
+      const { storagePath } = await res.json();
+      onChange(storagePath);
     }
-    const { storagePath } = await res.json();
-    onChange(storagePath);
   }
 
   const hasFile = (preview && !imageError) || (type === "pdf" && filename);

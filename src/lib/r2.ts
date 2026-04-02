@@ -1,4 +1,5 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand, PutBucketCorsCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import sharp from "sharp";
 
 export const r2 = new S3Client({
@@ -62,6 +63,41 @@ export async function deleteFromR2(storagePath: string): Promise<void> {
     new DeleteObjectCommand({
       Bucket: BUCKET,
       Key: storagePath,
+    })
+  );
+}
+
+// Genera una URL firmada para que el browser suba directamente a R2 (sin pasar por Next.js)
+export async function getPresignedUploadUrl(
+  storagePath: string,
+  contentType: string
+): Promise<{ presignedUrl: string; publicUrl: string }> {
+  const command = new PutObjectCommand({
+    Bucket: BUCKET,
+    Key: storagePath,
+    ContentType: contentType,
+    CacheControl: "public, max-age=31536000, immutable",
+  });
+
+  const presignedUrl = await getSignedUrl(r2, command, { expiresIn: 3600 });
+  return { presignedUrl, publicUrl: getPublicUrl(storagePath) };
+}
+
+// Configura CORS en el bucket para permitir uploads directos desde el browser
+export async function configureCors(): Promise<void> {
+  await r2.send(
+    new PutBucketCorsCommand({
+      Bucket: BUCKET,
+      CORSConfiguration: {
+        CORSRules: [
+          {
+            AllowedOrigins: ["*"],
+            AllowedMethods: ["GET", "PUT"],
+            AllowedHeaders: ["Content-Type", "Cache-Control"],
+            MaxAgeSeconds: 3600,
+          },
+        ],
+      },
     })
   );
 }
