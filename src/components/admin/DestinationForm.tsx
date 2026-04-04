@@ -60,6 +60,48 @@ function previewUrl(path: string | null): string | null {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/destinations/${path}`;
 }
 
+async function compressImageClient(file: File): Promise<File> {
+  if (!file.type.startsWith("image/")) return file;
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let { width, height } = img;
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1080;
+        
+        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+          const ratio = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return resolve(file);
+        
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        const isPng = file.type === "image/png";
+        canvas.toBlob((blob) => {
+          if (blob) {
+            resolve(new File([blob], file.name, { type: isPng ? "image/png" : "image/jpeg", lastModified: Date.now() }));
+          } else {
+            resolve(file);
+          }
+        }, isPng ? "image/png" : "image/jpeg", 0.85);
+      };
+      img.onerror = () => resolve(file);
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => resolve(file);
+    reader.readAsDataURL(file);
+  });
+}
+
 // ─── Subcomponente: DatePicker ───────────────────────────────────────────────
 
 const MONTHS_LONG = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -315,8 +357,9 @@ function FileUploadField({ label, value, folder, accept, slug, type = "image", c
       onChange(storagePath);
     } else {
       // Imágenes: subir por servidor con compresión
+      const compressedFile = await compressImageClient(file);
       const fd = new FormData();
-      fd.append("file", file);
+      fd.append("file", compressedFile);
       fd.append("folder", folder);
       fd.append("slug", slugToUse);
 
