@@ -99,10 +99,13 @@ export default function Footer() {
                 { label: "Beneficios", href: "/ventajas" },
                 { label: "Contacto", href: "/contactanos" },
                 { label: "Salidas Grupales", href: "/salidas" },
+                { label: "Condiciones Generales", href: "/condiciones-generales.pdf" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
+                    target={link.href.endsWith(".pdf") ? "_blank" : undefined}
+                    rel={link.href.endsWith(".pdf") ? "noopener noreferrer" : undefined}
                     className="text-base text-white/55 hover:text-[#d9bf8f] transition-colors duration-200"
                   >
                     {link.label}
