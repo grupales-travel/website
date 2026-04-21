@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { X, Plus, Upload, FileText, Image as ImageIcon, ChevronDown, ChevronLeft, ChevronRight, CheckCircle, Sparkles, Loader2 } from "lucide-react";
+import { X, Plus, Upload, FileText, Image as ImageIcon, ChevronDown, ChevronLeft, ChevronRight, CheckCircle, Sparkles, Loader2, Trash2 } from "lucide-react";
 import { supabase, SupabaseDestination } from "@/lib/supabase";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -305,7 +305,7 @@ interface FileFieldProps {
   slug: string;
   type?: "image" | "pdf";
   compact?: boolean;
-  onChange: (path: string) => void;
+  onChange: (path: string | null) => void;
 }
 
 function FileUploadField({ label, value, folder, accept, slug, type = "image", compact = false, onChange }: FileFieldProps) {
@@ -424,6 +424,15 @@ function FileUploadField({ label, value, folder, accept, slug, type = "image", c
                 {type === "pdf" ? "Abrir archivo PDF" : "Ver imagen original"}
               </a>
             )}
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onChange(null); }}
+              disabled={loading}
+              className="bg-red-500/80 text-white px-5 py-2.5 rounded-full hover:bg-red-600 transition-all transform scale-95 group-hover:scale-100 shadow-xl flex items-center gap-2 text-sm font-semibold backdrop-blur-sm disabled:opacity-50"
+            >
+              <Trash2 size={14} />
+              Eliminar
+            </button>
           </div>
         </div>
       ) : (
