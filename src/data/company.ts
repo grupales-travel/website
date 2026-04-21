@@ -5,7 +5,7 @@ export const COMPANY = {
   tagline: "Salidas Grupales Acompañadas",
   description:
     "Somos una agencia de viajes especializada en salidas grupales acompañadas. Desde el 2018 estamos acompañando a nuestros clientes a descubrir el mundo.",
-  email: "consultas@grupalestravel.com",
+  email: "reservas@grupalestravel.com",
   whatsapp: "https://wa.me/5493512123128",
   instagram: "https://www.instagram.com/grupalestravel/",
   facebook: "https://www.facebook.com/grupalestravel/",
