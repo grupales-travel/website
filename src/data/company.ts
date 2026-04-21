@@ -36,6 +36,13 @@ export const OFFICES: OfficeInfo[] = [
     address: "La Rioja 590, oficina 14",
     mapsUrl: "https://maps.app.goo.gl/keemdMTUaXw2nwEC8",
   },
+  {
+    city: "Buenos Aires",
+    phone: "+54 9 11 5992-6812",
+    whatsapp: "https://wa.me/5491159926812",
+    address: "Florida Nº 537, 1er.Sub. Local 330.",
+    mapsUrl: "https://maps.app.goo.gl/vwydgSw5AQ3bXAd66",
+  },
 ];
 
 export const ADVANTAGES = [
