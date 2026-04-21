@@ -21,9 +21,34 @@ export default function ContactanosPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSending(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setSending(false);
-    setSubmitted(true);
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/reservas@grupalestravel.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          Nombre: form.name,
+          Teléfono: form.phone,
+          Email: form.email,
+          Mensaje: form.message,
+          _subject: `Nueva Consulta Web de ${form.name}`,
+          _template: "table"
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        alert("Hubo un error al enviar tu consulta. Por favor escribinos por correo directo a reservas@grupalestravel.com");
+      }
+    } catch (error) {
+      alert("Hubo un error de conexión. Por favor intentá nuevamente o escribinos a reservas@grupalestravel.com");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
