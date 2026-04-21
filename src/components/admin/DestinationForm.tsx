@@ -57,7 +57,7 @@ function computeTagline(countries: number, cities: number | null, days: number) 
 function previewUrl(path: string | null): string | null {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/destinations/${path}`;
+  return `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${path}`;
 }
 
 async function compressImageClient(file: File): Promise<File> {
