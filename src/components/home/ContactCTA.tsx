@@ -41,8 +41,8 @@ export default function ContactCTA() {
           </motion.h2>
         </div>
 
-        {/* ── 3 Oficinas ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* ── Oficinas ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {OFFICES.map((office, i) => (
             <motion.div
               key={office.city}
