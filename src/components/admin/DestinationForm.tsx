@@ -565,7 +565,7 @@ export default function DestinationForm({ initial, id }: Props) {
     try {
       const pdfUrl = itineraryPath.startsWith("http")
         ? itineraryPath
-        : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/destinations/${itineraryPath}`;
+        : `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${itineraryPath}`;
 
       const res = await fetch("https://n8n.grupalestravel.com.ar/webhook/relleno_de_pagina_web", {
         method: "POST",
