@@ -205,7 +205,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                     ¡Pre-reserva recibida!
                   </h3>
                   <p className="text-white/60 text-sm leading-relaxed mb-6">
-                    Recibirás un correo con los detalles en instantes. Pronto un asesor del equipo se pondrá en contacto para asegurar tu lugar.
+                    Pronto un asesor del equipo se comunicará con vos por correo electrónico o WhatsApp para pasarte todos los detalles, coordinar el pago y asegurar tu lugar.
                   </p>
                   <button
                     onClick={onClose}
