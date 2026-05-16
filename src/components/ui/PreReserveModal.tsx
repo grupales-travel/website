@@ -12,6 +12,15 @@ interface PreReserveModalProps {
   destination: Destination;
 }
 
+const MONTHS = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+const currentYear = new Date().getFullYear();
+const YEARS = Array.from({ length: 100 }, (_, i) => currentYear - i);
+const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
+
 export default function PreReserveModal({ isOpen, onClose, destination }: PreReserveModalProps) {
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
@@ -31,8 +40,10 @@ export default function PreReserveModal({ isOpen, onClose, destination }: PreRes
       nombre: "",
       apellido: "",
       dni: "",
-      nacionalidad: "",
-      fechaNacimiento: "",
+      provincia: "",
+      diaNac: "",
+      mesNac: "",
+      anioNac: "",
     }))
   );
 
@@ -65,7 +76,7 @@ export default function PreReserveModal({ isOpen, onClose, destination }: PreRes
       const newArr = [...prev];
       if (count > prev.length) {
         for (let i = prev.length; i < count; i++) {
-          newArr.push({ nombre: "", apellido: "", dni: "", nacionalidad: "", fechaNacimiento: "" });
+          newArr.push({ nombre: "", apellido: "", dni: "", provincia: "", diaNac: "", mesNac: "", anioNac: "" });
         }
       } else if (count < prev.length) {
         return newArr.slice(0, count);
@@ -77,11 +88,20 @@ export default function PreReserveModal({ isOpen, onClose, destination }: PreRes
   if (!mounted) return null;
 
   function handleContactChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    setContactForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    let { name, value } = e.target;
+    // Solo permitir números y símbolo + en teléfono
+    if (name === "telefono") {
+      value = value.replace(/[^\d+]/g, "");
+    }
+    setContactForm((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handlePassengerChange(index: number, e: React.ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
+  function handlePassengerChange(index: number, e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    let { name, value } = e.target;
+    // Solo permitir números en DNI
+    if (name === "dni") {
+      value = value.replace(/\D/g, "");
+    }
     setPassengers((prev) => {
       const newArr = [...prev];
       newArr[index] = { ...newArr[index], [name]: value };
@@ -98,6 +118,11 @@ export default function PreReserveModal({ isOpen, onClose, destination }: PreRes
     e.preventDefault();
     setSending(true);
 
+    const formattedPassengers = passengers.map(p => ({
+      ...p,
+      fechaNacimiento: `${p.diaNac}/${p.mesNac}/${p.anioNac}`
+    }));
+
     // Formatear un bloque de texto resumen para enviar al webhook de forma "sistematizada"
     const resumenTexto = `
 📍 Destino: ${destination.title}
@@ -106,11 +131,11 @@ export default function PreReserveModal({ isOpen, onClose, destination }: PreRes
 👥 Cantidad de pasajeros: ${contactForm.cantidadPasajeros}
 
 --- PASAJEROS ---
-${passengers.map((p, i) => `
+${formattedPassengers.map((p, i) => `
 Pasajero ${i + 1}:
 Nombre y Apellido: ${p.nombre} ${p.apellido}
-DNI/Pasaporte: ${p.dni}
-Nacionalidad: ${p.nacionalidad}
+DNI: ${p.dni}
+Provincia: ${p.provincia}
 Fecha de Nacimiento: ${p.fechaNacimiento}
 `).join("\n")}
     `.trim();
@@ -125,8 +150,8 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
         body: JSON.stringify({
           destino: destination.title,
           contacto: contactForm,
-          pasajeros: passengers,
-          resumenTexto: resumenTexto // Campo extra para que puedan pegarlo directamente en el email
+          pasajeros: formattedPassengers,
+          resumenTexto: resumenTexto
         }),
       });
 
@@ -150,14 +175,14 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
+          className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            initial={{ scale: 0.95, opacity: 0, y: 15 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            exit={{ scale: 0.95, opacity: 0, y: 15 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-xl bg-[#1E1810] border border-[#a66d03]/20 rounded-3xl shadow-2xl overflow-hidden my-auto"
+            className="relative w-full max-w-[500px] bg-[#1E1810] border border-[#a66d03]/20 rounded-2xl shadow-2xl overflow-hidden my-auto"
           >
             {/* Header decorativo */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#a66d03]/60 to-transparent" />
@@ -165,26 +190,26 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
             
             <button
               onClick={onClose}
-              className="absolute top-5 right-5 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-white/10 hover:text-white transition-colors"
+              className="absolute top-4 right-4 z-20 w-7 h-7 flex items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-white/10 hover:text-white transition-colors"
             >
-              <X size={18} />
+              <X size={16} />
             </button>
 
-            <div className="p-8 sm:p-10 relative z-10">
+            <div className="p-6 sm:p-8 relative z-10">
               {submitted ? (
-                <div className="flex flex-col items-center justify-center text-center py-6">
-                  <div className="w-20 h-20 rounded-full bg-[#a66d03]/20 flex items-center justify-center text-[#a66d03] mb-6">
-                    <CheckCircle size={40} />
+                <div className="flex flex-col items-center justify-center text-center py-4">
+                  <div className="w-16 h-16 rounded-full bg-[#a66d03]/20 flex items-center justify-center text-[#a66d03] mb-5">
+                    <CheckCircle size={32} />
                   </div>
-                  <h3 className="text-2xl font-black uppercase mb-3" style={{ color: "#f5e6cc" }}>
+                  <h3 className="text-xl font-black uppercase mb-2" style={{ color: "#f5e6cc" }}>
                     ¡Pre-reserva recibida!
                   </h3>
-                  <p className="text-white/60 text-sm leading-relaxed mb-8">
-                    Recibirás un correo con los detalles en instantes. Pronto un asesor del equipo se pondrá en contacto para coordinar el pago y asegurar tu lugar para {destination.title}.
+                  <p className="text-white/60 text-sm leading-relaxed mb-6">
+                    Recibirás un correo con los detalles en instantes. Pronto un asesor del equipo se pondrá en contacto para asegurar tu lugar.
                   </p>
                   <button
                     onClick={onClose}
-                    className="w-full py-4 rounded-full btn-gold text-white text-sm font-black uppercase tracking-widest"
+                    className="w-full py-3 rounded-full btn-gold text-white text-xs font-black uppercase tracking-widest"
                   >
                     Cerrar
                   </button>
@@ -196,21 +221,18 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
                 >
-                  <div className="mb-8 text-center">
-                    <div className="inline-block px-3 py-1 rounded-full bg-[#a66d03]/20 border border-[#a66d03]/30 text-[#d9bf8f] text-[10px] font-bold uppercase tracking-widest mb-4">
-                      Paso 1 de 2 · Datos de contacto
+                  <div className="mb-6 text-center">
+                    <div className="inline-block px-3 py-1 rounded-full bg-[#a66d03]/20 border border-[#a66d03]/30 text-[#d9bf8f] text-[9px] font-bold uppercase tracking-widest mb-3">
+                      Paso 1 de 2 · Contacto
                     </div>
-                    <h3 className="text-2xl sm:text-3xl font-black uppercase leading-tight mb-3" style={{ color: "#f5e6cc" }}>
+                    <h3 className="text-xl sm:text-2xl font-black uppercase leading-tight mb-2" style={{ color: "#f5e6cc" }}>
                       Pre-reservá <span className="text-gold-gradient">tu lugar</span>
                     </h3>
-                    <p className="text-white/50 text-sm leading-relaxed">
-                      Seleccioná para cuántas personas es la reserva de {destination.title}.
-                    </p>
                   </div>
 
-                  <form onSubmit={handleNextStep} className="flex flex-col gap-5">
+                  <form onSubmit={handleNextStep} className="flex flex-col gap-4">
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
                         Email *
                       </label>
                       <input
@@ -219,14 +241,14 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                         required
                         value={contactForm.email}
                         onChange={handleContactChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/10 transition-all duration-300"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/10 transition-all duration-300"
                         placeholder="Ej: juan@ejemplo.com"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
-                        Teléfono / WhatsApp *
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
+                        WhatsApp / Teléfono *
                       </label>
                       <input
                         type="tel"
@@ -234,13 +256,13 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                         required
                         value={contactForm.telefono}
                         onChange={handleContactChange}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/10 transition-all duration-300"
-                        placeholder="Ej: +54 9 11 1234-5678"
+                        className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/10 transition-all duration-300"
+                        placeholder="Ej: +54 9 11 1234 5678"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
+                      <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
                         Cantidad de pasajeros *
                       </label>
                       <div className="relative">
@@ -248,7 +270,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                           name="cantidadPasajeros"
                           value={contactForm.cantidadPasajeros}
                           onChange={handleContactChange}
-                          className="w-full appearance-none bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/10 transition-all duration-300"
+                          className="w-full appearance-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/10 transition-all duration-300"
                         >
                           {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
                             <option key={num} value={num} className="bg-[#1E1810] text-white">
@@ -256,8 +278,8 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                             </option>
                           ))}
                         </select>
-                        <div className="absolute inset-y-0 right-5 flex items-center pointer-events-none text-white/50">
-                          <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-white/50">
+                          <svg width="10" height="6" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                           </svg>
                         </div>
@@ -268,10 +290,10 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                       type="submit"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="mt-2 flex items-center justify-center gap-2.5 w-full py-4 rounded-full btn-gold text-white text-sm font-black uppercase tracking-widest shadow-lg shadow-[#a66d03]/25"
+                      className="mt-2 flex items-center justify-center gap-2 w-full py-3 rounded-full btn-gold text-white text-xs font-black uppercase tracking-widest shadow-lg shadow-[#a66d03]/25"
                     >
                       Siguiente
-                      <ChevronRight size={16} />
+                      <ChevronRight size={14} />
                     </motion.button>
                   </form>
                 </motion.div>
@@ -282,34 +304,34 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                 >
-                  <div className="mb-6 flex items-center gap-3">
+                  <div className="mb-5 flex items-center gap-3">
                     <button
                       onClick={() => setStep(1)}
-                      className="w-8 h-8 flex items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-white/10 hover:text-white transition-colors"
+                      className="w-7 h-7 flex shrink-0 items-center justify-center rounded-full bg-white/5 text-white/60 hover:bg-white/10 hover:text-white transition-colors"
                     >
-                      <ChevronLeft size={16} />
+                      <ChevronLeft size={14} />
                     </button>
                     <div>
-                      <div className="text-[#d9bf8f] text-[10px] font-bold uppercase tracking-widest mb-0.5">
+                      <div className="text-[#d9bf8f] text-[9px] font-bold uppercase tracking-widest mb-0.5">
                         Paso 2 de 2
                       </div>
-                      <h3 className="text-xl font-black uppercase leading-tight" style={{ color: "#f5e6cc" }}>
+                      <h3 className="text-lg font-black uppercase leading-tight" style={{ color: "#f5e6cc" }}>
                         Datos de los pasajeros
                       </h3>
                     </div>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-                    <div className="max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar flex flex-col gap-6">
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                    <div className="max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar flex flex-col gap-4">
                       {passengers.map((p, index) => (
-                        <div key={index} className="p-5 rounded-2xl bg-white/5 border border-white/10">
-                          <h4 className="text-sm font-bold uppercase tracking-wider text-[#d9bf8f] mb-4">
+                        <div key={index} className="p-4 rounded-xl bg-white/5 border border-white/10">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#d9bf8f] mb-3">
                             Pasajero {index + 1}
                           </h4>
-                          <div className="flex flex-col gap-4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="flex flex-col gap-3">
+                            <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
+                                <label className="block text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
                                   Nombre *
                                 </label>
                                 <input
@@ -318,11 +340,11 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                   required
                                   value={p.nombre}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                  className="w-full bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
+                                <label className="block text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
                                   Apellido *
                                 </label>
                                 <input
@@ -331,51 +353,83 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                   required
                                   value={p.apellido}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                  className="w-full bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
                                 />
                               </div>
                             </div>
                             
-                            <div>
-                              <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
-                                DNI / Pasaporte *
-                              </label>
-                              <input
-                                type="text"
-                                name="dni"
-                                required
-                                value={p.dni}
-                                onChange={(e) => handlePassengerChange(index, e)}
-                                className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
-                              />
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
-                                  Nacionalidad *
+                                <label className="block text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
+                                  DNI / Pasaporte *
                                 </label>
                                 <input
                                   type="text"
-                                  name="nacionalidad"
+                                  name="dni"
                                   required
-                                  value={p.nacionalidad}
+                                  value={p.dni}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                  className="w-full bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
                                 />
                               </div>
                               <div>
-                                <label className="block text-[10px] font-bold uppercase tracking-wider text-white/50 mb-1.5 ml-1">
-                                  Fecha de Nacimiento *
+                                <label className="block text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
+                                  Provincia *
                                 </label>
                                 <input
-                                  type="date"
-                                  name="fechaNacimiento"
+                                  type="text"
+                                  name="provincia"
                                   required
-                                  value={p.fechaNacimiento}
+                                  value={p.provincia}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-black/20 border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300 [&::-webkit-calendar-picker-indicator]:invert-[0.5]"
+                                  className="w-full bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
                                 />
+                              </div>
+                            </div>
+
+                            <div>
+                              <label className="block text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
+                                Fecha de Nacimiento *
+                              </label>
+                              <div className="grid grid-cols-3 gap-2">
+                                <select
+                                  name="diaNac"
+                                  required
+                                  value={p.diaNac}
+                                  onChange={(e) => handlePassengerChange(index, e)}
+                                  className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                >
+                                  <option value="" disabled>Día</option>
+                                  {DAYS.map(d => (
+                                    <option key={d} value={d} className="bg-[#1E1810] text-white">{d}</option>
+                                  ))}
+                                </select>
+
+                                <select
+                                  name="mesNac"
+                                  required
+                                  value={p.mesNac}
+                                  onChange={(e) => handlePassengerChange(index, e)}
+                                  className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                >
+                                  <option value="" disabled>Mes</option>
+                                  {MONTHS.map((m, i) => (
+                                    <option key={i} value={i + 1} className="bg-[#1E1810] text-white">{m}</option>
+                                  ))}
+                                </select>
+
+                                <select
+                                  name="anioNac"
+                                  required
+                                  value={p.anioNac}
+                                  onChange={(e) => handlePassengerChange(index, e)}
+                                  className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                >
+                                  <option value="" disabled>Año</option>
+                                  {YEARS.map(y => (
+                                    <option key={y} value={y} className="bg-[#1E1810] text-white">{y}</option>
+                                  ))}
+                                </select>
                               </div>
                             </div>
                           </div>
@@ -388,16 +442,16 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                       disabled={sending}
                       whileHover={{ scale: sending ? 1 : 1.02 }}
                       whileTap={{ scale: sending ? 1 : 0.98 }}
-                      className="mt-2 flex items-center justify-center gap-2.5 w-full py-4 rounded-full btn-gold text-white text-sm font-black uppercase tracking-widest disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-[#a66d03]/25"
+                      className="mt-1 flex items-center justify-center gap-2 w-full py-3 rounded-full btn-gold text-white text-xs font-black uppercase tracking-widest disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-[#a66d03]/25"
                     >
                       {sending ? (
                         <>
-                          <span className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                          <span className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
                           Enviando...
                         </>
                       ) : (
                         <>
-                          <Send size={16} />
+                          <Send size={14} />
                           Confirmar Pre-Reserva
                         </>
                       )}
