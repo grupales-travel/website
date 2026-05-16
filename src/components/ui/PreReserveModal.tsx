@@ -13,8 +13,8 @@ interface PreReserveModalProps {
 }
 
 const MONTHS = [
-  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+  "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
 ];
 
 const currentYear = new Date().getFullYear();
@@ -391,45 +391,69 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                               <label className="block text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
                                 Fecha de Nacimiento *
                               </label>
-                              <div className="grid grid-cols-3 gap-2">
-                                <select
-                                  name="diaNac"
-                                  required
-                                  value={p.diaNac}
-                                  onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
-                                >
-                                  <option value="" disabled>Día</option>
-                                  {DAYS.map(d => (
-                                    <option key={d} value={d} className="bg-[#1E1810] text-white">{d}</option>
-                                  ))}
-                                </select>
+                              <div className="grid grid-cols-3 gap-2 relative">
+                                {/* DÍA */}
+                                <div className="relative">
+                                  <select
+                                    name="diaNac"
+                                    required
+                                    value={p.diaNac}
+                                    onChange={(e) => handlePassengerChange(index, e)}
+                                    className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg pl-3 pr-6 py-2.5 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                  >
+                                    <option value="" disabled>Día</option>
+                                    {DAYS.map(d => (
+                                      <option key={d} value={d} className="bg-[#1E1810] text-white">{d}</option>
+                                    ))}
+                                  </select>
+                                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none text-white/40">
+                                    <svg width="8" height="5" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                  </div>
+                                </div>
 
-                                <select
-                                  name="mesNac"
-                                  required
-                                  value={p.mesNac}
-                                  onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
-                                >
-                                  <option value="" disabled>Mes</option>
-                                  {MONTHS.map((m, i) => (
-                                    <option key={i} value={i + 1} className="bg-[#1E1810] text-white">{m}</option>
-                                  ))}
-                                </select>
+                                {/* MES */}
+                                <div className="relative">
+                                  <select
+                                    name="mesNac"
+                                    required
+                                    value={p.mesNac}
+                                    onChange={(e) => handlePassengerChange(index, e)}
+                                    className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg pl-3 pr-6 py-2.5 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                  >
+                                    <option value="" disabled>Mes</option>
+                                    {MONTHS.map((m, i) => (
+                                      <option key={i} value={i + 1} className="bg-[#1E1810] text-white">{m}</option>
+                                    ))}
+                                  </select>
+                                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none text-white/40">
+                                    <svg width="8" height="5" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                  </div>
+                                </div>
 
-                                <select
-                                  name="anioNac"
-                                  required
-                                  value={p.anioNac}
-                                  onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
-                                >
-                                  <option value="" disabled>Año</option>
-                                  {YEARS.map(y => (
-                                    <option key={y} value={y} className="bg-[#1E1810] text-white">{y}</option>
-                                  ))}
-                                </select>
+                                {/* AÑO */}
+                                <div className="relative">
+                                  <select
+                                    name="anioNac"
+                                    required
+                                    value={p.anioNac}
+                                    onChange={(e) => handlePassengerChange(index, e)}
+                                    className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg pl-3 pr-6 py-2.5 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                  >
+                                    <option value="" disabled>Año</option>
+                                    {YEARS.map(y => (
+                                      <option key={y} value={y} className="bg-[#1E1810] text-white">{y}</option>
+                                    ))}
+                                  </select>
+                                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none text-white/40">
+                                    <svg width="8" height="5" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
