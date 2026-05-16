@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Destination } from "@/types";
 import { formatWhatsAppUrl } from "@/lib/utils";
+import PreReserveModal from "@/components/ui/PreReserveModal";
 
 // ─── Helpers de video ────────────────────────────────────────────────────────
 
@@ -123,7 +124,7 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
 
 // ─── CTA Card (reutilizable) ─────────────────────────────────────────────────
 
-function CTACard({ destination }: { destination: Destination }) {
+function CTACard({ destination, onPreReserve }: { destination: Destination; onPreReserve: () => void }) {
   return (
     <div className="rounded-2xl bg-[#1E1810] p-6 border border-[#a66d03]/20">
       <p className="text-[#d9bf8f] text-sm font-bold uppercase tracking-widest mb-1">¿Te interesa?</p>
@@ -144,12 +145,12 @@ function CTACard({ destination }: { destination: Destination }) {
         <img src="/wp-icon.png" alt="WhatsApp" className="w-[15px] h-[15px] object-contain" />
         WhatsApp
       </motion.a>
-      <a
-        href="/contactanos"
+      <button
+        onClick={onPreReserve}
         className="flex items-center justify-center w-full py-3.5 rounded-full border border-white/20 text-white/70 text-sm font-semibold uppercase tracking-widest hover:bg-white/8 hover:text-white transition-all duration-300"
       >
-        Formulario de consulta
-      </a>
+        Pre-reservar lugar
+      </button>
     </div>
   );
 }
@@ -162,6 +163,7 @@ export default function DestinationContent({ destination }: Props) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   // null = cerrado | "normal" = modal centrado | "expanded" = pantalla completa
   const [mapMode, setMapMode] = useState<null | "normal" | "expanded">(null);
+  const [isPreReserveOpen, setIsPreReserveOpen] = useState(false);
   const [showAllIncludes, setShowAllIncludes] = useState(false);
   const videoScrollRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
@@ -212,7 +214,7 @@ export default function DestinationContent({ destination }: Props) {
 
             {/* 2. CTA — solo mobile */}
             <div className="lg:hidden">
-              <CTACard destination={destination} />
+              <CTACard destination={destination} onPreReserve={() => setIsPreReserveOpen(true)} />
             </div>
 
             {/* 3. Qué incluye */}
@@ -323,7 +325,7 @@ export default function DestinationContent({ destination }: Props) {
           {/* ── Sidebar — desktop only ────────────────────────── */}
           <div className="hidden lg:block lg:col-span-1">
             <div className="sticky top-24">
-              <CTACard destination={destination} />
+              <CTACard destination={destination} onPreReserve={() => setIsPreReserveOpen(true)} />
             </div>
           </div>
 
@@ -411,6 +413,12 @@ export default function DestinationContent({ destination }: Props) {
         )}
         </AnimatePresence>
       , document.body)}
+
+      <PreReserveModal
+        isOpen={isPreReserveOpen}
+        onClose={() => setIsPreReserveOpen(false)}
+        destination={destination}
+      />
     </section>
   );
 }

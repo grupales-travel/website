@@ -7,6 +7,7 @@ import { MapPin, Clock, Globe, Calendar, FileText, ChevronLeft } from "lucide-re
 import { useRouter } from "next/navigation";
 import { Destination } from "@/types";
 import { formatWhatsAppUrl } from "@/lib/utils";
+import PreReserveModal from "@/components/ui/PreReserveModal";
 
 interface Props {
   destination: Destination;
@@ -15,6 +16,7 @@ interface Props {
 export default function DestinationHero({ destination }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const [isPreReserveOpen, setIsPreReserveOpen] = useState(false);
 
   // Altura bloqueada al montar — IDÉNTICO al home hero.
   // Debe ser 100% del viewport inicial para que no haya contenido debajo
@@ -147,17 +149,20 @@ export default function DestinationHero({ destination }: Props) {
             Ver itinerario
           </a>
 
-          <a
-            href={formatWhatsAppUrl(destination.whatsappUrl || "", destination.title)}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={() => setIsPreReserveOpen(true)}
             className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full btn-gold text-white text-sm font-bold uppercase tracking-widest"
           >
-            <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
-            Consultar disponibilidad
-          </a>
+            Pre-reservar
+          </button>
         </div>
       </motion.div>
+
+      <PreReserveModal
+        isOpen={isPreReserveOpen}
+        onClose={() => setIsPreReserveOpen(false)}
+        destination={destination}
+      />
     </section>
   );
 }
