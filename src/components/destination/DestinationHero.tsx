@@ -138,7 +138,7 @@ export default function DestinationHero({ destination }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3">
           <a
             href={destination.itineraryPdfUrl || "#itinerario"}
             target={destination.itineraryPdfUrl ? "_blank" : undefined}
@@ -147,6 +147,16 @@ export default function DestinationHero({ destination }: Props) {
           >
             <FileText size={16} />
             Ver itinerario
+          </a>
+
+          <a
+            href={formatWhatsAppUrl(destination.whatsappUrl || "", destination.title)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-bold uppercase tracking-widest hover:bg-white/20 transition-colors duration-300"
+          >
+            <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain opacity-70" />
+            Consultar
           </a>
 
           <button
