@@ -147,7 +147,7 @@ function CTACard({ destination, onPreReserve }: { destination: Destination; onPr
       </motion.a>
       <button
         onClick={onPreReserve}
-        className="flex items-center justify-center w-full py-3.5 rounded-full border border-white/20 text-white/70 text-sm font-semibold uppercase tracking-widest hover:bg-white/8 hover:text-white transition-all duration-300"
+        className="flex items-center justify-center w-full py-3.5 rounded-full border border-white/20 text-white/70 text-sm font-semibold uppercase tracking-widest hover:bg-white/8 hover:text-white transition-all duration-300 cursor-pointer"
       >
         Pre-reservar lugar
       </button>

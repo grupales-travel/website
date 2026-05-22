@@ -181,6 +181,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
             initial={{ scale: 0.95, opacity: 0, y: 15 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 15 }}
+            onClick={(e) => e.stopPropagation()}
             className="relative w-full max-w-[500px] bg-white border border-[#a66d03]/30 rounded-2xl shadow-2xl overflow-hidden my-auto"
           >
             {/* Header decorativo */}

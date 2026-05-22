@@ -161,7 +161,7 @@ export default function DestinationHero({ destination }: Props) {
 
           <button
             onClick={() => setIsPreReserveOpen(true)}
-            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full btn-gold text-white text-sm font-bold uppercase tracking-widest"
+            className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full btn-gold text-white text-sm font-bold uppercase tracking-widest cursor-pointer"
           >
             Pre-reservar
           </button>
