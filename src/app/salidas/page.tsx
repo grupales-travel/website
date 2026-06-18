@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SalidasPage() {
-  const destinations = await getActiveDestinations().catch(() => DESTINATIONS);
+  const destinations = await getActiveDestinations().catch(() => DESTINATIONS.filter(d => !d.partner || d.featured));
 
   return (
     <>

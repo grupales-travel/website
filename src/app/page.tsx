@@ -16,7 +16,7 @@ export const revalidate = 3600;
 export default async function Home() {
   // Supabase primero, datos estáticos como fallback si falla. Concurrente.
   const [destinations, heroImagesData] = await Promise.all([
-    getActiveDestinations().catch(() => DESTINATIONS),
+    getActiveDestinations().catch(() => DESTINATIONS.filter(d => !d.partner || d.featured)),
     getHeroImages().catch(() => []),
   ]);
 
@@ -25,7 +25,7 @@ export default async function Home() {
       <Navbar />
       <main>
         <HeroSection initialImages={heroImagesData} />
-        <DestinationsSection destinations={destinations} />
+        {/* <DestinationsSection destinations={destinations} /> */}
         <BenefitsBanner />
         <RegionFilter limit={8} destinations={destinations} />
         <ExperienceSection />

@@ -54,12 +54,12 @@ export default async function DestinationPage({ params }: Props) {
   // Supabase Fetch Concurrente: destino actual + todos para relacionados
   const [destinationDB, allDestinations] = await Promise.all([
     getDestinationBySlugDB(slug).catch(() => null),
-    getActiveDestinations().catch(() => DESTINATIONS),
+    getActiveDestinations().catch(() => DESTINATIONS.filter(d => !d.partner || d.featured)),
   ]);
 
   const destination = destinationDB ?? getDestinationBySlug(slug);
 
-  if (!destination || !destination.active) {
+  if (!destination || !destination.active || (destination.partner && !destination.featured)) {
     notFound();
   }
 

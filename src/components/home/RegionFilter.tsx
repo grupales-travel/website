@@ -70,13 +70,20 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
       return matchSearch && matchRegion && matchYear && matchMonth;
     });
 
-    if (!filters.region) {
-      results = [...results].sort((a, b) => {
-        const dateA = parseDepartureDate(a.departureDate, a.year);
-        const dateB = parseDepartureDate(b.departureDate, b.year);
-        return dateA.getTime() - dateB.getTime();
-      });
-    }
+    // Sort:
+    // 1. Prioritize non-sold-out (badge !== 'agotado') departures, pushing 'agotado' to the bottom.
+    // 2. Within each group, sort chronologically by departure date ascending (closest date first).
+    results = [...results].sort((a, b) => {
+      const isAgotadoA = a.badge === "agotado";
+      const isAgotadoB = b.badge === "agotado";
+
+      if (isAgotadoA && !isAgotadoB) return 1;
+      if (!isAgotadoA && isAgotadoB) return -1;
+
+      const dateA = parseDepartureDate(a.departureDate, a.year);
+      const dateB = parseDepartureDate(b.departureDate, b.year);
+      return dateA.getTime() - dateB.getTime();
+    });
 
     return results;
   }, [allDestinations, filters]);

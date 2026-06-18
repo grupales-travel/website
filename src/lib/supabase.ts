@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { DESTINATIONS } from "@/data/destinations";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -139,10 +140,13 @@ export async function getActiveDestinations() {
 
   if (error) {
     console.error("Error fetching destinations:", error.message);
-    return [];
+    // Temporary: Hide partner departures that are not featured from fallback
+    return DESTINATIONS.filter(d => !d.partner || d.featured);
   }
 
-  return (data as SupabaseDestination[]).map(toDestination);
+  const mapped = (data as SupabaseDestination[]).map(toDestination);
+  // Temporary: Hide partner departures that are not featured
+  return mapped.filter(d => !d.partner || d.featured);
 }
 
 export async function getDestinationBySlugDB(slug: string) {
@@ -154,7 +158,10 @@ export async function getDestinationBySlugDB(slug: string) {
     .single();
 
   if (error || !data) return null;
-  return toDestination(data as SupabaseDestination);
+  const dest = toDestination(data as SupabaseDestination);
+  // Temporary: Hide partner departures that are not featured
+  if (dest.partner && !dest.featured) return null;
+  return dest;
 }
 
 // Solo para el admin — trae todos incluyendo inactivos

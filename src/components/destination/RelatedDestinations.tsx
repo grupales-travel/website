@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function RelatedDestinations({ current, allDestinations }: Props) {
-  const source = allDestinations ?? DESTINATIONS;
+  const source = allDestinations ?? DESTINATIONS.filter(d => !d.partner || d.featured);
 
   // Filtra activos excluyendo el actual
   const candidates = source.filter((d) => d.active && d.id !== current.id);

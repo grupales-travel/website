@@ -472,9 +472,14 @@ function FileUploadField({ label, value, folder, accept, slug, type = "image", c
 
 // ─── Subcomponente: Toggle ───────────────────────────────────────────────────
 
-function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
+function Toggle({ checked, onChange, label, disabled = false }: { checked: boolean; onChange: (v: boolean) => void; label: string; disabled?: boolean }) {
   return (
-    <button type="button" onClick={() => onChange(!checked)} className="flex items-center gap-3">
+    <button
+      type="button"
+      onClick={() => !disabled && onChange(!checked)}
+      disabled={disabled}
+      className={`flex items-center gap-3 transition-opacity ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
+    >
       <div className={`relative w-10 h-5 rounded-full transition-colors duration-300 ${checked ? "bg-[#a66d03]" : "bg-white/12"}`}>
         <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-all duration-300 ${checked ? "left-[22px]" : "left-0.5"}`} />
       </div>
@@ -1074,7 +1079,7 @@ export default function DestinationForm({ initial, id }: Props) {
         <div className="px-6 py-6 flex flex-wrap gap-8">
           <Toggle checked={active} onChange={setActive} label="Visible en el sitio" />
           <Toggle checked={featured} onChange={setFeatured} label="Destacado en home" />
-          <Toggle checked={partner} onChange={setPartner} label="Salida partner" />
+          <Toggle checked={partner} onChange={setPartner} label="Salida partner" disabled={true} />
         </div>
       </div>
 
