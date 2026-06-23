@@ -2,12 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { DESTINATIONS } from "@/data/destinations";
 import { Destination } from "@/types";
-import { formatRegion } from "@/lib/utils";
 import DestinationCard from "./DestinationCard";
 import AdvancedFilter from "./AdvancedFilter";
 
@@ -39,7 +37,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
     search: "",
     region: "",
     month: "",
-    year: "2026",
+    year: "",
   });
 
   const allDestinations = useMemo(() => {
@@ -70,6 +68,11 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
       return matchSearch && matchRegion && matchYear && matchMonth;
     });
 
+    // If on homepage (not pageMode), completely exclude sold-out (agotado) departures.
+    if (!pageMode) {
+      results = results.filter((d) => d.badge !== "agotado");
+    }
+
     // Sort:
     // 1. Prioritize non-sold-out (badge !== 'agotado') departures, pushing 'agotado' to the bottom.
     // 2. Within each group, sort chronologically by departure date ascending (closest date first).
@@ -86,7 +89,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
     });
 
     return results;
-  }, [allDestinations, filters]);
+  }, [allDestinations, filters, pageMode]);
 
   const visibleDestinations = limit ? filteredDestinations.slice(0, limit) : filteredDestinations;
 

@@ -19,8 +19,6 @@ interface AdvancedFilterProps {
   years: number[];
 }
 
-const CURRENT_YEAR = new Date().getFullYear().toString();
-
 export default function AdvancedFilter({
   onFilterChange,
   regions,
@@ -31,7 +29,7 @@ export default function AdvancedFilter({
     search: "",
     region: "",
     month: "",
-    year: CURRENT_YEAR,
+    year: "",
   });
 
   // Un único panel abierto: "search" | "region" | "month" | "year" | null
@@ -69,10 +67,10 @@ export default function AdvancedFilter({
     setOpenPanel(openPanel === key ? null : key);
   };
 
-  const hasActiveFilters = !!(filters.region || filters.month || filters.year !== CURRENT_YEAR);
+  const hasActiveFilters = !!(filters.region || filters.month || filters.year !== "");
 
   const clearFilters = () => {
-    const cleared = { ...filters, region: "", month: "", year: CURRENT_YEAR };
+    const cleared = { ...filters, region: "", month: "", year: "" };
     setFilters(cleared);
     onFilterChange(cleared);
     setOpenPanel(null);
@@ -192,7 +190,7 @@ export default function AdvancedFilter({
               }
               label="Año"
               value={filters.year || null}
-              active={filters.year !== CURRENT_YEAR}
+              active={filters.year !== ""}
               open={openPanel === "year"}
               onClick={() => togglePanel("year")}
               align="right"

@@ -88,7 +88,8 @@ export default function PreReserveModal({ isOpen, onClose, destination }: PreRes
   if (!mounted) return null;
 
   function handleContactChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    let { name, value } = e.target;
+    const name = e.target.name;
+    let value = e.target.value;
     // Solo permitir números y símbolo + en teléfono
     if (name === "telefono") {
       value = value.replace(/[^\d+]/g, "");
@@ -97,7 +98,8 @@ export default function PreReserveModal({ isOpen, onClose, destination }: PreRes
   }
 
   function handlePassengerChange(index: number, e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    let { name, value } = e.target;
+    const name = e.target.name;
+    let value = e.target.value;
     // Solo permitir números en DNI
     if (name === "dni") {
       value = value.replace(/\D/g, "");
