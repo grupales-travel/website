@@ -28,14 +28,21 @@ function parseDepartureDate(dateStr: string, year: number): Date {
 export default function RelatedDestinations({ current, allDestinations }: Props) {
   const source = allDestinations ?? DESTINATIONS.filter(d => !d.partner || d.featured);
 
-  // Filtra activos de la misma región, excluyendo el actual y los agotados
+  // Filtra activos, excluyendo el actual y los agotados
   const candidates = source.filter(
-    (d) => d.active && d.id !== current.id && d.badge !== "agotado" && d.region === current.region
+    (d) => d.active && d.id !== current.id && d.badge !== "agotado"
   );
 
-  // Ordena por fecha de salida ascendente (más cercanas primero)
+  // Ordena: misma región primero, luego por fecha de salida ascendente (más cercanas primero)
   const related = [...candidates]
     .sort((a, b) => {
+      const sameRegionA = a.region === current.region ? 0 : 1;
+      const sameRegionB = b.region === current.region ? 0 : 1;
+
+      if (sameRegionA !== sameRegionB) {
+        return sameRegionA - sameRegionB;
+      }
+
       const dateA = parseDepartureDate(a.departureDate, a.year);
       const dateB = parseDepartureDate(b.departureDate, b.year);
       return dateA.getTime() - dateB.getTime();
