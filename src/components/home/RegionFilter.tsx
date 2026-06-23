@@ -264,7 +264,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
         </motion.div>
 
         {/* Ver más */}
-        {limit && filteredDestinations.length > limit && (
+        {limit && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -274,9 +274,6 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             <Link href="/salidas" className="group flex flex-col items-center gap-2">
               <span className="inline-flex items-center gap-3 px-8 py-4 btn-gold text-white rounded-full font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#a66d03]/20">
                 Ver todas las salidas
-                <span className="bg-white/20 px-2 py-0.5 rounded text-xs">
-                  +{filteredDestinations.length - limit}
-                </span>
               </span>
             </Link>
           </motion.div>
