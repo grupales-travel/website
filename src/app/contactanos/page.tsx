@@ -23,7 +23,7 @@ export default function ContactanosPage() {
     setSending(true);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/reservas@grupalestravel.com", {
+      const response = await fetch("https://formsubmit.co/ajax/ventas@grupalestravel.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,10 +42,10 @@ export default function ContactanosPage() {
       if (response.ok) {
         setSubmitted(true);
       } else {
-        alert("Hubo un error al enviar tu consulta. Por favor escribinos por correo directo a reservas@grupalestravel.com");
+        alert("Hubo un error al enviar tu consulta. Por favor escribinos por correo directo a ventas@grupalestravel.com");
       }
     } catch (error) {
-      alert("Hubo un error de conexión. Por favor intentá nuevamente o escribinos a reservas@grupalestravel.com");
+      alert("Hubo un error de conexión. Por favor intentá nuevamente o escribinos a ventas@grupalestravel.com");
     } finally {
       setSending(false);
     }
