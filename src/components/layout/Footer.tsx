@@ -96,6 +96,7 @@ export default function Footer() {
             <ul className="flex flex-col gap-3 mb-8">
               {[
                 { label: "Inicio", href: "/" },
+                { label: "Quiénes Somos", href: "/quienes-somos" },
                 { label: "Beneficios", href: "/ventajas" },
                 { label: "Contacto", href: "/contactanos" },
                 { label: "Salidas Grupales", href: "/salidas" },

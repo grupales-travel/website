@@ -10,6 +10,7 @@ import { COMPANY } from "@/data/company";
 
 const NAV_LINKS = [
   { label: "Inicio", href: "/" },
+  { label: "Quiénes Somos", href: "/quienes-somos" },
   { label: "Salidas Grupales", href: "/salidas" },
   { label: "Beneficios", href: "/ventajas" },
   { label: "Contacto", href: "/contactanos" },
