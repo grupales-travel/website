@@ -143,6 +143,8 @@ export default function TeamSection() {
                 <img
                   src={getImagePath(director.name)}
                   alt={director.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-102"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
@@ -220,6 +222,8 @@ export default function TeamSection() {
                       <img
                         src={getImagePath(member.name)}
                         alt={member.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-102"
                         onError={(e) => {
                           e.currentTarget.style.display = "none";
