@@ -151,11 +151,11 @@ export default function QuienesSomosPage() {
                 </AnimatedSection>
 
                 <AnimatedSection delay={0.15}>
-                  <p className="text-[#1E1810]/65 text-base leading-relaxed">
+                  <p className="text-[#1E1810]/75 text-[17px] leading-relaxed">
                     Grupales Travel nació con el propósito de ofrecer salidas grupales cuidadosamente diseñadas, 
                     combinando el asesoramiento personalizado con una operación profesional y un acompañamiento permanente.
                   </p>
-                  <p className="text-[#1E1810]/65 text-base leading-relaxed mt-4">
+                  <p className="text-[#1E1810]/75 text-[17px] leading-relaxed mt-4">
                     Con el paso de los años fuimos creciendo, incorporando nuevas oficinas, representantes en distintas 
                     ciudades y un equipo multidisciplinario que hoy nos permite brindar un servicio integral antes, 
                     durante y después de cada viaje.
@@ -184,7 +184,7 @@ export default function QuienesSomosPage() {
                         <h4 className="text-lg font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200">
                           {item.title}
                         </h4>
-                        <p className="text-[#1E1810]/60 text-sm leading-relaxed max-w-lg">
+                        <p className="text-[#1E1810]/70 text-[15px] leading-relaxed max-w-lg">
                           {item.text}
                         </p>
                       </div>
@@ -209,7 +209,7 @@ export default function QuienesSomosPage() {
                 <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810]">
                   Estamos cerca tuyo
                 </h2>
-                <p className="text-[#1E1810]/70 text-sm md:text-base">
+                <p className="text-[#1E1810]/75 text-base sm:text-lg max-w-xl mx-auto">
                   Acercate a cualquiera de nuestras sedes presenciales o coordiná una llamada virtual con nuestros representantes.
                 </p>
               </AnimatedSection>
@@ -250,7 +250,7 @@ export default function QuienesSomosPage() {
                 <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810]">
                   Nuestro Equipo
                 </h2>
-                <p className="text-[#1E1810]/70 text-base leading-relaxed">
+                <p className="text-[#1E1810]/75 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
                   Cada viaje es el resultado del trabajo coordinado de profesionales especializados en distintas áreas. 
                   Nuestro compromiso es acompañarte en cada etapa del proceso para que solo tengas que disfrutar la experiencia.
                 </p>

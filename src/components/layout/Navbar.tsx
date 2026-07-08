@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -17,6 +18,8 @@ const NAV_LINKS = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   // 100vh fijo garantiza que la franja blanca no se asome por debajo al ocultar el nav nativo
@@ -109,7 +112,7 @@ export default function Navbar() {
         style={{ transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}
         className={cn(
           "fixed top-0 left-0 right-0 z-[100] transition-all duration-500",
-          scrolled
+          (scrolled || !isHome)
             ? "bg-[#1E1810]/95 backdrop-blur-md border-b border-[#a66d03]/30 py-2"
             : "bg-transparent py-3"
         )}

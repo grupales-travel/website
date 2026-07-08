@@ -126,10 +126,10 @@ export default function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-white border border-[#a66d03]/20 rounded-3xl p-8 shadow-xl flex flex-col md:flex-row gap-6 items-center text-center md:text-left hover:border-[#bf8b2a]/45 transition-all duration-300 group"
+              className="bg-white border border-[#a66d03]/15 rounded-3xl p-6 shadow-xl flex flex-col sm:flex-row gap-6 items-center text-center sm:text-left hover:border-[#bf8b2a]/45 transition-all duration-300 group"
             >
-              {/* Avatar con imagen o iniciales de fallback */}
-              <div className="w-24 h-24 rounded-full bg-[#FAF7F2] border border-[#a66d03]/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform duration-300 relative overflow-hidden">
+              {/* Imagen de perfil rectangular 3:4 */}
+              <div className="w-32 h-44 rounded-2xl bg-[#FAF7F2] border border-[#a66d03]/20 flex items-center justify-center shrink-0 shadow-md group-hover:scale-[1.02] transition-transform duration-300 relative overflow-hidden">
                 <img
                   src={getImagePath(director.name)}
                   alt={director.name}
@@ -141,23 +141,23 @@ export default function TeamSection() {
                 <span className="text-2xl font-black tracking-wider text-[#a66d03]">
                   {getInitials(director.name)}
                 </span>
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20">
+                <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20 shadow-md">
                   <Award size={12} className="text-white" />
                 </div>
               </div>
 
               {/* Información */}
-              <div className="flex-1 space-y-2">
+              <div className="flex-1 space-y-2.5">
                 <h4 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
                   {director.title}
                 </h4>
-                <h3 className="text-2xl font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200">
+                <h3 className="text-2xl font-black text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 leading-tight">
                   {director.name}
                 </h3>
-                <p className="text-[#1E1810]/55 text-sm font-semibold uppercase tracking-wider">
+                <p className="text-[#1E1810]/60 text-sm font-semibold uppercase tracking-wider">
                   {director.role}
                 </p>
-                <p className="text-[#1E1810]/70 text-sm leading-relaxed pt-2 border-t border-[#1E1810]/5">
+                <p className="text-[#1E1810]/75 text-[15px] leading-relaxed pt-2 border-t border-[#1E1810]/5">
                   {director.description}
                 </p>
               </div>
@@ -193,7 +193,7 @@ export default function TeamSection() {
                       transition={{ delay: memberIndex * 0.05 + deptIndex * 0.05, duration: 0.4 }}
                       className="bg-white border border-[#1E1810]/5 rounded-2xl p-5 hover:border-[#a66d03]/25 shadow-sm transition-all duration-300 flex items-center gap-3.5 group"
                     >
-                      <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#1E1810]/5 flex items-center justify-center shrink-0 shadow-inner transition-colors duration-300 overflow-hidden relative">
+                      <div className="w-14 h-18 rounded-xl bg-[#FAF7F2] border border-[#1E1810]/10 flex items-center justify-center shrink-0 shadow-inner transition-colors duration-300 overflow-hidden relative">
                         <img
                           src={getImagePath(member.name)}
                           alt={member.name}
@@ -204,11 +204,11 @@ export default function TeamSection() {
                         />
                         <User size={16} className="text-[#1E1810]/30" />
                       </div>
-                      <div className="overflow-hidden">
-                        <h4 className="text-sm font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 truncate">
+                      <div className="overflow-hidden space-y-0.5">
+                        <h4 className="text-base font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 truncate">
                           {member.name}
                         </h4>
-                        <p className="text-[#1E1810]/45 text-[11px] font-medium tracking-wide uppercase truncate">
+                        <p className="text-[#1E1810]/50 text-xs font-semibold tracking-wide uppercase truncate">
                           {member.role}
                         </p>
                       </div>
