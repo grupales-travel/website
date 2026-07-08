@@ -74,12 +74,6 @@ const DEPARTMENTS: Department[] = [
     members: [
       { name: "Nicolás Sánchez", role: "Operaciones" },
       { name: "Alejandro Insaurralde", role: "Operaciones" },
-      { 
-        name: "Martín Estanguet", 
-        role: "MANAGER DESIGN", 
-        title: "EQUIPO DE MARKETING Y COMUNICACIÓN", 
-        description: "Estamos para ayudarte a planificar tu próximo viaje." 
-      },
     ],
   },
   {
@@ -95,11 +89,17 @@ const DEPARTMENTS: Department[] = [
     ],
   },
   {
-    name: "Representantes Comerciales",
-    intro: "Embajadores de nuestra marca en distintas ciudades, facilitando el asesoramiento presencial a pasajeros de todo el país.",
+    name: "Marketing y Comunicación",
+    intro: "Creamos los contenidos, desarrollamos la identidad visual de cada salida y comunicamos nuestras experiencias para inspirar nuevos viajes.",
     members: [
       { name: "Juan Pablo Olivares", role: "Marketing y Comunicación" },
       { name: "Facundo Cortines", role: "Marketing y Comunicación" },
+      { 
+        name: "Martín Estanguet", 
+        role: "MANAGER DESIGN", 
+        title: "EQUIPO DE MARKETING Y COMUNICACIÓN", 
+        description: "Estamos para ayudarte a planificar tu próximo viaje." 
+      },
     ],
   },
 ];
