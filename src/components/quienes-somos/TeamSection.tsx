@@ -126,10 +126,10 @@ export default function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-white border border-[#a66d03]/15 rounded-3xl p-6 shadow-xl flex flex-col sm:flex-row gap-6 items-center text-center sm:text-left hover:border-[#bf8b2a]/45 transition-all duration-300 group"
+              className="bg-white border border-[#a66d03]/15 rounded-3xl p-8 shadow-xl flex flex-col items-center text-center hover:border-[#bf8b2a]/45 transition-all duration-300 group"
             >
               {/* Imagen de perfil rectangular 3:4 */}
-              <div className="w-32 h-44 rounded-2xl bg-[#FAF7F2] border border-[#a66d03]/20 flex items-center justify-center shrink-0 shadow-md group-hover:scale-[1.02] transition-transform duration-300 relative overflow-hidden">
+              <div className="w-56 h-72 rounded-2xl bg-[#FAF7F2] border border-[#a66d03]/20 flex items-center justify-center shrink-0 shadow-md group-hover:scale-[1.01] transition-transform duration-300 relative overflow-hidden mb-6">
                 <img
                   src={getImagePath(director.name)}
                   alt={director.name}
@@ -138,16 +138,16 @@ export default function TeamSection() {
                     e.currentTarget.style.display = "none";
                   }}
                 />
-                <span className="text-2xl font-black tracking-wider text-[#a66d03]">
+                <span className="text-3xl font-black tracking-wider text-[#a66d03]">
                   {getInitials(director.name)}
                 </span>
-                <div className="absolute bottom-2 right-2 w-7 h-7 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20 shadow-md">
-                  <Award size={12} className="text-white" />
+                <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20 shadow-md">
+                  <Award size={14} className="text-white" />
                 </div>
               </div>
 
               {/* Información */}
-              <div className="flex-1 space-y-2.5">
+              <div className="space-y-3 w-full">
                 <h4 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
                   {director.title}
                 </h4>
@@ -157,7 +157,7 @@ export default function TeamSection() {
                 <p className="text-[#1E1810]/60 text-sm font-semibold uppercase tracking-wider">
                   {director.role}
                 </p>
-                <p className="text-[#1E1810]/75 text-[15px] leading-relaxed pt-2 border-t border-[#1E1810]/5">
+                <p className="text-[#1E1810]/75 text-[15px] leading-relaxed pt-3 border-t border-[#1E1810]/5 mt-2">
                   {director.description}
                 </p>
               </div>
@@ -170,51 +170,49 @@ export default function TeamSection() {
       <div className="space-y-16">
         {DEPARTMENTS.map((dept, deptIndex) => (
           <div key={dept.name} className="max-w-6xl mx-auto border-t border-[#1E1810]/5 pt-12">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Info del departamento */}
-              <div className="lg:col-span-1 space-y-3">
-                <h3 className="text-xl font-bold text-[#a66d03] tracking-tight">
+            <div className="flex flex-col gap-10">
+              {/* Info del departamento - Arriba y centrado */}
+              <div className="text-center max-w-2xl mx-auto space-y-2.5">
+                <h3 className="text-2xl font-bold text-[#a66d03] tracking-tight">
                   {dept.name}
                 </h3>
-                <p className="text-[#1E1810]/60 text-sm leading-relaxed">
+                <p className="text-[#1E1810]/60 text-sm sm:text-base leading-relaxed">
                   {dept.intro}
                 </p>
               </div>
 
-              {/* Integrantes */}
-              <div className="lg:col-span-2">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {dept.members.map((member, memberIndex) => (
-                    <motion.div
-                      key={member.name}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: memberIndex * 0.05 + deptIndex * 0.05, duration: 0.4 }}
-                      className="bg-white border border-[#1E1810]/5 rounded-2xl p-5 hover:border-[#a66d03]/25 shadow-sm transition-all duration-300 flex items-center gap-3.5 group"
-                    >
-                      <div className="w-14 h-18 rounded-xl bg-[#FAF7F2] border border-[#1E1810]/10 flex items-center justify-center shrink-0 shadow-inner transition-colors duration-300 overflow-hidden relative">
-                        <img
-                          src={getImagePath(member.name)}
-                          alt={member.name}
-                          className="absolute inset-0 w-full h-full object-cover z-10"
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                          }}
-                        />
-                        <User size={16} className="text-[#1E1810]/30" />
-                      </div>
-                      <div className="overflow-hidden space-y-0.5">
-                        <h4 className="text-base font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 truncate">
-                          {member.name}
-                        </h4>
-                        <p className="text-[#1E1810]/50 text-xs font-semibold tracking-wide uppercase truncate">
-                          {member.role}
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
+              {/* Integrantes - Abajo en grilla centrada */}
+              <div className="flex flex-wrap gap-6 justify-center">
+                {dept.members.map((member, memberIndex) => (
+                  <motion.div
+                    key={member.name}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: memberIndex * 0.05 + deptIndex * 0.05, duration: 0.4 }}
+                    className="bg-white border border-[#1E1810]/5 rounded-3xl p-5 hover:border-[#a66d03]/25 shadow-sm transition-all duration-300 flex flex-col items-center text-center w-[220px] group"
+                  >
+                    <div className="w-40 h-52 rounded-xl bg-[#FAF7F2] border border-[#1E1810]/10 flex items-center justify-center shrink-0 shadow-inner overflow-hidden relative mb-4">
+                      <img
+                        src={getImagePath(member.name)}
+                        alt={member.name}
+                        className="absolute inset-0 w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                      <User size={28} className="text-[#1E1810]/20" />
+                    </div>
+                    <div className="overflow-hidden w-full space-y-0.5">
+                      <h4 className="text-base font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 truncate">
+                        {member.name}
+                      </h4>
+                      <p className="text-[#1E1810]/50 text-xs font-semibold tracking-wide uppercase truncate">
+                        {member.role}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </div>
