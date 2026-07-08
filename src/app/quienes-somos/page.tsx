@@ -255,30 +255,33 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* ¿Por qué elegir Grupales Travel? */}
-        <section className="py-24 px-6 bg-[#FAF7F2] relative border-t border-[#1E1810]/5">
+        <section className="py-16 md:py-24 px-6 bg-[#FAF7F2] relative border-t border-[#1E1810]/5">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16 space-y-3">
+            <div className="text-center mb-12 space-y-3">
               <AnimatedSection>
-                <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
+                <h3 className="text-[#a66d03] text-sm font-bold uppercase tracking-widest mb-1">
                   Diferenciales
                 </h3>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E1810]">
-                  ¿Por qué elegir Grupales Travel?
+                <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810] flex flex-col items-center gap-1.5">
+                  <span>¿Por qué elegir</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d9bf8f] via-[#bf8b2a] to-[#a66d03]">
+                    Grupales Travel?
+                  </span>
                 </h2>
               </AnimatedSection>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {ADVANTAGES_LIST.map((adv, index) => (
                 <AnimatedSection
                   key={index}
                   delay={index * 0.05}
-                  className="flex items-start gap-4 bg-white border border-[#a66d03]/10 p-5 rounded-2xl hover:border-[#bf8b2a]/30 transition-colors shadow-sm"
+                  className="flex items-center gap-4 bg-white border border-[#a66d03]/10 p-4 rounded-2xl hover:border-[#bf8b2a]/30 transition-colors shadow-sm"
                 >
-                  <div className="w-6 h-6 rounded-full bg-[#bf8b2a]/10 flex items-center justify-center shrink-0 border border-[#bf8b2a]/20 mt-0.5">
-                    <Check size={13} className="text-[#a66d03]" />
+                  <div className="w-8 h-8 rounded-full bg-[#bf8b2a]/10 flex items-center justify-center shrink-0 border border-[#bf8b2a]/20">
+                    <Check size={16} className="text-[#a66d03]" />
                   </div>
-                  <p className="text-[#1E1810]/75 text-sm sm:text-base leading-relaxed">
+                  <p className="text-[#1E1810]/85 text-base sm:text-lg font-bold leading-snug">
                     {adv}
                   </p>
                 </AnimatedSection>
@@ -288,7 +291,7 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* Cierre / Frase Final */}
-        <section className="py-24 px-6 relative border-t border-[#1E1810]/5 overflow-hidden">
+        <section className="pt-10 pb-16 md:py-24 px-6 relative border-t border-[#1E1810]/5 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(166,109,3,0.05),transparent)] pointer-events-none" />
           
           <div className="max-w-3xl mx-auto text-center space-y-10 relative z-10">

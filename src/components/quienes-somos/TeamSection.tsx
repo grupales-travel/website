@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { User, Globe } from "lucide-react";
 
 function getImagePath(name: string) {
@@ -129,13 +126,9 @@ export default function TeamSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
-          {DIRECTORS.map((director, i) => (
-            <motion.div
+          {DIRECTORS.map((director) => (
+            <div
               key={director.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
               className="bg-[#F4F0EB] border border-[#a66d03]/20 rounded-3xl shadow-xl flex flex-col overflow-hidden w-full max-w-[340px] mx-auto border-b-8 border-b-[#a66d03] hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group"
             >
               {/* Imagen Cuadrada de perfil 1:1 (Sin zoom click) */}
@@ -183,14 +176,14 @@ export default function TeamSection() {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
 
       {/* Departamentos */}
       <div className="space-y-16">
-        {DEPARTMENTS.map((dept, deptIndex) => (
+        {DEPARTMENTS.map((dept) => (
           <div key={dept.name} className="max-w-6xl mx-auto border-t border-[#1E1810]/5 pt-12">
             <div className="flex flex-col gap-10">
               {/* Info del departamento - Arriba y centrado */}
@@ -205,13 +198,9 @@ export default function TeamSection() {
 
               {/* Integrantes - Abajo en grilla centrada */}
               <div className="flex flex-wrap gap-8 justify-center">
-                {dept.members.map((member, memberIndex) => (
-                  <motion.div
+                {dept.members.map((member) => (
+                  <div
                     key={member.name}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: memberIndex * 0.05 + deptIndex * 0.05, duration: 0.4 }}
                     className="bg-[#F4F0EB] border border-[#1E1810]/5 rounded-3xl shadow-md flex flex-col overflow-hidden w-full max-w-[300px] border-b-8 border-b-[#a66d03] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 group"
                   >
                     {/* Imagen Cuadrada de perfil 1:1 (Sin zoom click) */}
@@ -271,7 +260,7 @@ export default function TeamSection() {
                         </div>
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             </div>
