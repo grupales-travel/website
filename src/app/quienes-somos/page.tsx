@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import OfficeCard from "@/components/quienes-somos/OfficeCard";
-import ArgentinaMap from "@/components/quienes-somos/ArgentinaMap";
 import TeamSection from "@/components/quienes-somos/TeamSection";
 import { OFFICES } from "@/data/company";
 import { Check } from "lucide-react";
@@ -85,7 +83,6 @@ const ADVANTAGES_LIST = [
 ];
 
 export default function QuienesSomosPage() {
-  const [activeOfficeId, setActiveOfficeId] = useState<string | null>(null);
 
   return (
     <>
@@ -220,33 +217,15 @@ export default function QuienesSomosPage() {
                 </p>
               </AnimatedSection>
             </div>
-
-            {/* Grid de Oficinas + Mapa SVG */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              
-              {/* Tarjetas de Oficinas (8 cols) */}
-              <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                {OFFICE_DETAILS.map((office, index) => (
-                  <AnimatedSection key={office.id} delay={index * 0.1} className="h-full">
-                    <OfficeCard
-                      office={office}
-                      activeOfficeId={activeOfficeId}
-                      setActiveOfficeId={setActiveOfficeId}
-                    />
-                  </AnimatedSection>
-                ))}
-              </div>
-
-              {/* Mapa de Argentina interactivo (4 cols) */}
-              <div className="lg:col-span-4 h-full">
-                <AnimatedSection delay={0.2}>
-                  <ArgentinaMap
-                    activeOfficeId={activeOfficeId}
-                    setActiveOfficeId={setActiveOfficeId}
+            {/* Tarjetas de Oficinas */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+              {OFFICE_DETAILS.map((office, index) => (
+                <AnimatedSection key={office.id} delay={index * 0.1} className="h-full">
+                  <OfficeCard
+                    office={office}
                   />
                 </AnimatedSection>
-              </div>
-
+              ))}
             </div>
           </div>
         </section>

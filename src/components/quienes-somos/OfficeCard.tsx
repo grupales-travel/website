@@ -8,11 +8,9 @@ import { cn } from "@/lib/utils";
 
 interface OfficeCardProps {
   office: OfficeInfo & { id: string; imagePlaceholder: string; hours: string };
-  activeOfficeId: string | null;
-  setActiveOfficeId: (id: string | null) => void;
 }
 
-export default function OfficeCard({ office, activeOfficeId, setActiveOfficeId }: OfficeCardProps) {
+export default function OfficeCard({ office }: OfficeCardProps) {
   const [showMap, setShowMap] = useState(false);
 
   // Generamos una URL de inserción de Google Maps basada en la dirección
@@ -33,18 +31,12 @@ export default function OfficeCard({ office, activeOfficeId, setActiveOfficeId }
     }
   };
 
-  const isActive = activeOfficeId === office.id;
-
   return (
     <div
       id={`office-${office.id}`}
-      onMouseEnter={() => setActiveOfficeId(office.id)}
-      onMouseLeave={() => setActiveOfficeId(null)}
       className={cn(
         "bg-white border rounded-2xl overflow-hidden shadow-lg transition-all duration-500 flex flex-col h-full scroll-mt-24 group",
-        isActive
-          ? "border-[#bf8b2a] shadow-xl shadow-[#bf8b2a]/10 ring-2 ring-[#bf8b2a]/20 scale-[1.02]"
-          : "border-[#a66d03]/15 hover:border-[#bf8b2a]/45"
+        "border-[#a66d03]/15 hover:border-[#bf8b2a] hover:shadow-xl hover:shadow-[#bf8b2a]/10 hover:ring-2 hover:ring-[#bf8b2a]/20 hover:scale-[1.02]"
       )}
     >
       {/* Imagen de la Oficina */}
