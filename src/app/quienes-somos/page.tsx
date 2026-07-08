@@ -154,11 +154,11 @@ export default function QuienesSomosPage() {
                 </AnimatedSection>
 
                 <AnimatedSection delay={0.15}>
-                  <p className="text-[#1E1810]/75 text-[17px] leading-relaxed">
+                  <p className="text-[#1E1810]/75 text-lg md:text-xl leading-relaxed">
                     Grupales Travel nació con el propósito de ofrecer salidas grupales cuidadosamente diseñadas, 
                     combinando el asesoramiento personalizado con una operación profesional y un acompañamiento permanente.
                   </p>
-                  <p className="text-[#1E1810]/75 text-[17px] leading-relaxed mt-4">
+                  <p className="text-[#1E1810]/75 text-lg md:text-xl leading-relaxed mt-4">
                     Con el paso de los años fuimos creciendo, incorporando nuevas oficinas, representantes en distintas 
                     ciudades y un equipo multidisciplinario que hoy nos permite brindar un servicio integral antes, 
                     durante y después de cada viaje.
@@ -187,7 +187,7 @@ export default function QuienesSomosPage() {
                         <h4 className="text-lg font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200">
                           {item.title}
                         </h4>
-                        <p className="text-[#1E1810]/70 text-[15px] leading-relaxed max-w-lg">
+                        <p className="text-[#1E1810]/70 text-base md:text-lg leading-relaxed max-w-lg">
                           {item.text}
                         </p>
                       </div>
@@ -204,15 +204,15 @@ export default function QuienesSomosPage() {
         <section className="py-24 px-6 bg-[#FAF7F2] relative border-y border-[#1E1810]/5">
           <div className="max-w-7xl mx-auto space-y-16">
             
-            <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="text-center max-w-4xl mx-auto space-y-4">
               <AnimatedSection>
-                <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
+                <h3 className="text-[#a66d03] text-sm font-bold uppercase tracking-widest">
                   Ubicaciones
                 </h3>
                 <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810]">
                   Estamos cerca tuyo
                 </h2>
-                <p className="text-[#1E1810]/75 text-base sm:text-lg max-w-xl mx-auto">
+                <p className="text-[#1E1810]/75 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
                   Acercate a cualquiera de nuestras sedes presenciales o coordiná una llamada virtual con nuestros representantes.
                 </p>
               </AnimatedSection>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User, Award, Globe } from "lucide-react";
+import { User, Globe } from "lucide-react";
 
 function getImagePath(name: string) {
   const slug = name
@@ -155,9 +155,6 @@ export default function TeamSection() {
                     {getInitials(director.name)}
                   </span>
                 </div>
-                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20 shadow-md">
-                  <Award size={16} className="text-white" />
-                </div>
               </div>
 
               {/* Banner / Credencial abajo */}
@@ -167,10 +164,10 @@ export default function TeamSection() {
                     {director.name}
                   </h3>
                   <div className="w-12 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-3.5" />
-                  <p className="text-[#0F213C] text-[13px] md:text-sm font-bold tracking-[0.18em] uppercase">
+                  <p className="text-[#0F213C] text-sm md:text-base font-bold tracking-[0.18em] uppercase">
                     {director.role}
                   </p>
-                  <p className="text-[#a66d03] text-[11px] md:text-xs font-bold tracking-[0.12em] uppercase">
+                  <p className="text-[#a66d03] text-xs md:text-sm font-bold tracking-[0.12em] uppercase">
                     {director.title || "DIRECCIÓN GENERAL"}
                   </p>
                 </div>
@@ -180,7 +177,7 @@ export default function TeamSection() {
                   <div className="flex items-center gap-3.5 text-[#0F213C]/80">
                     <Globe size={22} className="text-[#a66d03] shrink-0" />
                     <div className="w-px h-8 bg-[#0F213C]/15 shrink-0" />
-                    <p className="text-xs md:text-[14px] leading-snug text-left">
+                    <p className="text-sm md:text-[16px] leading-snug text-left font-medium">
                       {director.description}
                     </p>
                   </div>
@@ -197,11 +194,11 @@ export default function TeamSection() {
           <div key={dept.name} className="max-w-6xl mx-auto border-t border-[#1E1810]/5 pt-12">
             <div className="flex flex-col gap-10">
               {/* Info del departamento - Arriba y centrado */}
-              <div className="text-center max-w-2xl mx-auto space-y-2.5">
-                <h3 className="text-2xl font-bold text-[#a66d03] tracking-tight">
+              <div className="text-center max-w-3xl mx-auto space-y-3.5">
+                <h3 className="text-2xl font-extrabold text-[#a66d03] tracking-tight">
                   {dept.name}
                 </h3>
-                <p className="text-[#1E1810]/60 text-sm sm:text-base leading-relaxed">
+                <p className="text-[#1E1810]/75 text-base sm:text-lg leading-relaxed">
                   {dept.intro}
                 </p>
               </div>
@@ -237,14 +234,14 @@ export default function TeamSection() {
                     {/* Banner / Credencial abajo */}
                     <div className="p-5 flex-1 flex flex-col items-center text-center justify-between min-h-[220px]">
                       <div className="w-full space-y-1">
-                        <h3 className="text-xl md:text-2xl font-bold font-serif text-[#0F213C] tracking-tight">
+                        <h3 className="text-xl md:text-2xl font-extrabold font-serif text-[#0F213C] tracking-tight">
                           {member.name}
                         </h3>
                         <div className="w-8 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-2.5" />
-                        <p className="text-[#0F213C] text-[11px] md:text-xs font-bold tracking-[0.15em] uppercase">
+                        <p className="text-[#0F213C] text-xs md:text-sm font-bold tracking-[0.15em] uppercase">
                           {member.role}
                         </p>
-                        <p className="text-[#a66d03] text-[9.5px] md:text-[11px] font-bold tracking-[0.1em] uppercase">
+                        <p className="text-[#a66d03] text-xs font-semibold tracking-[0.1em] uppercase">
                           {member.title || dept.name}
                         </p>
                       </div>
@@ -254,7 +251,7 @@ export default function TeamSection() {
                         <div className="flex items-center gap-3 text-[#0F213C]/80">
                           <Globe size={18} className="text-[#a66d03] shrink-0" />
                           <div className="w-px h-7 bg-[#0F213C]/15 shrink-0" />
-                          <p className="text-xs md:text-[13px] leading-snug text-left font-medium">
+                          <p className="text-sm md:text-[15px] leading-snug text-left font-medium">
                             {member.description ? (
                               member.description.includes("viaje") ? (
                                 <>

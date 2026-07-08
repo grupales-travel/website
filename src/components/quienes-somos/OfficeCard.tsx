@@ -32,7 +32,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
       )}
     >
       {/* Imagen de la Oficina */}
-      <div className="relative h-56 bg-[#FAF7F2] overflow-hidden border-b border-[#a66d03]/10">
+      <div className="relative h-60 bg-[#FAF7F2] overflow-hidden border-b border-[#a66d03]/10">
         <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10" />
         
         {getOfficeImage(office.id) ? (
@@ -53,41 +53,41 @@ export default function OfficeCard({ office }: OfficeCardProps) {
         )}
       </div>
 
-      <div className="p-6 flex-1 flex flex-col justify-between">
+      <div className="p-8 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-xl font-bold text-[#1E1810] mb-4 group-hover:text-[#a66d03] transition-colors duration-200">
+          <h3 className="text-2xl md:text-3xl font-extrabold text-[#1E1810] mb-6 group-hover:text-[#a66d03] transition-colors duration-200">
             {office.city === "San Luis" ? "San Luis Capital" : office.city}
           </h3>
 
-          <div className="space-y-4 text-[#1E1810]/70 text-sm">
+          <div className="space-y-6 text-base md:text-lg">
             {/* Dirección */}
-            <div className="flex items-start gap-3">
-              <MapPin size={16} className="text-[#a66d03] shrink-0 mt-0.5" />
+            <div className="flex items-start gap-4">
+              <MapPin size={22} className="text-[#a66d03] shrink-0 mt-1" />
               <div>
-                <p className="font-semibold text-[#a66d03]">Dirección</p>
-                <p className="text-[#1E1810]/60">{office.address}</p>
+                <p className="text-lg md:text-xl font-bold text-[#a66d03]">Dirección</p>
+                <p className="text-[#1E1810]/75 font-medium mt-1">{office.address}</p>
               </div>
             </div>
 
             {/* Horarios */}
-            <div className="flex items-start gap-3">
-              <Clock size={16} className="text-[#a66d03] shrink-0 mt-0.5" />
+            <div className="flex items-start gap-4">
+              <Clock size={22} className="text-[#a66d03] shrink-0 mt-1" />
               <div>
-                <p className="font-semibold text-[#a66d03]">Horarios de Atención</p>
-                <p className="text-[#1E1810]/60">{office.hours}</p>
+                <p className="text-lg md:text-xl font-bold text-[#a66d03]">Horarios de Atención</p>
+                <p className="text-[#1E1810]/75 font-medium mt-1">{office.hours}</p>
               </div>
             </div>
 
             {/* Teléfono / WhatsApp */}
-            <div className="flex items-start gap-3">
-              <Phone size={16} className="text-[#a66d03] shrink-0 mt-0.5" />
+            <div className="flex items-start gap-4">
+              <Phone size={22} className="text-[#a66d03] shrink-0 mt-1" />
               <div>
-                <p className="font-semibold text-[#a66d03]">WhatsApp / Contacto</p>
+                <p className="text-lg md:text-xl font-bold text-[#a66d03]">WhatsApp / Contacto</p>
                 <a
                   href={office.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#a66d03] hover:underline flex items-center gap-1.5 transition-all duration-200 mt-0.5"
+                  className="text-lg md:text-xl font-bold text-[#a66d03] hover:underline flex items-center gap-1.5 transition-all duration-200 mt-1"
                 >
                   {office.phone}
                 </a>
@@ -97,14 +97,14 @@ export default function OfficeCard({ office }: OfficeCardProps) {
         </div>
 
         {/* Acciones */}
-        <div className="mt-8 pt-4 border-t border-[#1E1810]/5">
+        <div className="mt-10 pt-6 border-t border-[#1E1810]/5">
           <a
             href={office.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-full text-xs font-bold uppercase tracking-widest bg-[#a66d03] text-white border border-transparent hover:bg-[#bf8b2a] shadow-md hover:shadow-lg transition-all duration-200 text-center"
+            className="flex items-center justify-center gap-2 w-full py-4 px-8 rounded-full text-sm font-extrabold uppercase tracking-widest bg-[#a66d03] text-white border border-transparent hover:bg-[#bf8b2a] shadow-md hover:shadow-lg transition-all duration-200 text-center"
           >
-            <Map size={14} />
+            <Map size={16} />
             Ver en el mapa
           </a>
         </div>
