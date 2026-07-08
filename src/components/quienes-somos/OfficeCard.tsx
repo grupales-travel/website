@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MapPin, Clock, Phone, Map, ExternalLink } from "lucide-react";
+import { MapPin, Clock, Phone, Map } from "lucide-react";
 import { OfficeInfo } from "@/types";
 import { cn } from "@/lib/utils";
 
@@ -11,12 +9,6 @@ interface OfficeCardProps {
 }
 
 export default function OfficeCard({ office }: OfficeCardProps) {
-  const [showMap, setShowMap] = useState(false);
-
-  // Generamos una URL de inserción de Google Maps basada en la dirección
-  const embedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(
-    office.address + ", " + office.city + ", Argentina"
-  )}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   const getOfficeImage = (id: string) => {
     switch (id) {
@@ -105,56 +97,16 @@ export default function OfficeCard({ office }: OfficeCardProps) {
         </div>
 
         {/* Acciones */}
-        <div className="mt-8 pt-4 border-t border-[#1E1810]/5 space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            {/* Botón Ver Mapa Embebido */}
-            <button
-              onClick={() => setShowMap(!showMap)}
-              className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-widest border transition-all duration-200 cursor-pointer ${
-                showMap
-                  ? "bg-[#bf8b2a] text-white border-[#bf8b2a]"
-                  : "bg-transparent text-[#a66d03] border-[#a66d03]/30 hover:border-[#bf8b2a]/70 hover:bg-[#1E1810]/5"
-              }`}
-            >
-              <Map size={14} />
-              {showMap ? "Ocultar Mapa" : "Ver Mapa"}
-            </button>
-
-            {/* Botón Cómo Llegar (Google Maps Externo) */}
-            <a
-              href={office.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-widest bg-[#1E1810] text-white border border-transparent hover:bg-[#2d2418] transition-all duration-200"
-            >
-              Cómo Llegar
-              <ExternalLink size={12} className="opacity-70" />
-            </a>
-          </div>
-
-          {/* Iframe de Google Maps deslizable */}
-          <AnimatePresence>
-            {showMap && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 220, opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden rounded-xl border border-[#a66d03]/20"
-              >
-                <iframe
-                  src={embedUrl}
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, filter: "grayscale(0.3)" }}
-                  allowFullScreen={false}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`Mapa de la oficina de ${office.city}`}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className="mt-8 pt-4 border-t border-[#1E1810]/5">
+          <a
+            href={office.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-3 px-6 rounded-full text-xs font-bold uppercase tracking-widest bg-[#a66d03] text-white border border-transparent hover:bg-[#bf8b2a] shadow-md hover:shadow-lg transition-all duration-200 text-center"
+          >
+            <Map size={14} />
+            Ver en el mapa
+          </a>
         </div>
       </div>
     </div>

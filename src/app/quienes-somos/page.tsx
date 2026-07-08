@@ -292,13 +292,18 @@ export default function QuienesSomosPage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(166,109,3,0.05),transparent)] pointer-events-none" />
           
           <div className="max-w-3xl mx-auto text-center space-y-10 relative z-10">
-            {/* Foto grupal placeholder */}
+            {/* Foto grupal */}
             <AnimatedSection>
-              <div className="relative aspect-[21/9] w-full bg-[#F3EFE7] border border-[#1E1810]/5 rounded-3xl flex items-center justify-center overflow-hidden shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent z-10" />
-                <span className="text-[#1E1810]/35 uppercase tracking-[0.25em] font-extrabold text-xs sm:text-sm border border-[#1E1810]/5 p-4 rounded-xl bg-white/50 z-20">
-                  Foto Grupal de Todo el Equipo (Pendiente)
-                </span>
+              <div className="relative aspect-[21/9] w-full border border-[#1E1810]/5 rounded-3xl overflow-hidden shadow-xl group">
+                <Image
+                  src="/foto-grupal-equipo.webp"
+                  alt="Equipo de Grupales Travel"
+                  fill
+                  className="object-cover group-hover:scale-[1.01] transition-transform duration-700"
+                  sizes="(max-w-3xl) 100vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none" />
               </div>
             </AnimatedSection>
 
