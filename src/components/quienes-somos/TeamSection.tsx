@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Award, X } from "lucide-react";
+import { User, Award, X, Globe } from "lucide-react";
 
 function getImagePath(name: string) {
   const slug = name
@@ -11,7 +11,7 @@ function getImagePath(name: string) {
     .toLowerCase()
     .trim()
     .replace(/\s+/g, "-");
-  return `/team/${slug}.webp`;
+  return `/team/${slug}.png`;
 }
 
 interface TeamMember {
@@ -121,7 +121,7 @@ export default function TeamSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
           {DIRECTORS.map((director, i) => (
             <motion.div
               key={director.name}
@@ -129,48 +129,57 @@ export default function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-gradient-to-b from-white to-[#FAF7F2] border border-[#a66d03]/15 rounded-3xl p-8 shadow-xl flex flex-col items-center text-center hover:border-[#bf8b2a]/45 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group"
+              className="bg-[#F4F0EB] border border-[#a66d03]/20 rounded-3xl shadow-xl flex flex-col overflow-hidden w-full max-w-[340px] mx-auto border-b-8 border-b-[#a66d03] hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group"
             >
-              {/* Imagen de perfil rectangular 2:3 con marco decorativo */}
+              {/* Imagen Cuadrada de perfil 1:1 */}
               <div 
-                className="relative mb-8 cursor-zoom-in shrink-0 group/img"
+                className="w-full aspect-square overflow-hidden relative cursor-zoom-in shrink-0"
                 onClick={() => setSelectedMember({ name: director.name, image: getImagePath(director.name) })}
               >
-                {/* Marco de fondo */}
-                <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-2xl border-2 border-[#a66d03]/20 pointer-events-none -z-10 transition-transform duration-300 group-hover/img:translate-x-4 group-hover/img:translate-y-4" />
-                
-                <div className="w-64 h-[384px] rounded-2xl bg-white border border-[#a66d03]/20 overflow-hidden relative shadow-md group-hover/img:scale-[1.01] transition-transform duration-300">
-                  <img
-                    src={getImagePath(director.name)}
-                    alt={director.name}
-                    className="absolute inset-0 w-full h-full object-cover z-10"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                  <span className="text-3xl font-black tracking-wider text-[#a66d03] absolute inset-0 flex items-center justify-center bg-[#FAF7F2]">
+                <img
+                  src={getImagePath(director.name)}
+                  alt={director.name}
+                  className="w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-102"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-[#FAF7F2] -z-10">
+                  <span className="text-3xl font-black tracking-wider text-[#a66d03]">
                     {getInitials(director.name)}
                   </span>
-                  <div className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20 shadow-md">
-                    <Award size={14} className="text-white" />
-                  </div>
+                </div>
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20 shadow-md">
+                  <Award size={16} className="text-white" />
                 </div>
               </div>
 
-              {/* Información */}
-              <div className="space-y-3 w-full">
-                <h4 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
-                  {director.title}
-                </h4>
-                <h3 className="text-2xl font-black text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 leading-tight">
-                  {director.name}
-                </h3>
-                <p className="text-[#1E1810]/60 text-sm font-semibold uppercase tracking-wider">
-                  {director.role}
-                </p>
-                <p className="text-[#1E1810]/75 text-[15px] leading-relaxed pt-3 border-t border-[#1E1810]/5 mt-2">
-                  {director.description}
-                </p>
+              {/* Banner / Credencial abajo */}
+              <div className="p-6 flex-1 flex flex-col items-center text-center justify-between min-h-[220px]">
+                <div className="w-full space-y-1">
+                  <h3 className="text-2xl font-bold font-serif text-[#0F213C] tracking-tight">
+                    {director.name}
+                  </h3>
+                  <div className="w-10 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-3" />
+                  <p className="text-[#0F213C] text-[13px] font-bold tracking-[0.18em] uppercase">
+                    {director.role}
+                  </p>
+                  <p className="text-[#a66d03] text-[11px] font-bold tracking-[0.12em] uppercase">
+                    {director.title || "DIRECCIÓN GENERAL"}
+                  </p>
+                </div>
+
+                <div className="w-full">
+                  <div className="w-full h-px bg-[#0F213C]/10 my-4" />
+                  <div className="flex items-center gap-3.5 text-[#0F213C]/80">
+                    <Globe size={22} className="text-[#a66d03] shrink-0" />
+                    <div className="w-px h-8 bg-[#0F213C]/15 shrink-0" />
+                    <p className="text-xs md:text-[13px] leading-snug text-left">
+                      Estamos para ayudarte a planificar tu{" "}
+                      <span className="text-[#a66d03] font-bold">próximo viaje.</span>
+                    </p>
+                  </div>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -201,38 +210,52 @@ export default function TeamSection() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: memberIndex * 0.05 + deptIndex * 0.05, duration: 0.4 }}
-                    className="bg-gradient-to-b from-white to-[#FAF7F2] border border-[#1E1810]/5 rounded-3xl p-5 hover:border-[#a66d03]/25 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-500 flex flex-col items-center text-center w-[230px] group"
+                    className="bg-[#F4F0EB] border border-[#1E1810]/5 rounded-3xl shadow-md flex flex-col overflow-hidden w-full max-w-[300px] border-b-8 border-b-[#a66d03] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 group"
                   >
-                    {/* Imagen de perfil rectangular 2:3 con marco decorativo */}
+                    {/* Imagen Cuadrada de perfil 1:1 */}
                     <div 
-                      className="relative mb-6 cursor-zoom-in shrink-0 group/img"
+                      className="w-full aspect-square overflow-hidden relative cursor-zoom-in shrink-0"
                       onClick={() => setSelectedMember({ name: member.name, image: getImagePath(member.name) })}
                     >
-                      {/* Marco de fondo */}
-                      <div className="absolute inset-0 translate-x-2 translate-y-2 rounded-xl border border-[#a66d03]/15 pointer-events-none -z-10 transition-transform duration-300 group-hover/img:translate-x-2.5 group-hover/img:translate-y-2.5" />
-                      
-                      <div className="w-44 h-66 rounded-xl bg-white border border-[#a66d03]/10 overflow-hidden relative shadow-md group-hover/img:scale-[1.01] transition-transform duration-300">
-                        <img
-                          src={getImagePath(member.name)}
-                          alt={member.name}
-                          className="absolute inset-0 w-full h-full object-cover z-10"
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                          }}
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-[#FAF7F2]">
-                          <User size={28} className="text-[#1E1810]/20" />
-                        </div>
+                      <img
+                        src={getImagePath(member.name)}
+                        alt={member.name}
+                        className="w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-102"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#FAF7F2] -z-10">
+                        <User size={36} className="text-[#1E1810]/20" />
                       </div>
                     </div>
 
-                    <div className="overflow-hidden w-full space-y-0.5">
-                      <h4 className="text-base font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 truncate">
-                        {member.name}
-                      </h4>
-                      <p className="text-[#1E1810]/50 text-xs font-semibold tracking-wide uppercase truncate">
-                        {member.role}
-                      </p>
+                    {/* Banner / Credencial abajo */}
+                    <div className="p-5 flex-1 flex flex-col items-center text-center justify-between min-h-[200px]">
+                      <div className="w-full space-y-1">
+                        <h3 className="text-xl font-bold font-serif text-[#0F213C] tracking-tight truncate">
+                          {member.name}
+                        </h3>
+                        <div className="w-8 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-2.5" />
+                        <p className="text-[#0F213C] text-[11px] font-bold tracking-[0.15em] uppercase truncate">
+                          {member.role}
+                        </p>
+                        <p className="text-[#a66d03] text-[9.5px] font-bold tracking-[0.1em] uppercase truncate">
+                          {dept.name}
+                        </p>
+                      </div>
+
+                      <div className="w-full">
+                        <div className="w-full h-px bg-[#0F213C]/10 my-3.5" />
+                        <div className="flex items-center gap-3 text-[#0F213C]/80">
+                          <Globe size={18} className="text-[#a66d03] shrink-0" />
+                          <div className="w-px h-7 bg-[#0F213C]/15 shrink-0" />
+                          <p className="text-[11.5px] leading-snug text-left">
+                            Estamos para ayudarte a planificar tu{" "}
+                            <span className="text-[#a66d03] font-bold">próximo viaje.</span>
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
@@ -257,7 +280,7 @@ export default function TeamSection() {
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="relative max-w-full max-h-[85vh] aspect-[2/3] w-full sm:w-[450px] bg-white rounded-3xl overflow-hidden shadow-2xl p-2 cursor-default border border-white/20"
+              className="relative max-w-full max-h-[85vh] aspect-square w-full sm:w-[500px] bg-white rounded-3xl overflow-hidden shadow-2xl p-2 cursor-default border border-white/20"
               onClick={(e) => e.stopPropagation()}
             >
               <img
