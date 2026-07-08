@@ -3,6 +3,16 @@
 import { motion } from "framer-motion";
 import { User, Award } from "lucide-react";
 
+function getImagePath(name: string) {
+  const slug = name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-");
+  return `/team/${slug}.webp`;
+}
+
 interface TeamMember {
   name: string;
   role: string;
@@ -64,6 +74,7 @@ const DEPARTMENTS: Department[] = [
     members: [
       { name: "Nicolás Sánchez", role: "Operaciones" },
       { name: "Alejandro Insaurralde", role: "Operaciones" },
+      { name: "Martín Estanguet", role: "Operaciones" },
     ],
   },
   {
@@ -99,10 +110,10 @@ export default function TeamSection() {
       {/* Sección Directores */}
       <div>
         <div className="text-center mb-12">
-          <h3 className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest mb-2">
+          <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest mb-2">
             Liderazgo
           </h3>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E1810]">
             Dirección
           </h2>
         </div>
@@ -115,30 +126,38 @@ export default function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-[#261E14]/40 border border-[#a66d03]/30 rounded-3xl p-8 backdrop-blur-sm shadow-2xl flex flex-col md:flex-row gap-6 items-center text-center md:text-left hover:border-[#bf8b2a]/55 transition-all duration-300 group"
+              className="bg-white border border-[#a66d03]/20 rounded-3xl p-8 shadow-xl flex flex-col md:flex-row gap-6 items-center text-center md:text-left hover:border-[#bf8b2a]/45 transition-all duration-300 group"
             >
-              {/* Avatar placeholder con iniciales */}
-              <div className="w-24 h-24 rounded-full bg-[#1E1810] border border-[#a66d03]/40 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform duration-300 relative">
-                <span className="text-2xl font-black tracking-wider text-[#d9bf8f]">
+              {/* Avatar con imagen o iniciales de fallback */}
+              <div className="w-24 h-24 rounded-full bg-[#FAF7F2] border border-[#a66d03]/30 flex items-center justify-center shrink-0 shadow-inner group-hover:scale-105 transition-transform duration-300 relative overflow-hidden">
+                <img
+                  src={getImagePath(director.name)}
+                  alt={director.name}
+                  className="absolute inset-0 w-full h-full object-cover z-10"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+                <span className="text-2xl font-black tracking-wider text-[#a66d03]">
                   {getInitials(director.name)}
                 </span>
-                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-[#1e1810]">
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#bf8b2a] flex items-center justify-center border-2 border-white z-20">
                   <Award size={12} className="text-white" />
                 </div>
               </div>
 
               {/* Información */}
               <div className="flex-1 space-y-2">
-                <h4 className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest">
+                <h4 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
                   {director.title}
                 </h4>
-                <h3 className="text-2xl font-bold text-white group-hover:text-[#d9bf8f] transition-colors duration-200">
+                <h3 className="text-2xl font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200">
                   {director.name}
                 </h3>
-                <p className="text-white/40 text-sm font-semibold uppercase tracking-wider">
+                <p className="text-[#1E1810]/55 text-sm font-semibold uppercase tracking-wider">
                   {director.role}
                 </p>
-                <p className="text-white/60 text-sm leading-relaxed pt-2 border-t border-white/5">
+                <p className="text-[#1E1810]/70 text-sm leading-relaxed pt-2 border-t border-[#1E1810]/5">
                   {director.description}
                 </p>
               </div>
@@ -150,14 +169,14 @@ export default function TeamSection() {
       {/* Departamentos */}
       <div className="space-y-16">
         {DEPARTMENTS.map((dept, deptIndex) => (
-          <div key={dept.name} className="max-w-6xl mx-auto border-t border-white/5 pt-12">
+          <div key={dept.name} className="max-w-6xl mx-auto border-t border-[#1E1810]/5 pt-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Info del departamento */}
               <div className="lg:col-span-1 space-y-3">
-                <h3 className="text-xl font-bold text-[#d9bf8f] tracking-tight">
+                <h3 className="text-xl font-bold text-[#a66d03] tracking-tight">
                   {dept.name}
                 </h3>
-                <p className="text-white/50 text-sm leading-relaxed">
+                <p className="text-[#1E1810]/60 text-sm leading-relaxed">
                   {dept.intro}
                 </p>
               </div>
@@ -172,16 +191,24 @@ export default function TeamSection() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: memberIndex * 0.05 + deptIndex * 0.05, duration: 0.4 }}
-                      className="bg-[#1E1810]/60 border border-white/5 rounded-2xl p-5 hover:border-[#a66d03]/30 transition-all duration-300 flex items-center gap-3.5 group"
+                      className="bg-white border border-[#1E1810]/5 rounded-2xl p-5 hover:border-[#a66d03]/25 shadow-sm transition-all duration-300 flex items-center gap-3.5 group"
                     >
-                      <div className="w-11 h-11 rounded-full bg-[#261E14] border border-white/5 flex items-center justify-center shrink-0 shadow-inner group-hover:bg-[#a66d03]/10 group-hover:border-[#a66d03]/30 transition-colors duration-300">
-                        <User size={16} className="text-white/40 group-hover:text-[#d9bf8f] transition-colors" />
+                      <div className="w-11 h-11 rounded-full bg-[#FAF7F2] border border-[#1E1810]/5 flex items-center justify-center shrink-0 shadow-inner transition-colors duration-300 overflow-hidden relative">
+                        <img
+                          src={getImagePath(member.name)}
+                          alt={member.name}
+                          className="absolute inset-0 w-full h-full object-cover z-10"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                        <User size={16} className="text-[#1E1810]/30" />
                       </div>
                       <div className="overflow-hidden">
-                        <h4 className="text-sm font-bold text-white group-hover:text-[#d9bf8f] transition-colors duration-200 truncate">
+                        <h4 className="text-sm font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200 truncate">
                           {member.name}
                         </h4>
-                        <p className="text-white/35 text-[11px] font-medium tracking-wide uppercase truncate">
+                        <p className="text-[#1E1810]/45 text-[11px] font-medium tracking-wide uppercase truncate">
                           {member.role}
                         </p>
                       </div>

@@ -87,18 +87,18 @@ export default function QuienesSomosPage() {
   return (
     <>
       <Navbar />
-      <main className="bg-[#1E1810] text-white">
+      <main className="bg-[#FAF7F2] text-[#1E1810]">
         
         {/* Banner Principal / Hero */}
         <section className="relative min-h-[60vh] flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
           {/* Background overlay */}
-          <div className="absolute inset-0 bg-black/60 z-10" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(166,109,3,0.22),transparent)] z-10" />
+          <div className="absolute inset-0 bg-black/[0.03] z-10" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(166,109,3,0.08),transparent)] z-10" />
           
           {/* Espacio para la foto amplia de la oficina o collage */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1E1810] via-transparent to-[#1E1810] z-10" />
-          <div className="absolute inset-0 bg-[#261E14]/40 flex items-center justify-center">
-            <span className="text-white/10 uppercase tracking-[0.2em] font-extrabold text-xl md:text-3xl border border-white/5 p-8 rounded-2xl bg-black/20">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2] via-transparent to-[#FAF7F2] z-10" />
+          <div className="absolute inset-0 bg-[#FAF7F2]/40 flex items-center justify-center">
+            <span className="text-[#1E1810]/15 uppercase tracking-[0.2em] font-extrabold text-xl md:text-3xl border border-[#1E1810]/5 p-8 rounded-2xl bg-white/20">
               Banner Principal (Foto de Oficina o Collage)
             </span>
           </div>
@@ -107,7 +107,7 @@ export default function QuienesSomosPage() {
             <AnimatedSection>
               <div className="flex items-center justify-center gap-3 mb-2">
                 <div className="h-px w-10 bg-[#a66d03]" />
-                <span className="text-[#d9bf8f] text-xs font-bold uppercase tracking-[0.3em]">
+                <span className="text-[#a66d03] text-xs font-bold uppercase tracking-[0.3em]">
                   Grupales Travel
                 </span>
                 <div className="h-px w-10 bg-[#a66d03]" />
@@ -115,7 +115,7 @@ export default function QuienesSomosPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.15}>
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase leading-tight text-[#f5e6cc]">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase leading-tight text-[#1E1810]">
                 Más que una agencia, <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d9bf8f] via-[#bf8b2a] to-[#a66d03]">
                   un equipo que crea experiencias
@@ -124,7 +124,7 @@ export default function QuienesSomosPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.3}>
-              <p className="text-white/75 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-light">
+              <p className="text-[#1E1810]/75 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-light">
                 En Grupales Travel creemos que los grandes viajes comienzan mucho antes del embarque. 
                 Comienzan con un equipo de personas apasionadas por el turismo que trabaja cada día para diseñar 
                 experiencias únicas, acompañar a nuestros pasajeros y cuidar cada detalle desde la primera consulta 
@@ -135,27 +135,27 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* Nuestra Historia */}
-        <section className="py-24 px-6 relative border-t border-white/5">
+        <section className="py-24 px-6 relative border-t border-[#1E1810]/5">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
               
               {/* Textos descriptivos */}
               <div className="lg:col-span-5 space-y-6">
                 <AnimatedSection>
-                  <h3 className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest mb-2">
+                  <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest mb-2">
                     Trayectoria
                   </h3>
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-white leading-tight">
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E1810] leading-tight">
                     Una empresa en constante crecimiento
                   </h2>
                 </AnimatedSection>
 
                 <AnimatedSection delay={0.15}>
-                  <p className="text-white/60 text-base leading-relaxed">
+                  <p className="text-[#1E1810]/65 text-base leading-relaxed">
                     Grupales Travel nació con el propósito de ofrecer salidas grupales cuidadosamente diseñadas, 
                     combinando el asesoramiento personalizado con una operación profesional y un acompañamiento permanente.
                   </p>
-                  <p className="text-white/60 text-base leading-relaxed mt-4">
+                  <p className="text-[#1E1810]/65 text-base leading-relaxed mt-4">
                     Con el paso de los años fuimos creciendo, incorporando nuevas oficinas, representantes en distintas 
                     ciudades y un equipo multidisciplinario que hoy nos permite brindar un servicio integral antes, 
                     durante y después de cada viaje.
@@ -175,16 +175,16 @@ export default function QuienesSomosPage() {
                       className="relative pl-12 lg:pl-16 group"
                     >
                       {/* Puntero de línea de tiempo */}
-                      <div className="absolute left-[9px] lg:left-[17px] top-1.5 w-4 h-4 rounded-full bg-[#1E1810] border-2 border-[#bf8b2a] group-hover:bg-[#bf8b2a] transition-all duration-300 shadow-lg shadow-[#bf8b2a]/20" />
+                      <div className="absolute left-[9px] lg:left-[17px] top-1.5 w-4 h-4 rounded-full bg-[#FAF7F2] border-2 border-[#bf8b2a] group-hover:bg-[#bf8b2a] transition-all duration-300 shadow-lg shadow-[#bf8b2a]/10" />
                       
                       <div className="space-y-1">
                         <span className="text-2xl font-black text-[#bf8b2a] tracking-tight block">
                           {item.year}
                         </span>
-                        <h4 className="text-lg font-bold text-white group-hover:text-[#d9bf8f] transition-colors duration-200">
+                        <h4 className="text-lg font-bold text-[#1E1810] group-hover:text-[#a66d03] transition-colors duration-200">
                           {item.title}
                         </h4>
-                        <p className="text-white/50 text-sm leading-relaxed max-w-lg">
+                        <p className="text-[#1E1810]/60 text-sm leading-relaxed max-w-lg">
                           {item.text}
                         </p>
                       </div>
@@ -198,18 +198,18 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* Nuestras Oficinas */}
-        <section className="py-24 px-6 bg-[#17120B] relative border-y border-white/5">
+        <section className="py-24 px-6 bg-[#FAF7F2] relative border-y border-[#1E1810]/5">
           <div className="max-w-7xl mx-auto space-y-16">
             
             <div className="text-center max-w-2xl mx-auto space-y-3">
               <AnimatedSection>
-                <h3 className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest">
+                <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
                   Ubicaciones
                 </h3>
-                <h2 className="text-3xl md:text-5xl font-extrabold text-white">
+                <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810]">
                   Estamos cerca tuyo
                 </h2>
-                <p className="text-white/55 text-sm md:text-base">
+                <p className="text-[#1E1810]/70 text-sm md:text-base">
                   Acercate a cualquiera de nuestras sedes presenciales o coordiná una llamada virtual con nuestros representantes.
                 </p>
               </AnimatedSection>
@@ -244,13 +244,13 @@ export default function QuienesSomosPage() {
             
             <div className="text-center max-w-3xl mx-auto space-y-4">
               <AnimatedSection>
-                <h3 className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest">
+                <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
                   Profesionales
                 </h3>
-                <h2 className="text-3xl md:text-5xl font-extrabold text-white">
+                <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810]">
                   Nuestro Equipo
                 </h2>
-                <p className="text-white/60 text-base leading-relaxed">
+                <p className="text-[#1E1810]/70 text-base leading-relaxed">
                   Cada viaje es el resultado del trabajo coordinado de profesionales especializados en distintas áreas. 
                   Nuestro compromiso es acompañarte en cada etapa del proceso para que solo tengas que disfrutar la experiencia.
                 </p>
@@ -263,14 +263,14 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* ¿Por qué elegir Grupales Travel? */}
-        <section className="py-24 px-6 bg-[#17120B] relative border-t border-white/5">
+        <section className="py-24 px-6 bg-[#FAF7F2] relative border-t border-[#1E1810]/5">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16 space-y-3">
               <AnimatedSection>
-                <h3 className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest">
+                <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
                   Diferenciales
                 </h3>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-white">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E1810]">
                   ¿Por qué elegir Grupales Travel?
                 </h2>
               </AnimatedSection>
@@ -281,12 +281,12 @@ export default function QuienesSomosPage() {
                 <AnimatedSection
                   key={index}
                   delay={index * 0.05}
-                  className="flex items-start gap-4 bg-[#1E1810]/40 border border-[#a66d03]/10 p-5 rounded-2xl hover:border-[#bf8b2a]/30 transition-colors"
+                  className="flex items-start gap-4 bg-white border border-[#a66d03]/10 p-5 rounded-2xl hover:border-[#bf8b2a]/30 transition-colors shadow-sm"
                 >
-                  <div className="w-6 h-6 rounded-full bg-[#bf8b2a]/15 flex items-center justify-center shrink-0 border border-[#bf8b2a]/20 mt-0.5">
-                    <Check size={13} className="text-[#d9bf8f]" />
+                  <div className="w-6 h-6 rounded-full bg-[#bf8b2a]/10 flex items-center justify-center shrink-0 border border-[#bf8b2a]/20 mt-0.5">
+                    <Check size={13} className="text-[#a66d03]" />
                   </div>
-                  <p className="text-white/75 text-sm sm:text-base leading-relaxed">
+                  <p className="text-[#1E1810]/75 text-sm sm:text-base leading-relaxed">
                     {adv}
                   </p>
                 </AnimatedSection>
@@ -296,15 +296,15 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* Cierre / Frase Final */}
-        <section className="py-24 px-6 relative border-t border-white/5 overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(166,109,3,0.1),transparent)] pointer-events-none" />
+        <section className="py-24 px-6 relative border-t border-[#1E1810]/5 overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(166,109,3,0.05),transparent)] pointer-events-none" />
           
           <div className="max-w-3xl mx-auto text-center space-y-10 relative z-10">
             {/* Foto grupal placeholder */}
             <AnimatedSection>
-              <div className="relative aspect-[21/9] w-full bg-[#261E14] border border-white/5 rounded-3xl flex items-center justify-center overflow-hidden shadow-2xl">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
-                <span className="text-white/20 uppercase tracking-[0.25em] font-extrabold text-xs sm:text-sm border border-white/5 p-4 rounded-xl bg-black/35 z-20">
+              <div className="relative aspect-[21/9] w-full bg-[#F3EFE7] border border-[#1E1810]/5 rounded-3xl flex items-center justify-center overflow-hidden shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent z-10" />
+                <span className="text-[#1E1810]/35 uppercase tracking-[0.25em] font-extrabold text-xs sm:text-sm border border-[#1E1810]/5 p-4 rounded-xl bg-white/50 z-20">
                   Foto Grupal de Todo el Equipo (Pendiente)
                 </span>
               </div>
@@ -312,13 +312,13 @@ export default function QuienesSomosPage() {
 
             <div className="space-y-4">
               <AnimatedSection delay={0.15}>
-                <p className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest">
+                <p className="text-[#a66d03] text-xs font-bold uppercase tracking-widest">
                   Nuestro Compromiso
                 </p>
               </AnimatedSection>
               
               <AnimatedSection delay={0.25}>
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white leading-tight">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810] leading-tight">
                   "Detrás de cada salida hay un equipo comprometido con un mismo objetivo: <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#d9bf8f] via-[#bf8b2a] to-[#a66d03]">
                     Que cada viaje se convierta en una experiencia inolvidable.

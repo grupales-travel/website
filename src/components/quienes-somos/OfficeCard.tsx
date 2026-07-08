@@ -20,23 +20,23 @@ export default function OfficeCard({ office }: OfficeCardProps) {
   return (
     <div
       id={`office-${office.id}`}
-      className="bg-[#1E1810] border border-[#a66d03]/25 rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:border-[#bf8b2a]/50 flex flex-col h-full scroll-mt-24 group"
+      className="bg-white border border-[#a66d03]/15 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:border-[#bf8b2a]/45 flex flex-col h-full scroll-mt-24 group"
     >
       {/* Imagen / Placeholder de la Oficina */}
-      <div className="relative h-56 bg-[#261E14] flex items-center justify-center overflow-hidden border-b border-[#a66d03]/10">
+      <div className="relative h-56 bg-[#FAF7F2] flex items-center justify-center overflow-hidden border-b border-[#a66d03]/10">
         {/* Placeholder elegante en degradé */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1E1810] via-transparent to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10" />
         <div className="text-center p-6 z-15">
-          <div className="w-16 h-16 rounded-full bg-[#bf8b2a]/15 flex items-center justify-center mx-auto mb-3 border border-[#bf8b2a]/30 group-hover:scale-105 transition-transform duration-300">
-            <MapPin size={24} className="text-[#d9bf8f]" />
+          <div className="w-16 h-16 rounded-full bg-[#bf8b2a]/10 flex items-center justify-center mx-auto mb-3 border border-[#bf8b2a]/20 group-hover:scale-105 transition-transform duration-300">
+            <MapPin size={24} className="text-[#a66d03]" />
           </div>
-          <span className="text-[#d9bf8f] text-xs font-bold uppercase tracking-widest bg-black/40 px-3 py-1 rounded-full border border-white/5">
+          <span className="text-[#a66d03] text-xs font-bold uppercase tracking-widest bg-[#1E1810]/5 px-3 py-1 rounded-full border border-[#1E1810]/5">
             {office.city}
           </span>
         </div>
         
         {/* Nota flotante de imagen */}
-        <div className="absolute top-3 right-3 z-20 text-[10px] text-white/40 uppercase tracking-widest bg-black/50 px-2 py-0.5 rounded border border-white/5">
+        <div className="absolute top-3 right-3 z-20 text-[10px] text-[#1E1810]/40 uppercase tracking-widest bg-white/60 px-2 py-0.5 rounded border border-[#1E1810]/5">
           Imagen Oficina (Pendiente)
         </div>
       </div>
@@ -44,17 +44,17 @@ export default function OfficeCard({ office }: OfficeCardProps) {
       {/* Contenido */}
       <div className="p-6 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-xl font-bold text-white mb-4 group-hover:text-[#d9bf8f] transition-colors duration-200">
+          <h3 className="text-xl font-bold text-[#1E1810] mb-4 group-hover:text-[#a66d03] transition-colors duration-200">
             {office.city === "San Luis" ? "San Luis Capital" : office.city}
           </h3>
 
-          <div className="space-y-4 text-white/70 text-sm">
+          <div className="space-y-4 text-[#1E1810]/70 text-sm">
             {/* Dirección */}
             <div className="flex items-start gap-3">
               <MapPin size={16} className="text-[#a66d03] shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-[#f5e6cc]/95">Dirección</p>
-                <p className="text-white/55">{office.address}</p>
+                <p className="font-semibold text-[#a66d03]">Dirección</p>
+                <p className="text-[#1E1810]/60">{office.address}</p>
               </div>
             </div>
 
@@ -62,8 +62,8 @@ export default function OfficeCard({ office }: OfficeCardProps) {
             <div className="flex items-start gap-3">
               <Clock size={16} className="text-[#a66d03] shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-[#f5e6cc]/95">Horarios de Atención</p>
-                <p className="text-white/55">{office.hours}</p>
+                <p className="font-semibold text-[#a66d03]">Horarios de Atención</p>
+                <p className="text-[#1E1810]/60">{office.hours}</p>
               </div>
             </div>
 
@@ -71,12 +71,12 @@ export default function OfficeCard({ office }: OfficeCardProps) {
             <div className="flex items-start gap-3">
               <Phone size={16} className="text-[#a66d03] shrink-0 mt-0.5" />
               <div>
-                <p className="font-semibold text-[#f5e6cc]/95">WhatsApp / Contacto</p>
+                <p className="font-semibold text-[#a66d03]">WhatsApp / Contacto</p>
                 <a
                   href={office.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#d9bf8f] hover:underline flex items-center gap-1.5 transition-all duration-200 mt-0.5"
+                  className="text-[#a66d03] hover:underline flex items-center gap-1.5 transition-all duration-200 mt-0.5"
                 >
                   {office.phone}
                 </a>
@@ -86,7 +86,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
         </div>
 
         {/* Acciones */}
-        <div className="mt-8 pt-4 border-t border-white/5 space-y-3">
+        <div className="mt-8 pt-4 border-t border-[#1E1810]/5 space-y-3">
           <div className="grid grid-cols-2 gap-3">
             {/* Botón Ver Mapa Embebido */}
             <button
@@ -94,7 +94,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
               className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-widest border transition-all duration-200 cursor-pointer ${
                 showMap
                   ? "bg-[#bf8b2a] text-white border-[#bf8b2a]"
-                  : "bg-transparent text-[#d9bf8f] border-[#a66d03]/30 hover:border-[#bf8b2a]/70 hover:bg-white/5"
+                  : "bg-transparent text-[#a66d03] border-[#a66d03]/30 hover:border-[#bf8b2a]/70 hover:bg-[#1E1810]/5"
               }`}
             >
               <Map size={14} />
@@ -106,7 +106,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
               href={office.mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-widest bg-[#261E14] text-white border border-white/5 hover:border-white/20 hover:bg-[#2e251a] transition-all duration-200"
+              className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-full text-xs font-bold uppercase tracking-widest bg-[#1E1810] text-white border border-transparent hover:bg-[#2d2418] transition-all duration-200"
             >
               Cómo Llegar
               <ExternalLink size={12} className="opacity-70" />
@@ -127,7 +127,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
                   src={embedUrl}
                   width="100%"
                   height="100%"
-                  style={{ border: 0, filter: "grayscale(1) invert(0.9) contrast(1.2)" }}
+                  style={{ border: 0, filter: "grayscale(0.3)" }}
                   allowFullScreen={false}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
