@@ -32,7 +32,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
       )}
     >
       {/* Imagen de la Oficina */}
-      <div className="relative h-60 bg-[#FAF7F2] overflow-hidden border-b border-[#a66d03]/10">
+      <div className="relative h-48 bg-[#FAF7F2] overflow-hidden border-b border-[#a66d03]/10">
         <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10" />
         
         {getOfficeImage(office.id) ? (

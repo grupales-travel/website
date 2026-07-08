@@ -218,7 +218,7 @@ export default function QuienesSomosPage() {
               </AnimatedSection>
             </div>
             {/* Tarjetas de Oficinas */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto w-full">
               {OFFICE_DETAILS.map((office, index) => (
                 <AnimatedSection key={office.id} delay={index * 0.1} className="h-full">
                   <OfficeCard
