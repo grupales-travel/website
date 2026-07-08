@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
 import { MapPin } from "lucide-react";
 
 interface OfficeMarker {
@@ -40,12 +39,22 @@ const MARKERS: OfficeMarker[] = [
   },
 ];
 
-export default function ArgentinaMap() {
-  const [hoveredMarker, setHoveredMarker] = useState<OfficeMarker | null>(null);
+interface ArgentinaMapProps {
+  activeOfficeId: string | null;
+  setActiveOfficeId: (id: string | null) => void;
+}
+
+export default function ArgentinaMap({ activeOfficeId, setActiveOfficeId }: ArgentinaMapProps) {
+  const hoveredMarker = activeOfficeId
+    ? MARKERS.find((m) => m.id === activeOfficeId) || null
+    : null;
 
   return (
-    <div className="relative w-full max-w-lg mx-auto bg-white/50 border border-[#a66d03]/15 rounded-2xl p-6 backdrop-blur-sm shadow-lg">
-      <div className="text-center mb-6">
+    <div className="relative w-full max-w-lg mx-auto bg-white/60 border border-[#a66d03]/15 rounded-2xl p-6 backdrop-blur-sm shadow-lg overflow-hidden">
+      {/* Decorative Blueprint Dotted Grid */}
+      <div className="absolute inset-0 bg-[radial-gradient(#a66d03_1px,transparent_1px)] [background-size:16px_16px] opacity-[0.04] pointer-events-none" />
+
+      <div className="text-center mb-6 relative z-10">
         <h4 className="text-sm font-bold uppercase tracking-widest text-[#a66d03] mb-1">
           Nuestra Presencia
         </h4>
@@ -54,7 +63,7 @@ export default function ArgentinaMap() {
         </p>
       </div>
 
-      <div className="relative aspect-[3/4] w-full flex items-center justify-center">
+      <div className="relative aspect-[3/4] w-full flex items-center justify-center relative z-10">
         {/* Argentina Map SVG */}
         <svg
           viewBox="235 590 55 110"
@@ -78,48 +87,51 @@ export default function ArgentinaMap() {
           />
 
           {/* Glowing Markers */}
-          {MARKERS.map((marker) => (
-            <g
-              key={marker.id}
-              className="cursor-pointer"
-              onMouseEnter={() => setHoveredMarker(marker)}
-              onMouseLeave={() => setHoveredMarker(null)}
-              onClick={() => {
-                const element = document.getElementById(`office-${marker.id}`);
-                if (element) {
-                  element.scrollIntoView({ behavior: "smooth", block: "center" });
-                  element.classList.add("ring-2", "ring-[#bf8b2a]", "ring-offset-2", "ring-offset-white");
-                  setTimeout(() => {
-                    element.classList.remove("ring-2", "ring-[#bf8b2a]", "ring-offset-2", "ring-offset-white");
-                  }, 2000);
-                }
-              }}
-            >
-              {/* Outer pulse animation */}
-              <circle cx={marker.x} cy={marker.y} r={0.7} className="fill-[#bf8b2a]/10">
-                <animate
-                  attributeName="r"
-                  values="0.5;2;0.5"
-                  dur="2s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  values="1;0;1"
-                  dur="2s"
-                  repeatCount="indefinite"
-                />
-              </circle>
+          {MARKERS.map((marker) => {
+            const isActive = activeOfficeId === marker.id;
+            return (
+              <g
+                key={marker.id}
+                className="cursor-pointer"
+                onMouseEnter={() => setActiveOfficeId(marker.id)}
+                onMouseLeave={() => setActiveOfficeId(null)}
+                onClick={() => {
+                  const element = document.getElementById(`office-${marker.id}`);
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    element.classList.add("ring-4", "ring-[#bf8b2a]/30", "ring-offset-2", "ring-offset-white");
+                    setTimeout(() => {
+                      element.classList.remove("ring-4", "ring-[#bf8b2a]/30", "ring-offset-2", "ring-offset-white");
+                    }, 2000);
+                  }
+                }}
+              >
+                {/* Outer pulse animation */}
+                <circle cx={marker.x} cy={marker.y} r={isActive ? 2.5 : 0.7} className="fill-[#bf8b2a]/20">
+                  <animate
+                    attributeName="r"
+                    values={isActive ? "0.6;2.5;0.6" : "0.5;1.5;0.5"}
+                    dur="2s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    values="1;0;1"
+                    dur="2s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
 
-              {/* Inner solid marker dot */}
-              <circle
-                cx={marker.x}
-                cy={marker.y}
-                r={0.5}
-                className="fill-[#bf8b2a] stroke-[#FAF7F2] stroke-[0.1] shadow-lg"
-              />
-            </g>
-          ))}
+                {/* Inner solid marker dot */}
+                <circle
+                  cx={marker.x}
+                  cy={marker.y}
+                  r={isActive ? 0.75 : 0.45}
+                  className="fill-[#bf8b2a] stroke-[#FAF7F2] stroke-[0.1] shadow-lg transition-all duration-300"
+                />
+              </g>
+            );
+          })}
         </svg>
 
         {/* Hover Tooltip */}
@@ -141,15 +153,19 @@ export default function ArgentinaMap() {
         )}
       </div>
 
-      <div className="mt-4 flex flex-wrap justify-center gap-4 border-t border-[#1E1810]/10 pt-4">
+      <div className="mt-4 flex flex-wrap justify-center gap-4 border-t border-[#1E1810]/10 pt-4 relative z-10">
         {MARKERS.map((m) => (
           <div
             key={m.id}
-            className="flex items-center gap-1.5 text-xs text-[#1E1810]/75 hover:text-[#a66d03] cursor-pointer transition-colors duration-200"
-            onMouseEnter={() => setHoveredMarker(m)}
-            onMouseLeave={() => setHoveredMarker(null)}
+            className={`flex items-center gap-1.5 text-xs cursor-pointer transition-colors duration-200 ${
+              activeOfficeId === m.id ? "text-[#a66d03] font-bold" : "text-[#1E1810]/75 hover:text-[#a66d03]"
+            }`}
+            onMouseEnter={() => setActiveOfficeId(m.id)}
+            onMouseLeave={() => setActiveOfficeId(null)}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-[#bf8b2a]" />
+            <span className={`w-1.5 h-1.5 rounded-full transition-transform duration-200 bg-[#bf8b2a] ${
+              activeOfficeId === m.id ? "scale-125" : ""
+            }`} />
             <span>{m.name}</span>
           </div>
         ))}

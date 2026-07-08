@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
@@ -84,23 +85,28 @@ const ADVANTAGES_LIST = [
 ];
 
 export default function QuienesSomosPage() {
+  const [activeOfficeId, setActiveOfficeId] = useState<string | null>(null);
+
   return (
     <>
       <Navbar />
-      <main className="bg-[#FAF7F2] text-[#1E1810]">
+      <main className="bg-[#FAF7F2] text-[#1E1810] relative">
         
         {/* Banner Principal / Hero */}
         <section className="relative min-h-[60vh] flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
           {/* Background overlay */}
-          <div className="absolute inset-0 bg-black/[0.03] z-10" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(166,109,3,0.08),transparent)] z-10" />
+          <div className="absolute inset-0 bg-black/[0.02] z-10" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(166,109,3,0.06),transparent)] z-10" />
           
-          {/* Espacio para la foto amplia de la oficina o collage */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2] via-transparent to-[#FAF7F2] z-10" />
-          <div className="absolute inset-0 bg-[#FAF7F2]/40 flex items-center justify-center">
-            <span className="text-[#1E1810]/15 uppercase tracking-[0.2em] font-extrabold text-xl md:text-3xl border border-[#1E1810]/5 p-8 rounded-2xl bg-white/20">
-              Banner Principal (Foto de Oficina o Collage)
-            </span>
+          {/* Stylized background photo with low opacity and blur */}
+          <div className="absolute inset-0 z-0 select-none pointer-events-none">
+            <Image
+              src="/office-san-luis.webp"
+              alt="Grupales Travel Office"
+              fill
+              className="object-cover opacity-[0.12] filter blur-[2px]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2] via-transparent to-[#FAF7F2]" />
           </div>
 
           <div className="max-w-4xl mx-auto relative z-20 text-center space-y-6">
@@ -222,7 +228,11 @@ export default function QuienesSomosPage() {
               <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                 {OFFICE_DETAILS.map((office, index) => (
                   <AnimatedSection key={office.id} delay={index * 0.1} className="h-full">
-                    <OfficeCard office={office} />
+                    <OfficeCard
+                      office={office}
+                      activeOfficeId={activeOfficeId}
+                      setActiveOfficeId={setActiveOfficeId}
+                    />
                   </AnimatedSection>
                 ))}
               </div>
@@ -230,7 +240,10 @@ export default function QuienesSomosPage() {
               {/* Mapa de Argentina interactivo (4 cols) */}
               <div className="lg:col-span-4 h-full">
                 <AnimatedSection delay={0.2}>
-                  <ArgentinaMap />
+                  <ArgentinaMap
+                    activeOfficeId={activeOfficeId}
+                    setActiveOfficeId={setActiveOfficeId}
+                  />
                 </AnimatedSection>
               </div>
 

@@ -4,12 +4,15 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Clock, Phone, Map, ExternalLink } from "lucide-react";
 import { OfficeInfo } from "@/types";
+import { cn } from "@/lib/utils";
 
 interface OfficeCardProps {
   office: OfficeInfo & { id: string; imagePlaceholder: string; hours: string };
+  activeOfficeId: string | null;
+  setActiveOfficeId: (id: string | null) => void;
 }
 
-export default function OfficeCard({ office }: OfficeCardProps) {
+export default function OfficeCard({ office, activeOfficeId, setActiveOfficeId }: OfficeCardProps) {
   const [showMap, setShowMap] = useState(false);
 
   // Generamos una URL de inserción de Google Maps basada en la dirección
@@ -17,31 +20,55 @@ export default function OfficeCard({ office }: OfficeCardProps) {
     office.address + ", " + office.city + ", Argentina"
   )}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
+  const getOfficeImage = (id: string) => {
+    switch (id) {
+      case "san-luis":
+        return "/office-san-luis.webp";
+      case "villa-mercedes":
+        return "/office-villa-mercedes.webp";
+      case "cordoba":
+        return "/office-cordoba.webp";
+      default:
+        return null;
+    }
+  };
+
+  const isActive = activeOfficeId === office.id;
+
   return (
     <div
       id={`office-${office.id}`}
-      className="bg-white border border-[#a66d03]/15 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:border-[#bf8b2a]/45 flex flex-col h-full scroll-mt-24 group"
+      onMouseEnter={() => setActiveOfficeId(office.id)}
+      onMouseLeave={() => setActiveOfficeId(null)}
+      className={cn(
+        "bg-white border rounded-2xl overflow-hidden shadow-lg transition-all duration-500 flex flex-col h-full scroll-mt-24 group",
+        isActive
+          ? "border-[#bf8b2a] shadow-xl shadow-[#bf8b2a]/10 ring-2 ring-[#bf8b2a]/20 scale-[1.02]"
+          : "border-[#a66d03]/15 hover:border-[#bf8b2a]/45"
+      )}
     >
-      {/* Imagen / Placeholder de la Oficina */}
-      <div className="relative h-56 bg-[#FAF7F2] flex items-center justify-center overflow-hidden border-b border-[#a66d03]/10">
-        {/* Placeholder elegante en degradé */}
+      {/* Imagen de la Oficina */}
+      <div className="relative h-56 bg-[#FAF7F2] overflow-hidden border-b border-[#a66d03]/10">
         <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent z-10" />
-        <div className="text-center p-6 z-15">
-          <div className="w-16 h-16 rounded-full bg-[#bf8b2a]/10 flex items-center justify-center mx-auto mb-3 border border-[#bf8b2a]/20 group-hover:scale-105 transition-transform duration-300">
-            <MapPin size={24} className="text-[#a66d03]" />
-          </div>
-          <span className="text-[#a66d03] text-xs font-bold uppercase tracking-widest bg-[#1E1810]/5 px-3 py-1 rounded-full border border-[#1E1810]/5">
-            {office.city}
-          </span>
-        </div>
         
-        {/* Nota flotante de imagen */}
-        <div className="absolute top-3 right-3 z-20 text-[10px] text-[#1E1810]/40 uppercase tracking-widest bg-white/60 px-2 py-0.5 rounded border border-[#1E1810]/5">
-          Imagen Oficina (Pendiente)
-        </div>
+        {getOfficeImage(office.id) ? (
+          <img
+            src={getOfficeImage(office.id)!}
+            alt={office.city}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="text-center p-6 z-15 flex flex-col items-center justify-center h-full">
+            <div className="w-16 h-16 rounded-full bg-[#bf8b2a]/10 flex items-center justify-center mb-3 border border-[#bf8b2a]/20">
+              <MapPin size={24} className="text-[#a66d03]" />
+            </div>
+            <span className="text-[#a66d03] text-xs font-bold uppercase tracking-widest bg-[#1E1810]/5 px-3 py-1 rounded-full border border-[#1E1810]/5">
+              {office.city}
+            </span>
+          </div>
+        )}
       </div>
 
-      {/* Contenido */}
       <div className="p-6 flex-1 flex flex-col justify-between">
         <div>
           <h3 className="text-xl font-bold text-[#1E1810] mb-4 group-hover:text-[#a66d03] transition-colors duration-200">
