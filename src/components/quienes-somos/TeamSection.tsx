@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { User, Award, X, Globe } from "lucide-react";
+import { motion } from "framer-motion";
+import { User, Award, Globe } from "lucide-react";
 
 function getImagePath(name: string) {
   const slug = name
@@ -75,14 +74,24 @@ const DEPARTMENTS: Department[] = [
     members: [
       { name: "Nicolás Sánchez", role: "Operaciones" },
       { name: "Alejandro Insaurralde", role: "Operaciones" },
-      { name: "Martín Estanguet", role: "Operaciones" },
+      { 
+        name: "Martín Estanguet", 
+        role: "MANAGER DESIGN", 
+        title: "EQUIPO DE MARKETING Y COMUNICACIÓN", 
+        description: "Estamos para ayudarte a planificar tu próximo viaje." 
+      },
     ],
   },
   {
     name: "Sistemas",
     intro: "Soporte tecnológico, mantenimiento de infraestructura digital y desarrollo de herramientas internas para optimizar el servicio.",
     members: [
-      { name: "Nicolás Sánchez", role: "Soporte Técnico y Sistemas" },
+      { 
+        name: "Matías Amoroso", 
+        role: "A cargo de Sistemas y diseño de circuitos", 
+        title: "TÉCNICO EN TURISMO",
+        description: "Organizo cada detalle para que tu viaje sea perfecto desde el primer momento." 
+      },
     ],
   },
   {
@@ -96,8 +105,6 @@ const DEPARTMENTS: Department[] = [
 ];
 
 export default function TeamSection() {
-  const [selectedMember, setSelectedMember] = useState<{ name: string; image: string } | null>(null);
-
   // Función para obtener iniciales para el avatar
   const getInitials = (name: string) => {
     return name
@@ -131,11 +138,8 @@ export default function TeamSection() {
               transition={{ delay: i * 0.1, duration: 0.5 }}
               className="bg-[#F4F0EB] border border-[#a66d03]/20 rounded-3xl shadow-xl flex flex-col overflow-hidden w-full max-w-[340px] mx-auto border-b-8 border-b-[#a66d03] hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group"
             >
-              {/* Imagen Cuadrada de perfil 1:1 */}
-              <div 
-                className="w-full aspect-square overflow-hidden relative cursor-zoom-in shrink-0"
-                onClick={() => setSelectedMember({ name: director.name, image: getImagePath(director.name) })}
-              >
+              {/* Imagen Cuadrada de perfil 1:1 (Sin zoom click) */}
+              <div className="w-full aspect-square overflow-hidden relative shrink-0">
                 <img
                   src={getImagePath(director.name)}
                   alt={director.name}
@@ -155,16 +159,16 @@ export default function TeamSection() {
               </div>
 
               {/* Banner / Credencial abajo */}
-              <div className="p-6 flex-1 flex flex-col items-center text-center justify-between min-h-[220px]">
+              <div className="p-6 flex-1 flex flex-col items-center text-center justify-between min-h-[240px]">
                 <div className="w-full space-y-1">
-                  <h3 className="text-2xl font-bold font-serif text-[#0F213C] tracking-tight">
+                  <h3 className="text-2xl md:text-3xl font-bold font-serif text-[#0F213C] tracking-tight">
                     {director.name}
                   </h3>
-                  <div className="w-10 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-3" />
-                  <p className="text-[#0F213C] text-[13px] font-bold tracking-[0.18em] uppercase">
+                  <div className="w-12 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-3.5" />
+                  <p className="text-[#0F213C] text-[13px] md:text-sm font-bold tracking-[0.18em] uppercase">
                     {director.role}
                   </p>
-                  <p className="text-[#a66d03] text-[11px] font-bold tracking-[0.12em] uppercase">
+                  <p className="text-[#a66d03] text-[11px] md:text-xs font-bold tracking-[0.12em] uppercase">
                     {director.title || "DIRECCIÓN GENERAL"}
                   </p>
                 </div>
@@ -174,9 +178,8 @@ export default function TeamSection() {
                   <div className="flex items-center gap-3.5 text-[#0F213C]/80">
                     <Globe size={22} className="text-[#a66d03] shrink-0" />
                     <div className="w-px h-8 bg-[#0F213C]/15 shrink-0" />
-                    <p className="text-xs md:text-[13px] leading-snug text-left">
-                      Estamos para ayudarte a planificar tu{" "}
-                      <span className="text-[#a66d03] font-bold">próximo viaje.</span>
+                    <p className="text-xs md:text-[14px] leading-snug text-left">
+                      {director.description}
                     </p>
                   </div>
                 </div>
@@ -212,11 +215,8 @@ export default function TeamSection() {
                     transition={{ delay: memberIndex * 0.05 + deptIndex * 0.05, duration: 0.4 }}
                     className="bg-[#F4F0EB] border border-[#1E1810]/5 rounded-3xl shadow-md flex flex-col overflow-hidden w-full max-w-[300px] border-b-8 border-b-[#a66d03] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 group"
                   >
-                    {/* Imagen Cuadrada de perfil 1:1 */}
-                    <div 
-                      className="w-full aspect-square overflow-hidden relative cursor-zoom-in shrink-0"
-                      onClick={() => setSelectedMember({ name: member.name, image: getImagePath(member.name) })}
-                    >
+                    {/* Imagen Cuadrada de perfil 1:1 (Sin zoom click) */}
+                    <div className="w-full aspect-square overflow-hidden relative shrink-0">
                       <img
                         src={getImagePath(member.name)}
                         alt={member.name}
@@ -231,17 +231,17 @@ export default function TeamSection() {
                     </div>
 
                     {/* Banner / Credencial abajo */}
-                    <div className="p-5 flex-1 flex flex-col items-center text-center justify-between min-h-[200px]">
+                    <div className="p-5 flex-1 flex flex-col items-center text-center justify-between min-h-[220px]">
                       <div className="w-full space-y-1">
-                        <h3 className="text-xl font-bold font-serif text-[#0F213C] tracking-tight truncate">
+                        <h3 className="text-xl md:text-2xl font-bold font-serif text-[#0F213C] tracking-tight">
                           {member.name}
                         </h3>
                         <div className="w-8 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-2.5" />
-                        <p className="text-[#0F213C] text-[11px] font-bold tracking-[0.15em] uppercase truncate">
+                        <p className="text-[#0F213C] text-[11px] md:text-xs font-bold tracking-[0.15em] uppercase">
                           {member.role}
                         </p>
-                        <p className="text-[#a66d03] text-[9.5px] font-bold tracking-[0.1em] uppercase truncate">
-                          {dept.name}
+                        <p className="text-[#a66d03] text-[9.5px] md:text-[11px] font-bold tracking-[0.1em] uppercase">
+                          {member.title || dept.name}
                         </p>
                       </div>
 
@@ -250,9 +250,22 @@ export default function TeamSection() {
                         <div className="flex items-center gap-3 text-[#0F213C]/80">
                           <Globe size={18} className="text-[#a66d03] shrink-0" />
                           <div className="w-px h-7 bg-[#0F213C]/15 shrink-0" />
-                          <p className="text-[11.5px] leading-snug text-left">
-                            Estamos para ayudarte a planificar tu{" "}
-                            <span className="text-[#a66d03] font-bold">próximo viaje.</span>
+                          <p className="text-xs md:text-[13px] leading-snug text-left font-medium">
+                            {member.description ? (
+                              member.description.includes("viaje") ? (
+                                <>
+                                  Organizo cada detalle para que tu viaje sea{" "}
+                                  <span className="text-[#a66d03] font-bold">perfecto desde el primer momento.</span>
+                                </>
+                              ) : (
+                                member.description
+                              )
+                            ) : (
+                              <>
+                                Estamos para ayudarte a planificar tu{" "}
+                                <span className="text-[#a66d03] font-bold">próximo viaje.</span>
+                              </>
+                            )}
                           </p>
                         </div>
                       </div>
@@ -264,41 +277,6 @@ export default function TeamSection() {
           </div>
         ))}
       </div>
-
-      {/* Lightbox Modal de Framer Motion */}
-      <AnimatePresence>
-        {selectedMember && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedMember(null)}
-            className="fixed inset-0 z-[150] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out"
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="relative max-w-full max-h-[85vh] aspect-square w-full sm:w-[500px] bg-white rounded-3xl overflow-hidden shadow-2xl p-2 cursor-default border border-white/20"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img
-                src={selectedMember.image}
-                alt={selectedMember.name}
-                className="w-full h-full object-cover rounded-2xl"
-              />
-              {/* Botón Cerrar */}
-              <button
-                onClick={() => setSelectedMember(null)}
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/60 hover:bg-black/85 flex items-center justify-center text-white border border-white/10 transition-colors cursor-pointer"
-              >
-                <X size={20} />
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
