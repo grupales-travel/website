@@ -100,6 +100,7 @@ export default function Footer() {
                 { label: "Beneficios", href: "/ventajas" },
                 { label: "Contacto", href: "/contactanos" },
                 { label: "Salidas Grupales", href: "/salidas" },
+                { label: "Bases Sorteo Primavera", href: "/bases-concurso-primavera-circuito-dulce-francia.pdf" },
                 { label: "Condiciones Generales", href: "/condiciones-generales.pdf" },
               ].map((link) => (
                 <li key={link.label}>
