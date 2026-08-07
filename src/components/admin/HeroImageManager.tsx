@@ -98,17 +98,24 @@ export default function HeroImageManager({ images: init }: Props) {
     if (!res.ok) {
       setImages((prev) => prev.map((i) => i.id === id ? { ...i, active: img.active } : i));
       toast("Error al guardar el estado.");
+    } else {
+      // Disparar revalidación de caché del Home
+      fetch("/api/revalidate?secret=grupales-seed-2026&path=/", { method: "POST" }).catch(() => {});
     }
   }
 
   // ── Editar alt (onBlur) ─────────────────────────────────────────────────
   async function saveAlt(id: number, alt: string) {
     const img = images.find((i) => i.id === id)!;
-    await fetch(`/api/admin-hero?id=${id}`, {
+    const res = await fetch(`/api/admin-hero?id=${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ alt, active: img.active }),
     });
+    if (res.ok) {
+      // Disparar revalidación de caché del Home
+      fetch("/api/revalidate?secret=grupales-seed-2026&path=/", { method: "POST" }).catch(() => {});
+    }
   }
 
   // ── Eliminar ─────────────────────────────────────────────────────────────
@@ -119,6 +126,8 @@ export default function HeroImageManager({ images: init }: Props) {
     setDeletingId(null);
     if (res.ok) {
       setImages((prev) => prev.filter((i) => i.id !== id));
+      // Disparar revalidación de caché del Home
+      fetch("/api/revalidate?secret=grupales-seed-2026&path=/", { method: "POST" }).catch(() => {});
       toast("Imagen eliminada.");
     } else {
       toast("Error al eliminar.");
@@ -147,11 +156,15 @@ export default function HeroImageManager({ images: init }: Props) {
     onDragEnd();
 
     // Guardar nuevo orden en BD
-    await fetch("/api/admin-hero", {
+    const res = await fetch("/api/admin-hero", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(reordered.map(({ id, order }) => ({ id, order }))),
     });
+    if (res.ok) {
+      // Disparar revalidación de caché del Home
+      fetch("/api/revalidate?secret=grupales-seed-2026&path=/", { method: "POST" }).catch(() => {});
+    }
   }
 
   // ── Upload (modal) ───────────────────────────────────────────────────────
@@ -223,6 +236,8 @@ export default function HeroImageManager({ images: init }: Props) {
 
       if (registerRes.ok) {
         setImages((prev) => [...prev, data.image]);
+        // Disparar revalidación de caché del Home
+        fetch("/api/revalidate?secret=grupales-seed-2026&path=/", { method: "POST" }).catch(() => {});
         closeModal();
         toast("Archivo subido correctamente.");
       } else {
