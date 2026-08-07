@@ -56,6 +56,8 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
   // Consolidar y limitar a 15 testimonios en total
   const videos = [...homeDirectVideos, ...featuredDestVideos].slice(0, 15);
 
+  const [volume, setVolume] = useState(0.5);
+
   // Lock scroll when video modal is open
   useEffect(() => {
     if (activeVideo) {
@@ -92,7 +94,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
         <div className="relative">
           <div
             ref={videoScrollRef}
-            className="flex gap-6 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden justify-start md:justify-center items-center"
+            className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden justify-start md:justify-center items-center"
           >
             {videos.map((video) => {
               const fullUrl = resolveR2Url(video.url);
@@ -101,7 +103,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
               return (
                 <div
                   key={video.id}
-                  className="flex-shrink-0 w-80 max-w-[85vw] aspect-[9/16] rounded-3xl overflow-hidden snap-center bg-black shadow-lg relative group/card cursor-pointer border border-[#a66d03]/30 hover:border-[#a66d03] transition-all duration-300"
+                  className="flex-shrink-0 w-80 max-w-[85vw] aspect-[9/16] rounded-3xl overflow-hidden snap-center bg-zinc-950 shadow-lg relative group/card cursor-pointer border-2 border-[#d9bf8f]/40 hover:border-[#bf8b2a] hover:shadow-[#bf8b2a]/10 transition-all duration-300"
                   onClick={() => {
                     if (!isCurrentPlaying) {
                       setIsPlaying(video.id);
@@ -112,16 +114,23 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                 >
                   {/* Reproductor de Video */}
                   <video
-                    src={fullUrl}
-                    className="w-full h-full object-cover absolute inset-0 z-0"
-                    preload="metadata"
+                    src={`${fullUrl}#t=0.1`}
+                    className="w-full h-full object-cover absolute inset-0 z-0 bg-zinc-900"
+                    preload="auto"
                     playsInline
                     loop
                     muted={isMuted}
                     ref={(el) => {
                       if (el) {
+                        el.volume = volume;
                         if (isCurrentPlaying) {
-                          el.play().catch(() => {});
+                          el.play().catch((err) => {
+                            console.log("Play failed, retrying muted", err);
+                            // Fallback para Safari y navegadores móviles que bloquean autoplay con audio
+                            el.muted = true;
+                            setIsMuted(true);
+                            el.play().catch(() => {});
+                          });
                         } else {
                           el.pause();
                         }
@@ -130,12 +139,12 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                   />
 
                   {/* Overlays decorativos */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/35 z-10 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/25 z-10 pointer-events-none" />
 
                   {/* Botón de reproducción cuando está pausado */}
                   {!isCurrentPlaying && (
                     <div className="absolute inset-0 flex items-center justify-center z-20 transition-transform duration-300 group-hover/card:scale-110">
-                      <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xl">
+                      <div className="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xl">
                         <Play size={28} fill="white" className="ml-1" />
                       </div>
                     </div>
@@ -152,27 +161,37 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                   </div>
 
                   {/* Botones de Control en la tarjeta */}
-                  <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-4 left-4 right-4 z-20 flex items-center gap-3 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsMuted(!isMuted);
                       }}
-                      className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#a66d03] hover:text-white transition-all duration-300"
+                      className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#a66d03] hover:text-white transition-all duration-300 shrink-0"
                     >
                       {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
                     </button>
                     
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsPlaying(null);
-                        setActiveVideo(video.url);
-                      }}
-                      className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#a66d03] hover:text-white transition-all duration-300"
+                    {/* Control de barra de volumen */}
+                    <div 
+                      className="flex-1 bg-black/60 backdrop-blur-md h-10 px-3 rounded-full flex items-center gap-2"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <Maximize2 size={16} />
-                    </button>
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        value={isMuted ? 0 : volume}
+                        onChange={(e) => {
+                          const val = parseFloat(e.target.value);
+                          setVolume(val);
+                          if (val > 0) setIsMuted(false);
+                          else setIsMuted(true);
+                        }}
+                        className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#a66d03]"
+                      />
+                    </div>
                   </div>
                 </div>
               );
@@ -181,7 +200,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
         </div>
       </div>
 
-      {/* Modal Pantalla Completa */}
+      {/* Modal Pantalla Completa (Solo si se necesita, pero ya se maneja internamente en la tarjeta con controles) */}
       <AnimatePresence>
         {activeVideo && (
           <motion.div
@@ -196,7 +215,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full h-full max-h-[85vh] sm:max-h-[90vh] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl bg-black border border-[#a66d03]"
+              className="relative w-full h-full max-h-[85vh] sm:max-h-[90vh] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl bg-black border-2 border-[#d9bf8f]"
             >
               <button
                 onClick={() => setActiveVideo(null)}
