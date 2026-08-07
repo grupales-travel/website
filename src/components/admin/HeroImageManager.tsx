@@ -170,10 +170,15 @@ export default function HeroImageManager({ images: init }: Props) {
     setUploading(true);
     setUploadErr("");
 
-    const compressedFile = await compressImageClient(file);
+    let fileToUpload = file;
+    const isVideoFile = file.type.startsWith("video/");
+
+    if (!isVideoFile) {
+      fileToUpload = await compressImageClient(file);
+    }
 
     const fd = new FormData();
-    fd.append("file", compressedFile);
+    fd.append("file", fileToUpload);
     fd.append("alt", altText);
     fd.append("order", String(images.length));
 
@@ -188,9 +193,9 @@ export default function HeroImageManager({ images: init }: Props) {
     if (res.ok) {
       setImages((prev) => [...prev, data.image]);
       closeModal();
-      toast("Imagen subida correctamente.");
+      toast("Archivo subido correctamente.");
     } else {
-      setUploadErr(data.error ?? "Error al subir la imagen.");
+      setUploadErr(data.error ?? "Error al subir el archivo.");
     }
     setUploading(false);
   }
@@ -216,9 +221,9 @@ export default function HeroImageManager({ images: init }: Props) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
         <div>
           <p className="text-[#a66d03] text-xs font-bold uppercase tracking-[0.25em] mb-2">Panel de administración</p>
-          <h1 className="text-2xl sm:text-4xl font-black uppercase text-[#f5e6cc] tracking-wide">Imágenes de portada</h1>
+          <h1 className="text-2xl sm:text-4xl font-black uppercase text-[#f5e6cc] tracking-wide">Portada y Videos del Home</h1>
           <p className="text-white/35 text-sm sm:text-base mt-1">
-            {images.length} imagen{images.length !== 1 ? "es" : ""} · Arrastrá para reordenar
+            {images.length} elemento{images.length !== 1 ? "s" : ""} · Arrastrá para reordenar
           </p>
         </div>
         <button
@@ -226,7 +231,7 @@ export default function HeroImageManager({ images: init }: Props) {
           className="w-full sm:w-auto px-7 py-3.5 btn-gold text-white text-sm font-bold uppercase tracking-widest rounded-full flex items-center justify-center gap-2"
         >
           <Upload size={15} strokeWidth={2.5} />
-          Nueva imagen
+          Nuevo elemento
         </button>
       </div>
 
@@ -252,6 +257,7 @@ export default function HeroImageManager({ images: init }: Props) {
         {images.map((img) => {
           const isDragging = draggedId === img.id;
           const isOver = dragOverId === img.id;
+          const isVideo = img.storage_path.includes("testimonios-home") || img.storage_path.endsWith(".mp4") || img.storage_path.endsWith(".mov");
 
           return (
             <div
@@ -274,12 +280,16 @@ export default function HeroImageManager({ images: init }: Props) {
 
                 {/* Thumbnail */}
                 <div
-                  className="relative w-full aspect-video rounded-lg overflow-hidden bg-white/8 shrink-0 cursor-pointer group"
+                  className="relative w-full aspect-video rounded-lg overflow-hidden bg-white/8 shrink-0 cursor-pointer group flex items-center justify-center"
                   onClick={() => setPreviewImage(img.publicUrl)}
                 >
-                  <Image src={img.publicUrl} alt={img.alt || "Imagen"} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                  {isVideo ? (
+                    <video src={img.publicUrl} className="w-full h-full object-cover" preload="metadata" muted playsInline />
+                  ) : (
+                    <Image src={img.publicUrl} alt={img.alt || "Portada"} fill className="object-cover transition-transform duration-500 group-hover:scale-105" unoptimized />
+                  )}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <p className="text-white text-[10px] font-bold uppercase tracking-widest">Ver</p>
+                    <p className="text-white text-[10px] font-bold uppercase tracking-widest">{isVideo ? "Reproducir" : "Ver"}</p>
                   </div>
                 </div>
 
@@ -288,7 +298,7 @@ export default function HeroImageManager({ images: init }: Props) {
                   defaultValue={img.alt}
                   onChange={(e) => setImages((prev) => prev.map((i) => i.id === img.id ? { ...i, alt: e.target.value } : i))}
                   onBlur={(e) => saveAlt(img.id, e.target.value)}
-                  placeholder="Descripción de la imagen..."
+                  placeholder={isVideo ? "Descripción del video testimonial..." : "Descripción de la imagen de portada..."}
                   className="bg-transparent text-[#f5e6cc] text-[15px] font-medium placeholder:text-white/20 outline-none border-b border-transparent focus:border-white/20 transition-colors py-1 w-full"
                 />
 
@@ -326,10 +336,14 @@ export default function HeroImageManager({ images: init }: Props) {
                     <GripVertical size={16} />
                   </div>
                   <div
-                    className="relative w-20 aspect-video rounded-lg overflow-hidden bg-white/8 cursor-pointer"
+                    className="relative w-20 aspect-video rounded-lg overflow-hidden bg-white/8 cursor-pointer flex items-center justify-center"
                     onClick={() => setPreviewImage(img.publicUrl)}
                   >
-                    <Image src={img.publicUrl} alt={img.alt || "Imagen"} fill className="object-cover" unoptimized />
+                    {isVideo ? (
+                      <video src={img.publicUrl} className="w-full h-full object-cover" preload="metadata" muted playsInline />
+                    ) : (
+                      <Image src={img.publicUrl} alt={img.alt || "Portada"} fill className="object-cover" unoptimized />
+                    )}
                   </div>
                 </div>
 
@@ -367,7 +381,7 @@ export default function HeroImageManager({ images: init }: Props) {
         })}
       </div>
 
-      {/* ── Modal de Vista Previa de Imagen ────────────────────────────── */}
+      {/* ── Modal de Vista Previa de Imagen o Video ────────────────────────────── */}
       <AnimatePresence>
         {previewImage && (
           <motion.div
@@ -386,13 +400,17 @@ export default function HeroImageManager({ images: init }: Props) {
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-5xl aspect-video rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10 cursor-default"
             >
-              <Image
-                src={previewImage}
-                alt="Vista Previa"
-                fill
-                className="object-contain bg-black"
-                unoptimized
-              />
+              {previewImage.includes("testimonios-home") || previewImage.endsWith(".mp4") || previewImage.endsWith(".mov") ? (
+                <video src={previewImage} className="w-full h-full object-contain bg-black" controls autoPlay playsInline />
+              ) : (
+                <Image
+                  src={previewImage}
+                  alt="Vista Previa"
+                  fill
+                  className="object-contain bg-black"
+                  unoptimized
+                />
+              )}
               <button
                 onClick={() => setPreviewImage(null)}
                 className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md transition-colors"
@@ -405,7 +423,7 @@ export default function HeroImageManager({ images: init }: Props) {
         )}
       </AnimatePresence>
 
-      {/* ── Modal para nueva imagen ─────────────────────────────────────── */}
+      {/* ── Modal para nueva imagen o video ─────────────────────────────────────── */}
       <AnimatePresence>
         {isModal && (
           <motion.div
@@ -427,8 +445,8 @@ export default function HeroImageManager({ images: init }: Props) {
               {/* Header del modal */}
               <div className="px-7 py-6 border-b border-white/6 flex items-center justify-between">
                 <div>
-                  <p className="text-[#a66d03] text-[10px] font-bold uppercase tracking-[0.25em] mb-0.5">Nueva imagen</p>
-                  <h2 className="text-xl font-black uppercase text-[#f5e6cc] tracking-wide">Subir imagen de portada</h2>
+                  <p className="text-[#a66d03] text-[10px] font-bold uppercase tracking-[0.25em] mb-0.5">Nuevo elemento</p>
+                  <h2 className="text-xl font-black uppercase text-[#f5e6cc] tracking-wide">Subir portada o video</h2>
                 </div>
                 <button
                   onClick={closeModal}
@@ -451,24 +469,28 @@ export default function HeroImageManager({ images: init }: Props) {
                     className="cursor-pointer rounded-2xl border-2 border-dashed border-white/12 hover:border-[#a66d03]/40 transition-colors overflow-hidden"
                   >
                     {preview ? (
-                      <div className="relative w-full aspect-video">
-                        <Image src={preview} alt="Vista previa" fill className="object-cover" unoptimized />
+                      <div className="relative w-full aspect-video flex items-center justify-center bg-black">
+                        {file?.type.startsWith("video/") ? (
+                          <video src={preview} className="w-full h-full object-cover" preload="metadata" muted playsInline />
+                        ) : (
+                          <Image src={preview} alt="Vista previa" fill className="object-cover" unoptimized />
+                        )}
                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                          <p className="text-white text-sm font-bold">Cambiar imagen</p>
+                          <p className="text-white text-sm font-bold">Cambiar archivo</p>
                         </div>
                       </div>
                     ) : (
                       <div className="py-12 text-center">
                         <Upload size={28} className="mx-auto text-white/20 mb-3" />
                         <p className="text-[#f5e6cc]/50 text-sm font-semibold">Hacé clic para seleccionar</p>
-                        <p className="text-white/20 text-xs mt-1">JPG, PNG, WEBP · Recomendado 1920×1080</p>
+                        <p className="text-white/20 text-xs mt-1">Imágenes (JPG, PNG, WEBP) o Videos (MP4)</p>
                       </div>
                     )}
                   </div>
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept="image/*"
+                    accept="image/*,video/*"
                     onChange={onFileChange}
                     className="hidden"
                     required
@@ -484,7 +506,7 @@ export default function HeroImageManager({ images: init }: Props) {
                   <input
                     value={altText}
                     onChange={(e) => setAltText(e.target.value)}
-                    placeholder="Ej: Vista panorámica de París"
+                    placeholder="Ej: Vista panorámica de París o Testimonio de Juan"
                     className="w-full bg-white/8 border border-white/10 rounded-xl px-5 py-3.5 text-[#f5e6cc] text-base placeholder:text-white/25 outline-none focus:border-[#a66d03]/50 transition-colors"
                   />
                 </div>
@@ -500,7 +522,7 @@ export default function HeroImageManager({ images: init }: Props) {
                     disabled={!file || uploading}
                     className="flex-1 py-4 btn-gold text-white text-sm font-bold uppercase tracking-widest rounded-full disabled:opacity-50"
                   >
-                    {uploading ? "Subiendo..." : "Subir imagen"}
+                    {uploading ? "Subiendo..." : "Subir archivo"}
                   </button>
                   <button
                     type="button"

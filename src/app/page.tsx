@@ -29,7 +29,7 @@ export default async function Home() {
         {/* <DestinationsSection destinations={destinations} /> */}
         <BenefitsBanner />
         <RegionFilter limit={8} destinations={destinations} />
-        <HomeTestimonials destinations={destinations} />
+        <HomeTestimonials destinations={destinations} heroImages={heroImagesData} />
         <ExperienceSection />
         <GallerySection />
         <ContactCTA />

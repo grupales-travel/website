@@ -11,27 +11,50 @@ interface TestimonialVideo {
   id: string;
 }
 
-interface HomeTestimonialsProps {
-  destinations: Destination[];
+interface HeroImage {
+  id: number;
+  storage_path: string;
+  alt: string;
+  order: number;
+  active: boolean;
+  publicUrl: string;
 }
 
-export default function HomeTestimonials({ destinations }: HomeTestimonialsProps) {
+interface HomeTestimonialsProps {
+  destinations: Destination[];
+  heroImages: HeroImage[];
+}
+
+export default function HomeTestimonials({ destinations, heroImages }: HomeTestimonialsProps) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const videoScrollRef = useRef<HTMLDivElement>(null);
   
-  // Compilar los testimonios de video válidos desde todos los destinos activos
-  const videos: TestimonialVideo[] = destinations
+  // 1. Videos subidos directamente para la Homepage (en hero_images)
+  const homeDirectVideos: TestimonialVideo[] = heroImages
+    .filter((img) => img.active && (img.storage_path.includes("testimonios-home") || img.storage_path.endsWith(".mp4") || img.storage_path.endsWith(".mov")))
+    .map((img) => ({
+      url: img.storage_path,
+      destinationTitle: img.alt || "Grupales Travel",
+      id: `home-${img.id}`,
+    }));
+
+  // 2. Videos de destinos destacados (URLs que inician con "featured::")
+  const featuredDestVideos: TestimonialVideo[] = destinations
     .filter((d) => d.videoTestimonials && d.videoTestimonials.length > 0)
     .flatMap((d) => 
-      d.videoTestimonials!.map((url, idx) => ({
-        url,
-        destinationTitle: d.title,
-        id: `${d.id}-${idx}`,
-      }))
-    )
-    .slice(0, 15); // Limitar a un máximo de 15 testimonios
+      d.videoTestimonials!
+        .filter((url) => url.startsWith("featured::"))
+        .map((url, idx) => ({
+          url: url.replace("featured::", ""),
+          destinationTitle: d.title,
+          id: `dest-${d.id}-${idx}`,
+        }))
+    );
+
+  // Consolidar y limitar a 15 testimonios en total
+  const videos = [...homeDirectVideos, ...featuredDestVideos].slice(0, 15);
 
   // Lock scroll when video modal is open
   useEffect(() => {

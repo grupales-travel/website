@@ -3,7 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 import { requireAuth } from "@/lib/supabase-server";
 import { uploadToR2, deleteFromR2, getPublicUrl } from "@/lib/r2";
 
-// POST — subir imagen nueva
+// POST — subir imagen o video nuevo
 export async function POST(req: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
@@ -15,14 +15,16 @@ export async function POST(req: NextRequest) {
 
   if (!file) return NextResponse.json({ error: "Falta el archivo" }, { status: 400 });
 
-  const ext         = file.name.split(".").pop();
-  const storagePath = `portadas/portada-${Date.now()}.${ext}`;
+  const ext         = file.name.split(".").pop()?.toLowerCase() ?? "bin";
+  const isVideo     = file.type.startsWith("video/") || ["mp4", "mov", "webm", "m4v"].includes(ext);
+  const folderName  = isVideo ? "testimonios-home" : "portadas";
+  const storagePath = `${folderName}/portada-${Date.now()}.${ext}`;
   const buffer      = Buffer.from(await file.arrayBuffer());
 
   try {
     await uploadToR2(buffer, storagePath, file.type);
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Error al subir imagen";
+    const message = err instanceof Error ? err.message : "Error al subir archivo";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 

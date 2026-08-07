@@ -1041,14 +1041,16 @@ export default function DestinationForm({ initial, id }: Props) {
           {videos.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {videos.map((v, i) => {
-                const isSocial = v.includes("youtube.com") || v.includes("youtu.be");
-                const label = isSocial ? v : (v.split("/").pop() ?? v);
-                const fullUrl = isSocial ? v : `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${v}`;
+                const isFeatured = v.startsWith("featured::");
+                const rawUrl = isFeatured ? v.replace("featured::", "") : v;
+                const isSocial = rawUrl.includes("youtube.com") || rawUrl.includes("youtu.be");
+                const label = isSocial ? rawUrl : (rawUrl.split("/").pop() ?? rawUrl);
+                const fullUrl = isSocial ? rawUrl : (rawUrl.startsWith("http") ? rawUrl : `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${rawUrl}`);
                 
                 return (
                   <div key={i} className="relative group rounded-xl overflow-hidden border border-white/10 bg-black/40 aspect-[9/16] flex flex-col justify-between">
                     {!isSocial ? (
-                      <video src={fullUrl} className="w-full h-full object-cover absolute inset-0 z-0" preload="metadata" muted playsInline />
+                      <video src={isFeatured ? previewUrl(rawUrl)! : fullUrl} className="w-full h-full object-cover absolute inset-0 z-0" preload="metadata" muted playsInline />
                     ) : (
                       <div className="absolute inset-0 z-0 bg-black/60 flex items-center justify-center text-xs text-white/50 p-2 text-center truncate">
                         YouTube Embed
@@ -1056,6 +1058,27 @@ export default function DestinationForm({ initial, id }: Props) {
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                     
+                    {/* Botón de Destaque en Home */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setVideos((p) =>
+                          p.map((urlStr, j) => {
+                            if (j !== i) return urlStr;
+                            return isFeatured ? rawUrl : `featured::${rawUrl}`;
+                          })
+                        );
+                      }}
+                      className={`absolute top-2 left-2 z-30 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg ${
+                        isFeatured
+                          ? "bg-amber-500 text-white opacity-100"
+                          : "bg-black/60 text-white/60 hover:text-white hover:bg-[#a66d03] opacity-0 group-hover:opacity-100"
+                      }`}
+                      title={isFeatured ? "Destacado en el Home" : "Destacar en el Home"}
+                    >
+                      <Sparkles size={13} className={isFeatured ? "animate-pulse" : ""} />
+                    </button>
+
                     <span className="text-[10px] text-white/60 font-mono p-2 truncate z-20 w-full relative">{label}</span>
                     
                     <button
