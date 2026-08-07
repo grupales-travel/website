@@ -28,7 +28,7 @@ interface HomeTestimonialsProps {
 export default function HomeTestimonials({ destinations, heroImages }: HomeTestimonialsProps) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const videoScrollRef = useRef<HTMLDivElement>(null);
   
   // 1. Videos subidos directamente para la Homepage (en hero_images)
@@ -57,6 +57,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
   const videos = [...homeDirectVideos, ...featuredDestVideos].slice(0, 15);
 
   const [volume, setVolume] = useState(0.5);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
 
   // Lock scroll when video modal is open
   useEffect(() => {
@@ -88,13 +89,13 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
   if (videos.length === 0) return null;
 
   return (
-    <section className="py-12 px-6 overflow-hidden relative">
+    <section className="py-12 px-4 overflow-hidden relative">
       <div className="max-w-7xl mx-auto relative">
         {/* Carrusel */}
         <div className="relative">
           <div
             ref={videoScrollRef}
-            className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden justify-start md:justify-center items-center"
+            className="flex gap-3 md:gap-6 overflow-x-auto pb-6 pt-2 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden justify-start md:justify-center items-center"
           >
             {videos.map((video) => {
               const fullUrl = resolveR2Url(video.url);
@@ -103,39 +104,43 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
               return (
                 <div
                   key={video.id}
-                  className="flex-shrink-0 w-80 max-w-[85vw] aspect-[9/16] rounded-3xl overflow-hidden snap-center bg-zinc-950 shadow-lg relative group/card cursor-pointer border-2 border-[#d9bf8f]/40 hover:border-[#bf8b2a] hover:shadow-[#bf8b2a]/10 transition-all duration-300"
+                  className="flex-shrink-0 w-80 max-w-[82vw] aspect-[9/16] rounded-3xl overflow-hidden snap-center bg-zinc-950 shadow-lg relative group/card cursor-pointer border-2 border-[#d9bf8f] hover:border-[#bf8b2a] hover:shadow-[#bf8b2a]/15 transition-all duration-300"
                   onClick={() => {
+                    const videoEl = videoRefs.current[video.id];
                     if (!isCurrentPlaying) {
                       setIsPlaying(video.id);
+                      if (videoEl) {
+                        // Garantiza volumen inicial
+                        videoEl.muted = isMuted;
+                        videoEl.volume = volume;
+                        videoEl.play().catch((err) => {
+                          console.log("iOS Autoplay restriction triggered. Muting video first.", err);
+                          videoEl.muted = true;
+                          videoEl.play().catch(() => {});
+                        });
+                      }
                     } else {
                       setIsPlaying(null);
+                      if (videoEl) {
+                        videoEl.pause();
+                      }
                     }
                   }}
                 >
                   {/* Reproductor de Video */}
                   <video
+                    ref={(el) => {
+                      videoRefs.current[video.id] = el;
+                      if (el) {
+                        el.volume = volume;
+                        el.muted = isMuted;
+                      }
+                    }}
                     src={`${fullUrl}#t=0.1`}
                     className="w-full h-full object-cover absolute inset-0 z-0 bg-zinc-900"
                     preload="auto"
                     playsInline
                     loop
-                    muted={isMuted}
-                    ref={(el) => {
-                      if (el) {
-                        el.volume = volume;
-                        if (isCurrentPlaying) {
-                          el.play().catch((err) => {
-                            console.log("Play failed, retrying muted", err);
-                            // Fallback para Safari y navegadores móviles que bloquean autoplay con audio
-                            el.muted = true;
-                            setIsMuted(true);
-                            el.play().catch(() => {});
-                          });
-                        } else {
-                          el.pause();
-                        }
-                      }
-                    }}
                   />
 
                   {/* Overlays decorativos */}
@@ -165,7 +170,17 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setIsMuted(!isMuted);
+                        const nextMuted = !isMuted;
+                        setIsMuted(nextMuted);
+                        
+                        // Forzar cambio directo en el elemento video actual
+                        const videoEl = videoRefs.current[video.id];
+                        if (videoEl) {
+                          videoEl.muted = nextMuted;
+                          if (!nextMuted) {
+                            videoEl.volume = volume;
+                          }
+                        }
                       }}
                       className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#a66d03] hover:text-white transition-all duration-300 shrink-0"
                     >
@@ -186,8 +201,19 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                         onChange={(e) => {
                           const val = parseFloat(e.target.value);
                           setVolume(val);
-                          if (val > 0) setIsMuted(false);
-                          else setIsMuted(true);
+                          const videoEl = videoRefs.current[video.id];
+                          if (val > 0) {
+                            setIsMuted(false);
+                            if (videoEl) {
+                              videoEl.muted = false;
+                              videoEl.volume = val;
+                            }
+                          } else {
+                            setIsMuted(true);
+                            if (videoEl) {
+                              videoEl.muted = true;
+                            }
+                          }
                         }}
                         className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#a66d03]"
                       />
