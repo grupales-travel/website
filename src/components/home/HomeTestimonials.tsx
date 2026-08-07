@@ -155,16 +155,6 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                     </div>
                   )}
 
-                  {/* Etiqueta del destino */}
-                  <div className="absolute bottom-5 left-5 right-5 z-20 pointer-events-none">
-                    <span className="inline-block bg-[#a66d03] text-white text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full mb-1">
-                      {video.destinationTitle}
-                    </span>
-                    <p className="text-white/80 text-xs font-semibold uppercase tracking-widest mt-1">
-                      Testimonio Viajero
-                    </p>
-                  </div>
-
                   {/* Botones de Control en la tarjeta */}
                   <div className="absolute top-4 left-4 right-4 z-20 flex items-center gap-3 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300">
                     <button
