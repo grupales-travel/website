@@ -7,6 +7,7 @@ import RegionFilter from "@/components/home/RegionFilter";
 import ExperienceSection from "@/components/home/ExperienceSection";
 import GallerySection from "@/components/home/GallerySection";
 import ContactCTA from "@/components/home/ContactCTA";
+import HomeTestimonials from "@/components/home/HomeTestimonials";
 import { getActiveDestinations, getHeroImages } from "@/lib/supabase";
 import { DESTINATIONS } from "@/data/destinations";
 
@@ -28,6 +29,7 @@ export default async function Home() {
         {/* <DestinationsSection destinations={destinations} /> */}
         <BenefitsBanner />
         <RegionFilter limit={8} destinations={destinations} />
+        <HomeTestimonials destinations={destinations} />
         <ExperienceSection />
         <GallerySection />
         <ContactCTA />

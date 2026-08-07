@@ -14,26 +14,10 @@ import PreReserveModal from "@/components/ui/PreReserveModal";
 
 // ─── Helpers de video ────────────────────────────────────────────────────────
 
-function getVideoEmbed(url: string, isPreview = false) {
-  if (url.includes("instagram.com")) {
-    const cleanUrl = url.split("?")[0].replace(/\/$/, "");
-    return { type: "instagram", embedUrl: `${cleanUrl}/embed` };
-  }
-  const ytMatch = url.match(/(?:youtube\.com\/shorts\/|youtu\.be\/|youtube\.com\/watch\?v=)([^&?]+)/);
-  if (ytMatch?.[1]) {
-    const videoId = ytMatch[1];
-    if (isPreview) {
-      return {
-        type: "youtube",
-        embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1&controls=1&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=1`,
-      };
-    }
-    return {
-      type: "youtube",
-      embedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&controls=1&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=${videoId}&enablejsapi=1&fs=1`,
-    };
-  }
-  return { type: "video", embedUrl: url };
+function resolveR2VideoUrl(url: string): string {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  return `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${url}`;
 }
 
 // ─── VideoCard ────────────────────────────────────────────────────────────────
@@ -42,31 +26,24 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
   const [isActive, setIsActive] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const embed = getVideoEmbed(url, true);
-
-  const ytCommand = (func: string, args: any[] = []) => {
-    iframeRef.current?.contentWindow?.postMessage(JSON.stringify({ event: "command", func, args }), "*");
-  };
+  
+  const fullVideoUrl = resolveR2VideoUrl(url);
 
   const handleTogglePlay = (e?: React.MouseEvent) => {
     if (!isActive) {
-      setIsActive(true); setIsPlaying(true); setIsMuted(false);
-      if (embed.type === "video" && videoRef.current) {
+      setIsActive(true);
+      setIsPlaying(true);
+      setIsMuted(false);
+      if (videoRef.current) {
         videoRef.current.currentTime = 0;
         videoRef.current.muted = false;
-        videoRef.current.play();
-      } else if (embed.type === "youtube") {
-        ytCommand("playVideo");
-        ytCommand("unMute");
+        videoRef.current.play().catch((err) => console.log("Video auto play prevented:", err));
       }
     } else {
       setIsPlaying(!isPlaying);
-      if (embed.type === "video" && videoRef.current) {
+      if (videoRef.current) {
         isPlaying ? videoRef.current.pause() : videoRef.current.play();
-      } else if (embed.type === "youtube") {
-        isPlaying ? ytCommand("pauseVideo") : ytCommand("playVideo");
       }
     }
   };
@@ -74,50 +51,48 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
   const handleToggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsMuted(!isMuted);
-    if (embed.type === "video" && videoRef.current) videoRef.current.muted = !isMuted;
-  };
-
-  const handleExpand = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isActive && embed.type === "video" && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.muted = true;
-    }
-    if (embed.type === "youtube") ytCommand("pauseVideo");
-    onExpand(url);
+    if (videoRef.current) videoRef.current.muted = !isMuted;
   };
 
   return (
     <div
       className="flex-shrink-0 w-52 sm:w-56 md:w-72 aspect-[9/16] rounded-2xl overflow-hidden snap-start bg-[#1E1810] shadow-md relative group/card cursor-pointer"
-      onClick={embed.type !== "youtube" ? handleTogglePlay : undefined}
+      onClick={handleTogglePlay}
     >
       <div className="absolute inset-0 overflow-hidden">
-        {embed.type === "video" ? (
-          <video ref={videoRef} src={url} className="w-full h-full object-cover" preload="metadata" playsInline muted={isMuted} loop />
-        ) : embed.type === "youtube" ? (
-          <div className="absolute inset-0 z-10">
-            <iframe ref={iframeRef} src={embed.embedUrl} className="w-full h-full" style={{ border: "none" }} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowFullScreen loading="lazy" />
-          </div>
-        ) : (
-          <div className="absolute left-0 right-0 pointer-events-none" style={{ top: "-58px", bottom: "-80px" }}>
-            <iframe src={embed.embedUrl} style={{ width: "100%", height: "100%", border: "none" }} allowFullScreen allow="encrypted-media" loading="lazy" scrolling="no" />
-          </div>
-        )}
+        <video
+          ref={videoRef}
+          src={fullVideoUrl}
+          className="w-full h-full object-cover"
+          preload="metadata"
+          playsInline
+          muted={isMuted}
+          loop
+        />
       </div>
-      {isActive && embed.type !== "youtube" && (
-        <button onClick={handleToggleMute} className="absolute bottom-3 left-3 z-20 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:text-white">
+      {isActive && (
+        <button
+          onClick={handleToggleMute}
+          className="absolute bottom-3 left-3 z-20 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:text-white"
+        >
           {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
         </button>
       )}
-      {embed.type !== "youtube" && (
-        <button 
-          onClick={(e) => { e.stopPropagation(); onExpand(url); }} 
-          className={`absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white ${isActive ? "opacity-100" : "opacity-0 group-hover/card:opacity-100"}`}
-        >
-          <Maximize2 size={16} />
-        </button>
-      )}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          if (videoRef.current) {
+            videoRef.current.pause();
+            setIsPlaying(false);
+          }
+          onExpand(url);
+        }}
+        className={`absolute bottom-3 right-3 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center transition-opacity duration-200 hover:bg-[#a66d03] text-white/90 hover:text-white ${
+          isActive ? "opacity-100" : "opacity-0 group-hover/card:opacity-100"
+        }`}
+      >
+        <Maximize2 size={16} />
+      </button>
     </div>
   );
 }
@@ -357,21 +332,13 @@ export default function DestinationContent({ destination }: Props) {
               >
                 <X size={18} />
               </button>
-              {getVideoEmbed(activeVideo, false).type === "video" ? (
-                <video src={activeVideo} className="w-full h-full object-contain bg-black" controls playsInline autoPlay />
-              ) : getVideoEmbed(activeVideo, false).type === "youtube" ? (
-                <iframe
-                  src={getVideoEmbed(activeVideo, false).embedUrl}
-                  className="w-full h-full border-0 bg-black"
-                  allowFullScreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
-                />
-              ) : (
-                <iframe
-                  src={getVideoEmbed(activeVideo, false).embedUrl}
-                  className="w-full h-full border-0 bg-black"
-                  allowFullScreen
-                  allow="clipboard-write; encrypted-media; picture-in-picture; web-share"
+              {activeVideo && (
+                <video
+                  src={resolveR2VideoUrl(activeVideo)}
+                  className="w-full h-full object-contain bg-black"
+                  controls
+                  playsInline
+                  autoPlay
                 />
               )}
             </motion.div>

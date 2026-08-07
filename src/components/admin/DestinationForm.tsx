@@ -642,37 +642,40 @@ export default function DestinationForm({ initial, id }: Props) {
   }
 
   // ── Videos ────────────────────────────────────────────────────────────────
-  function addVideoUrl() {
-    const val = newVideo.trim();
-    if (!val || videos.includes(val)) return;
-
-    // Validación estricta para asegurar que solo sean videos de YouTube
-    if (!val.includes("youtube.com") && !val.includes("youtu.be")) {
-      alert("Por favor, ingresá únicamente un enlace válido de YouTube Shorts o YouTube.");
-      return;
-    }
-
-    setVideos((p) => [...p, val]);
-    setNewVideo("");
-  }
-
   async function uploadVideoFile(file: File) {
     setUploadingVideo(true);
 
     const fd = new FormData();
-    fd.append("file", file);
     fd.append("folder", "videos");
-    fd.append("slug", `video-${Date.now()}`);
+    const slugToUse = slug ? `${slug}-${Date.now()}` : `video-${Date.now()}`;
+    fd.append("slug", slugToUse);
+    fd.append("ext", file.name.split(".").pop()?.toLowerCase() ?? "mp4");
+    fd.append("contentType", file.type);
 
     const res = await fetch("/api/admin-upload-url", { method: "POST", body: fd });
 
-    setUploadingVideo(false);
     if (!res.ok) {
+      setUploadingVideo(false);
       const d = await res.json().catch(() => ({}));
-      alert(`Error al subir el video: ${d.error ?? "Sin detalle"}`);
+      alert(`Error al preparar subida de video: ${d.error ?? "Sin detalle"}`);
       return;
     }
-    const { storagePath } = await res.json();
+
+    const { presignedUrl, storagePath } = await res.json();
+
+    const putRes = await fetch(presignedUrl, {
+      method: "PUT",
+      body: file,
+      headers: { "Content-Type": file.type },
+    });
+
+    setUploadingVideo(false);
+
+    if (!putRes.ok) {
+      alert("Error al subir archivo de video a R2");
+      return;
+    }
+
     setVideos((p) => [...p, storagePath]);
   }
 
@@ -1031,22 +1034,36 @@ export default function DestinationForm({ initial, id }: Props) {
       <div className={card}>
         <div className={cardH}>
           <h3 className="text-sm font-bold text-[#f5e6cc] uppercase tracking-widest">Videos del destino</h3>
-          <p className="text-white/25 text-xs mt-0.5">Pegá el link de YouTube Shorts.</p>
+          <p className="text-white/25 text-xs mt-0.5">Subí videos testimoniales en formato vertical directos a Cloudflare R2.</p>
         </div>
         <div className={cardB}>
           {/* Lista de videos */}
           {videos.length > 0 && (
-            <div className="space-y-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {videos.map((v, i) => {
                 const isSocial = v.includes("youtube.com") || v.includes("youtu.be");
                 const label = isSocial ? v : (v.split("/").pop() ?? v);
+                const fullUrl = isSocial ? v : `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${v}`;
+                
                 return (
-                  <div key={i} className="flex items-center gap-3 px-4 py-3 bg-white/5 border border-white/8 rounded-xl">
-                    <FileText size={15} className="text-[#a66d03] shrink-0" />
-                    <span className="text-sm text-[#f5e6cc]/55 flex-1 truncate">{label}</span>
-                    <button type="button" onClick={() => setVideos((p) => p.filter((_, j) => j !== i))}
-                      className="text-white/25 hover:text-red-400 transition-colors shrink-0">
-                      <X size={15} />
+                  <div key={i} className="relative group rounded-xl overflow-hidden border border-white/10 bg-black/40 aspect-[9/16] flex flex-col justify-between">
+                    {!isSocial ? (
+                      <video src={fullUrl} className="w-full h-full object-cover absolute inset-0 z-0" preload="metadata" muted playsInline />
+                    ) : (
+                      <div className="absolute inset-0 z-0 bg-black/60 flex items-center justify-center text-xs text-white/50 p-2 text-center truncate">
+                        YouTube Embed
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                    
+                    <span className="text-[10px] text-white/60 font-mono p-2 truncate z-20 w-full relative">{label}</span>
+                    
+                    <button
+                      type="button"
+                      onClick={() => setVideos((p) => p.filter((_, j) => j !== i))}
+                      className="absolute top-2 right-2 z-30 w-8 h-8 rounded-full bg-red-600/90 text-white flex items-center justify-center hover:bg-red-700 transition-colors shadow-lg opacity-0 group-hover:opacity-100 duration-200"
+                    >
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 );
@@ -1054,18 +1071,42 @@ export default function DestinationForm({ initial, id }: Props) {
             </div>
           )}
 
-          {/* Input URL Redes Sociales */}
-          <div className="flex gap-2 mt-4">
+          {/* Subida de Archivos de Video */}
+          <div className="mt-4">
             <input
-              className={`${input} flex-1`}
-              value={newVideo}
-              onChange={(e) => setNewVideo(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), addVideoUrl())}
-              placeholder="https://www.youtube.com/shorts/..."
+              type="file"
+              accept="video/*"
+              ref={videoFileRef}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  uploadVideoFile(file);
+                  if (videoFileRef.current) videoFileRef.current.value = "";
+                }
+              }}
+              className="hidden"
             />
-            <button type="button" onClick={addVideoUrl} disabled={!newVideo.trim()}
-              className="px-4 py-3 bg-[#a66d03]/20 border border-[#a66d03]/30 text-[#d9bf8f] rounded-xl hover:bg-[#a66d03]/30 transition-colors disabled:opacity-40 flex items-center gap-1.5 text-sm font-semibold whitespace-nowrap">
-              <Plus size={15} /> Agregar
+            
+            <button
+              type="button"
+              disabled={uploadingVideo}
+              onClick={() => videoFileRef.current?.click()}
+              className="w-full flex flex-col items-center justify-center gap-3 py-8 rounded-2xl border-2 border-dashed border-white/15 hover:border-[#a66d03]/50 hover:bg-[#a66d03]/5 transition-all duration-300 disabled:opacity-50 group cursor-pointer"
+            >
+              {uploadingVideo ? (
+                <>
+                  <Loader2 className="animate-spin text-[#a66d03]" size={28} />
+                  <p className="text-sm font-semibold text-[#f5e6cc]/70">Subiendo video a Cloudflare R2...</p>
+                </>
+              ) : (
+                <>
+                  <Upload className="text-[#a66d03] group-hover:scale-110 transition-transform duration-300" size={28} />
+                  <div>
+                    <p className="text-sm font-bold text-[#f5e6cc] uppercase tracking-wider text-center">Subir Video Testimonio</p>
+                    <p className="text-xs text-white/25 mt-1 text-center">Arrastrá un archivo o hacé clic para seleccionar. Formato MP4, MOV. Máximo 100MB.</p>
+                  </div>
+                </>
+              )}
             </button>
           </div>
         </div>
