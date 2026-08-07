@@ -12,20 +12,25 @@ export async function POST(req: NextRequest) {
   const file  = formData.get("file") as File | null;
   const alt   = (formData.get("alt") as string) || "";
   const order = parseInt((formData.get("order") as string) || "0");
+  
+  // Si ya se subió directo por URL prefirmada (R2 Direct), recibimos la ruta del storage directamente
+  let storagePath = formData.get("storagePath") as string | null;
 
-  if (!file) return NextResponse.json({ error: "Falta el archivo" }, { status: 400 });
+  if (!storagePath) {
+    if (!file) return NextResponse.json({ error: "Falta el archivo" }, { status: 400 });
 
-  const ext         = file.name.split(".").pop()?.toLowerCase() ?? "bin";
-  const isVideo     = file.type.startsWith("video/") || ["mp4", "mov", "webm", "m4v"].includes(ext);
-  const folderName  = isVideo ? "testimonios-home" : "portadas";
-  const storagePath = `${folderName}/portada-${Date.now()}.${ext}`;
-  const buffer      = Buffer.from(await file.arrayBuffer());
+    const ext         = file.name.split(".").pop()?.toLowerCase() ?? "bin";
+    const isVideo     = file.type.startsWith("video/") || ["mp4", "mov", "webm", "m4v"].includes(ext);
+    const folderName  = isVideo ? "testimonios-home" : "portadas";
+    storagePath = `${folderName}/portada-${Date.now()}.${ext}`;
+    const buffer      = Buffer.from(await file.arrayBuffer());
 
-  try {
-    await uploadToR2(buffer, storagePath, file.type);
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Error al subir archivo";
-    return NextResponse.json({ error: message }, { status: 500 });
+    try {
+      await uploadToR2(buffer, storagePath, file.type);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Error al subir archivo";
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
   }
 
   const { data, error: dbError } = await supabaseAdmin
@@ -35,7 +40,10 @@ export async function POST(req: NextRequest) {
     .single();
 
   if (dbError) {
-    await deleteFromR2(storagePath);
+    // Solo borramos de R2 si fue subido en este request (tenemos el file)
+    if (file) {
+      await deleteFromR2(storagePath);
+    }
     return NextResponse.json({ error: dbError.message }, { status: 500 });
   }
 

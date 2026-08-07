@@ -177,27 +177,62 @@ export default function HeroImageManager({ images: init }: Props) {
       fileToUpload = await compressImageClient(file);
     }
 
-    const fd = new FormData();
-    fd.append("file", fileToUpload);
-    fd.append("alt", altText);
-    fd.append("order", String(images.length));
+    const ext = fileToUpload.name.split(".").pop()?.toLowerCase() ?? "bin";
+    const folder = isVideoFile ? "testimonios-home" : "portadas";
+    const slug = isVideoFile ? `video-${Date.now()}` : `portada-${Date.now()}`;
 
-    const res = await fetch("/api/admin-hero", { method: "POST", body: fd });
-    let data;
     try {
-      data = await res.json();
-    } catch {
-      data = { error: "Error desconocido del servidor (quizás archivo aún es muy grande o respuesta no es JSON)." };
-    }
+      // 1. Pedir URL prefirmada
+      const fdUrl = new FormData();
+      fdUrl.append("folder", folder);
+      fdUrl.append("slug", slug);
+      fdUrl.append("ext", ext);
+      fdUrl.append("contentType", fileToUpload.type);
 
-    if (res.ok) {
-      setImages((prev) => [...prev, data.image]);
-      closeModal();
-      toast("Archivo subido correctamente.");
-    } else {
-      setUploadErr(data.error ?? "Error al subir el archivo.");
+      const urlRes = await fetch("/api/admin-upload-url", { method: "POST", body: fdUrl });
+      if (!urlRes.ok) {
+        const d = await urlRes.json().catch(() => ({}));
+        setUploadErr(d.error ?? "Error al preparar la subida de archivos.");
+        setUploading(false);
+        return;
+      }
+
+      const { presignedUrl, storagePath } = await urlRes.json();
+
+      // 2. Subir directamente a Cloudflare R2
+      const putRes = await fetch(presignedUrl, {
+        method: "PUT",
+        body: fileToUpload,
+        headers: { "Content-Type": fileToUpload.type },
+      });
+
+      if (!putRes.ok) {
+        setUploadErr("Error al transmitir el archivo directo a Cloudflare R2.");
+        setUploading(false);
+        return;
+      }
+
+      // 3. Registrar el archivo en Supabase utilizando la ruta del storage
+      const fdRegister = new FormData();
+      fdRegister.append("storagePath", storagePath);
+      fdRegister.append("alt", altText);
+      fdRegister.append("order", String(images.length));
+
+      const registerRes = await fetch("/api/admin-hero", { method: "POST", body: fdRegister });
+      const data = await registerRes.json().catch(() => ({}));
+
+      if (registerRes.ok) {
+        setImages((prev) => [...prev, data.image]);
+        closeModal();
+        toast("Archivo subido correctamente.");
+      } else {
+        setUploadErr(data.error ?? "Error al registrar el archivo en la base de datos.");
+      }
+    } catch (err: any) {
+      setUploadErr(err.message ?? "Error en la conexión de subida.");
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   }
 
   return (
