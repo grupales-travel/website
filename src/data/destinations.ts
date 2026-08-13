@@ -19,6 +19,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/tailandia-con-playas-2026-1781110098481.jpg",
     description:
       "Descubrí la magia de Tailandia: templos dorados, mercados flotantes, playas de aguas cristalinas y una gastronomía inigualable. Un viaje que combina cultura, naturaleza y relax.",
+    itineraryPdfUrl: "/r2-media/pdfs/tailandia-con-playas-2026-1771875867390.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -37,6 +38,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/alma-europea-2026.jpg",
     description:
       "El fin del mundo te espera. Glaciares imponentes, el Perito Moreno, la ciudad más austral del planeta y paisajes que quitan el aliento.",
+    itineraryPdfUrl: "/r2-media/pdfs/calafate-ushuaia-2027-1780077684384.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -55,6 +57,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/alma-europea-2026-1777921232769.webp",
     description:
       "Europa ofrece una riqueza cultural y paisajística incomparable. España, Francia, Suiza e Italia en un recorrido épico de 22 días atravesando las ciudades más bellas del continente.",
+    itineraryPdfUrl: "/r2-media/pdfs/alma-europea-2026.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -73,6 +76,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/de-londres-a-viena-2026-1779821401435.jpg",
     description:
       "Un viaje épico desde la elegancia británica hasta la majestuosidad imperial austriaca. Londres, Amsterdam, Berlín, Praga y Viena en un solo recorrido.",
+    itineraryPdfUrl: "/r2-media/pdfs/de-londres-a-viena-2026.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -91,6 +95,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/turquia-grecia-esplendida-2026-1776692964551.jpg",
     description:
       "Estambul, Capadocia, Éfeso, Santorini y Atenas. Un viaje entre dos mundos, donde Oriente y Occidente se fusionan en una experiencia única.",
+    itineraryPdfUrl: "/r2-media/pdfs/turquia-grecia-esplendida-2026-1771872893917.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -109,6 +114,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/encantos-de-peru-2026-1777921338981.webp",
     description:
       "Lima, Cusco, Machu Picchu y el Valle Sagrado. La civilización inca te espera en uno de los destinos más fascinantes de América del Sur.",
+    itineraryPdfUrl: "/r2-media/pdfs/encantos-de-peru-2026-1771874579982.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -127,6 +133,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/new-york-miami-2026.webp",
     description:
       "La Gran Manzana y las playas de Miami en un solo viaje. Broadway, Central Park, South Beach y Art Deco. Estados Unidos en su máxima expresión.",
+    itineraryPdfUrl: "/r2-media/pdfs/new-york-miami-2026-1771874850368.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -145,6 +152,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/joya-de-los-balcanes-estambul-2026.webp",
     description:
       "Descubrí los secretos de los Balcanes: Croacia, Bosnia, Montenegro, Albania y Turquía. Dubrovnik, Mostar, Budva y el magnífico Estambul.",
+    itineraryPdfUrl: "/r2-media/pdfs/joya-de-los-balcanes-estambul-2026.pdf",
     whatsappUrl: WA,
     featured: false,
     active: true,
@@ -163,6 +171,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/bella-italia-2026.jpg",
     description:
       "Italia entera en un solo viaje. Roma, Florencia, Venecia, Milán, Nápoles, Amalfi y mucho más. Arte, gastronomía y romanticismo en estado puro.",
+    itineraryPdfUrl: "/r2-media/pdfs/bella-italia-2026-1771875194312.pdf",
     whatsappUrl: WA,
     featured: true,
     active: true,
@@ -181,6 +190,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/gira-iberica-2026.jpg",
     description:
       "España y Portugal de norte a sur. Barcelona, Madrid, Toledo, Sevilla, Lisboa y Oporto. La península ibérica en toda su esencia.",
+    itineraryPdfUrl: "/r2-media/pdfs/gira-iberica-2026.pdf",
     whatsappUrl: WA,
     featured: false,
     active: true,
@@ -199,6 +209,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/turquia-dubai-1780228844783.jpg",
     description:
       "Estambul, Capadocia y Dubai en un viaje que combina lo antiguo y lo ultramoderno. Lujo árabe, bazares milenarios y paisajes de otro planeta.",
+    itineraryPdfUrl: "/r2-media/pdfs/turquia-y-dubai-2026-1771875639206.pdf",
     whatsappUrl: WA,
     featured: false,
     active: true,
@@ -217,6 +228,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/tailandia-con-playas-2026-1781110098481.jpg",
     description:
       "Versión extendida con más días de playa. Islas paradisíacas, manglares, elefantes y templos budistas. Tailandia en su máxima expresión.",
+    itineraryPdfUrl: "/r2-media/pdfs/tailandia-con-playas-2026-1771875867390.pdf",
     whatsappUrl: WA,
     featured: false,
     active: true,
@@ -235,6 +247,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/alma-europea-2026.jpg",
     description:
       "Las pirámides de Giza, el río Nilo y el lujo absoluto de Dubai. Un viaje entre la historia milenaria y la arquitectura del futuro.",
+    itineraryPdfUrl: "/r2-media/pdfs/egipto-y-dubai-2026-2026.pdf",
     whatsappUrl: WA,
     featured: false,
     active: true,
@@ -273,6 +286,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/egipto-con-playa-2026.jpg",
     description:
       "El Cairo, las Pirámides, Luxor y el Mar Rojo. Historia faraónica y playa de aguas turquesas en un solo viaje.",
+    itineraryPdfUrl: "/r2-media/pdfs/egipto-con-playa-de-hurgada-2026-1781109503748.pdf",
     whatsappUrl: WA,
     featured: false,
     active: false,
@@ -291,6 +305,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/turquia-grecia-esplendida-2026-1776692964551.jpg",
     description:
       "Estambul, Capadocia, Santorini y Atenas. Dos culturas milenarias en un viaje único.",
+    itineraryPdfUrl: "/r2-media/pdfs/turquia-grecia-esplendida-2026-1771872893917.pdf",
     whatsappUrl: WA,
     featured: false,
     active: false,
@@ -363,6 +378,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/alma-europea-2026-1777921232769.webp",
     description:
       "España, Francia, Suiza e Italia en 22 días. El recorrido más completo de Europa.",
+    itineraryPdfUrl: "/r2-media/pdfs/alma-europea-2026.pdf",
     whatsappUrl: WA,
     featured: false,
     active: false,
@@ -399,6 +415,7 @@ export const DESTINATIONS: Destination[] = [
     thumbnailImage: "/r2-media/portadas/tailandia-con-playas-2026-1781110098481.jpg",
     description:
       "Bangkok, Chiang Mai, Krabi y las islas del sur. Tailandia completa con días de playa incluidos.",
+    itineraryPdfUrl: "/r2-media/pdfs/tailandia-con-playas-2026-1771875867390.pdf",
     whatsappUrl: WA,
     featured: false,
     active: false,
@@ -455,8 +472,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/alma-europea-2026.webp", // Placeholder UK
     thumbnailImage: "/r2-media/portadas/alma-europea-2026.jpg",
     description: "Inglaterra, Escocia e Irlanda.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Reino-Unido-Irlanda-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -531,8 +548,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/alma-europea-2026.webp",
     thumbnailImage: "/r2-media/portadas/descubre-italia-2026.jpg",
     description: "Lo esencial de Italia.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Descubre-Italia-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -550,8 +567,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/costa-amalfitana-scilia-malta-2026-1771871961889.jpg",
     thumbnailImage: "/r2-media/portadas/costa-amalfitana-scilia-malta-2026.jpg",
     description: "Positano, Amalfi y Capri.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Costa-Amalfitana-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -588,8 +605,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/joyas-mexicanas-2026.jpg", // Placeholder America
     thumbnailImage: "/r2-media/portadas/joyas-mexicanas-2026.jpg",
     description: "CDMX, Taxco y Puebla.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Joyas-Mexicanas-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -626,8 +643,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/costa-rica-2026-1771873119094.jpg", // Placeholder Nature
     thumbnailImage: "/r2-media/portadas/costa-rica-2026.jpg",
     description: "Naturaleza, volcanes y playas.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Costa-Rica-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -645,8 +662,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/jamaica-2026-1771873414402.jpg", // Placeholder Beach
     thumbnailImage: "/r2-media/portadas/jamaica-2026.jpg",
     description: "Reggae, sol y playa.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Jamaica-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -683,8 +700,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/china-hong-kong-2026-1771873219521.jpg", // Placeholder Asia
     thumbnailImage: "/r2-media/portadas/china-hong-kong-2026.jpg",
     description: "Muralla China y modernidad.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/China-Hong-Kong-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -740,8 +757,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/alma-europea-2026.webp", // Placeholder Asia
     thumbnailImage: "/r2-media/portadas/alma-europea-2026.jpg",
     description: "Cerezos en flor.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Japon-Florecimientos-PApel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -759,8 +776,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/alma-europea-2026.webp", // Placeholder Asia
     thumbnailImage: "/r2-media/portadas/malasia-sing-bali.jpg",
     description: "Templos, rascacielos y playas.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Malasia-Sing-Bali-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -797,8 +814,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/vietnam-tailandia-2026.jpg",
     thumbnailImage: "/r2-media/portadas/vietnam-tailandia-2026.jpg",
     description: "Halong Bay y templos.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Vietnam-Tailandia-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -816,8 +833,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/turquia-egipto-2026-1771871687383.jpg",
     thumbnailImage: "/r2-media/portadas/turquia-egipto-2026.jpg",
     description: "Faraones y otomanos.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Turquia-Egipto-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -835,8 +852,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/lo-mejor-de-sudafrica-2026-1771873327557.jpg", // Placeholder Africa
     thumbnailImage: "/r2-media/portadas/lo-mejor-de-sudafrica-2026.jpg",
     description: "Cape Town y Kruger Park.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Sudafrica-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -854,8 +871,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/alma-europea-2026.webp",
     thumbnailImage: "/r2-media/portadas/egipto-jordania-2026.jpg",
     description: "Maravillas del mundo antiguo.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Egipto-Jordania-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,
@@ -911,8 +928,8 @@ export const DESTINATIONS: Destination[] = [
     heroImage: "/r2-media/backgrounds/alma-europea-2026.webp", // Placeholder Oceanía
     thumbnailImage: "/r2-media/portadas/alma-europea-2026.jpg",
     description: "Naturaleza extrema y ciudades modernas.",
-    whatsappUrl: WA,
     itineraryPdfUrl: "/r2-media/pdfs/Nueva-Zelanda-Australia-Papel.pdf",
+    whatsappUrl: WA,
     featured: false,
     active: true,
     partner: true,

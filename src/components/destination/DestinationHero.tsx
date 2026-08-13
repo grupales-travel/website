@@ -140,9 +140,9 @@ export default function DestinationHero({ destination }: Props) {
         {/* CTA */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-3">
           <a
-            href={destination.itineraryPdfUrl || "#itinerario"}
-            target={destination.itineraryPdfUrl ? "_blank" : undefined}
-            rel={destination.itineraryPdfUrl ? "noopener noreferrer" : undefined}
+            href={destination.itineraryPdfUrl || formatWhatsAppUrl(destination.whatsappUrl || "", destination.title)}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-bold uppercase tracking-widest hover:bg-white/20 transition-colors duration-300"
           >
             <FileText size={16} />

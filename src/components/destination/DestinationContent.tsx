@@ -217,19 +217,17 @@ export default function DestinationContent({ destination }: Props) {
                   </button>
                 )}
 
-                {destination.itineraryPdfUrl && (
-                  <div className="mt-6">
-                    <a
-                      href={destination.itineraryPdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full border border-[#a66d03] text-[#a66d03] font-bold text-sm uppercase tracking-widest hover:bg-[#a66d03] hover:text-white transition-all duration-300 group"
-                    >
-                      <FileText size={16} />
-                      Ver itinerario completo
-                    </a>
-                  </div>
-                )}
+                <div className="mt-6">
+                  <a
+                    href={destination.itineraryPdfUrl || formatWhatsAppUrl(destination.whatsappUrl || "", destination.title)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full border border-[#a66d03] text-[#a66d03] font-bold text-sm uppercase tracking-widest hover:bg-[#a66d03] hover:text-white transition-all duration-300 group"
+                  >
+                    <FileText size={16} />
+                    {destination.itineraryPdfUrl ? "Ver itinerario completo" : "Solicitar itinerario por WhatsApp"}
+                  </a>
+                </div>
               </div>
             )}
 
