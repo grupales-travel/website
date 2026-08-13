@@ -28,27 +28,79 @@ export interface HeroImageResolved extends HeroImage {
 
 export function resolveHeroUrl(storagePath: string): string {
   if (!storagePath) return "";
-  if (storagePath.startsWith("http")) return storagePath;
-  return `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${storagePath}`;
+  if (storagePath.startsWith("http")) {
+    if (storagePath.includes("pub-ee00f3f7e024452badbbefab620e13ba.r2.dev/")) {
+      return storagePath.replace("https://pub-ee00f3f7e024452badbbefab620e13ba.r2.dev/", "/r2-media/");
+    }
+    return storagePath;
+  }
+  return `/r2-media/${storagePath.replace(/^\//, "")}`;
 }
+
+const R2_BASE = "/r2-media";
+
+const FALLBACK_HERO_IMAGES: HeroImageResolved[] = [
+  {
+    id: 1,
+    storage_path: "backgrounds/alma-europea-2026.webp",
+    alt: "Alma Europea 2026",
+    order: 1,
+    active: true,
+    created_at: new Date().toISOString(),
+    publicUrl: `${R2_BASE}/backgrounds/alma-europea-2026.webp`,
+  },
+  {
+    id: 2,
+    storage_path: "backgrounds/costa-rica-2026.jpg",
+    alt: "Costa Rica 2026",
+    order: 2,
+    active: true,
+    created_at: new Date().toISOString(),
+    publicUrl: `${R2_BASE}/backgrounds/costa-rica-2026.jpg`,
+  },
+  {
+    id: 3,
+    storage_path: "backgrounds/de-londres-a-viena-2026.jpg",
+    alt: "De Londres a Viena",
+    order: 3,
+    active: true,
+    created_at: new Date().toISOString(),
+    publicUrl: `${R2_BASE}/backgrounds/de-londres-a-viena-2026.jpg`,
+  },
+  {
+    id: 4,
+    storage_path: "backgrounds/new-york-miami-2026.webp",
+    alt: "New York & Miami",
+    order: 4,
+    active: true,
+    created_at: new Date().toISOString(),
+    publicUrl: `${R2_BASE}/backgrounds/new-york-miami-2026.webp`,
+  },
+];
 
 export async function getHeroImages(): Promise<HeroImageResolved[]> {
-  const { data, error } = await supabase
-    .from("hero_images")
-    .select("*")
-    .eq("active", true)
-    .order("order", { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from("hero_images")
+      .select("*")
+      .eq("active", true)
+      .order("order", { ascending: true });
 
-  if (error) {
-    console.error("Error fetching hero images:", error.message);
-    return [];
+    if (error || !data || data.length === 0) {
+      console.warn("Using fallback hero images (Supabase unavailable or empty)");
+      return FALLBACK_HERO_IMAGES;
+    }
+
+    return data.map((img: HeroImage) => ({
+      ...img,
+      publicUrl: resolveHeroUrl(img.storage_path),
+    }));
+  } catch (err) {
+    console.error("Exception fetching hero images:", err);
+    return FALLBACK_HERO_IMAGES;
   }
-
-  return (data ?? []).map((img: HeroImage) => ({
-    ...img,
-    publicUrl: resolveHeroUrl(img.storage_path),
-  }));
 }
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DESTINATIONS
@@ -87,8 +139,13 @@ export interface SupabaseDestination {
 // Si el path ya es una URL completa (http/https), lo devuelve tal cual.
 export function resolveDestUrl(path: string | null): string {
   if (!path) return "";
-  if (path.startsWith("http")) return path;
-  return `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${path}`;
+  if (path.startsWith("http")) {
+    if (path.includes("pub-ee00f3f7e024452badbbefab620e13ba.r2.dev/")) {
+      return path.replace("https://pub-ee00f3f7e024452badbbefab620e13ba.r2.dev/", "/r2-media/");
+    }
+    return path;
+  }
+  return `/r2-media/${path.replace(/^\//, "")}`;
 }
 
 // Construye el string de fecha para mostrar al usuario.
