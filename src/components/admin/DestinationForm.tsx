@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { X, Plus, Upload, FileText, Image as ImageIcon, ChevronDown, ChevronLeft, ChevronRight, CheckCircle, Sparkles, Loader2, Trash2 } from "lucide-react";
-import { supabase, SupabaseDestination } from "@/lib/supabase";
+import { SupabaseDestination } from "@/lib/supabase";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 

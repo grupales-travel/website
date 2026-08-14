@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/supabase-server";
+import { requireAuth } from "@/lib/auth";
 import { uploadToR2, getPresignedUploadUrl } from "@/lib/r2";
 
 // POST /api/admin-upload-url

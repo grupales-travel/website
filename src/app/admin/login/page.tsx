@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { createSupabaseBrowser } from "@/lib/supabase-browser";
 
 export default function AdminLoginPage() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -13,19 +12,26 @@ export default function AdminLoginPage() {
     setLoading(true);
     setError("");
 
-    const supabase = createSupabaseBrowser();
-    const { error } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    if (error) {
-      setError("Credenciales incorrectas");
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setError(data.error || "Credenciales incorrectas");
+        setLoading(false);
+        return;
+      }
+
+      window.location.href = "/admin";
+    } catch {
+      setError("Error de conexión. Intente nuevamente.");
       setLoading(false);
-      return;
     }
-
-    window.location.href = "/admin";
   }
 
   return (
@@ -41,15 +47,16 @@ export default function AdminLoginPage() {
         <form onSubmit={handleSubmit} className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-4">
           <div>
             <label className="block text-xs font-bold text-[#d9bf8f] uppercase tracking-widest mb-1.5">
-              Email
+              Usuario o Email
             </label>
             <input
-              type="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              type="text"
+              value={form.username}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
               className="w-full bg-white/8 border border-white/15 rounded-lg px-4 py-2.5 text-white text-base outline-none focus:border-[#a66d03] transition-colors"
               required
-              autoComplete="email"
+              autoComplete="username"
+              placeholder="admin"
             />
           </div>
 
@@ -74,7 +81,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-full btn-gold text-white font-bold text-sm uppercase tracking-widest mt-2 disabled:opacity-60"
+            className="w-full py-3 rounded-full btn-gold text-white font-bold text-sm uppercase tracking-widest mt-2 disabled:opacity-60 cursor-pointer"
           >
             {loading ? "Ingresando..." : "Ingresar"}
           </button>

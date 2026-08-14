@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireAuth } from "@/lib/supabase-server";
-import { uploadToR2, getPublicUrl } from "@/lib/r2";
+import { requireAuth } from "@/lib/auth";
+import { uploadToR2 } from "@/lib/r2";
 
 // POST /api/admin-upload
 // FormData: file, folder (backgrounds|portadas|maps|pdfs|videos), slug

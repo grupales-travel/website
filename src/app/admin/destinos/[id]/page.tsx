@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 import DestinationForm from "@/components/admin/DestinationForm";
 import DeleteDestinationButton from "@/components/admin/DeleteDestinationButton";
+import { getDbDestinations } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -12,14 +12,12 @@ interface Props {
 
 export default async function EditDestinationPage({ params }: Props) {
   const { id } = await params;
+  const numId = Number(id);
 
-  const { data, error } = await supabaseAdmin
-    .from("destinations")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const destinations = await getDbDestinations();
+  const data = destinations.find((d) => d.id === numId);
 
-  if (error || !data) notFound();
+  if (!data) notFound();
 
   return (
     <div className="p-4 md:p-10 max-w-7xl mx-auto">

@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
-import { requireAuth } from "@/lib/supabase-server";
+import { requireAuth } from "@/lib/auth";
+import { getDbDestinations, saveDbDestinations } from "@/lib/db";
+import { SupabaseDestination } from "@/lib/supabase";
 
 // POST — crear destino
 export async function POST(req: NextRequest) {
@@ -9,20 +10,49 @@ export async function POST(req: NextRequest) {
   if (authError) return authError;
 
   const body = await req.json();
+  const destinations = await getDbDestinations();
 
-  const { data, error } = await supabaseAdmin
-    .from("destinations")
-    .insert(body)
-    .select("id, slug")
-    .single();
+  const maxId = destinations.reduce((max, d) => Math.max(max, d.id), 0);
+  const newId = maxId + 1;
+  const now = new Date().toISOString();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const newDestination: SupabaseDestination = {
+    id: newId,
+    slug: body.slug || `destino-${newId}`,
+    title: body.title || "Nuevo Destino",
+    tagline: body.tagline || "",
+    description: body.description || "",
+    region: body.region || "europa",
+    countries: Number(body.countries) || 1,
+    cities: Number(body.cities) || 1,
+    days: Number(body.days) || 1,
+    year: Number(body.year) || 2026,
+    departure_date: body.departure_date || "2026",
+    return_date: body.return_date || null,
+    departure_city: body.departure_city || "Buenos Aires",
+    cover_path: body.cover_path || null,
+    hero_path: body.hero_path || null,
+    map_path: body.map_path || null,
+    itinerary_path: body.itinerary_path || null,
+    whatsapp_url: body.whatsapp_url || "https://wa.link/ggzwq4",
+    video_urls: body.video_urls || [],
+    includes: body.includes || [],
+    featured: Boolean(body.featured),
+    active: body.active !== undefined ? Boolean(body.active) : true,
+    partner: Boolean(body.partner),
+    badge: body.badge || null,
+    created_at: now,
+    updated_at: now,
+  };
+
+  destinations.push(newDestination);
+  await saveDbDestinations(destinations);
 
   revalidatePath("/");
   revalidatePath("/salidas");
-  revalidatePath(`/destinos/${data.slug}`);
+  revalidatePath(`/destinos/${newDestination.slug}`);
 
-  return NextResponse.json({ ok: true, id: data.id });
+  return NextResponse.json({ ok: true, id: newDestination.id });
 }
 
 // PUT — actualizar destino por id
@@ -30,23 +60,32 @@ export async function PUT(req: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
 
-  const id = req.nextUrl.searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  const idStr = req.nextUrl.searchParams.get("id");
+  if (!idStr) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
+  const id = Number(idStr);
   const body = await req.json();
+  const destinations = await getDbDestinations();
 
-  const { data, error } = await supabaseAdmin
-    .from("destinations")
-    .update(body)
-    .eq("id", id)
-    .select("slug")
-    .single();
+  const index = destinations.findIndex((d) => d.id === id);
+  if (index === -1) {
+    return NextResponse.json({ error: "Destino no encontrado" }, { status: 404 });
+  }
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const existing = destinations[index];
+  const updated: SupabaseDestination = {
+    ...existing,
+    ...body,
+    id: existing.id,
+    updated_at: new Date().toISOString(),
+  };
+
+  destinations[index] = updated;
+  await saveDbDestinations(destinations);
 
   revalidatePath("/");
   revalidatePath("/salidas");
-  revalidatePath(`/destinos/${data.slug}`);
+  revalidatePath(`/destinos/${updated.slug}`);
 
   return NextResponse.json({ ok: true });
 }
@@ -56,22 +95,23 @@ export async function DELETE(req: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
 
-  const id = req.nextUrl.searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  const idStr = req.nextUrl.searchParams.get("id");
+  if (!idStr) return NextResponse.json({ error: "Missing id" }, { status: 400 });
 
-  // Obtener el slug antes de borrar para revalidar
-  const { data: dest } = await supabaseAdmin
-    .from("destinations")
-    .select("slug")
-    .eq("id", id)
-    .single();
+  const id = Number(idStr);
+  const destinations = await getDbDestinations();
 
-  const { error } = await supabaseAdmin.from("destinations").delete().eq("id", id);
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const target = destinations.find((d) => d.id === id);
+  if (!target) {
+    return NextResponse.json({ error: "Destino no encontrado" }, { status: 404 });
+  }
+
+  const filtered = destinations.filter((d) => d.id !== id);
+  await saveDbDestinations(filtered);
 
   revalidatePath("/");
   revalidatePath("/salidas");
-  if (dest?.slug) revalidatePath(`/destinos/${dest.slug}`);
+  if (target.slug) revalidatePath(`/destinos/${target.slug}`);
 
   return NextResponse.json({ ok: true });
 }

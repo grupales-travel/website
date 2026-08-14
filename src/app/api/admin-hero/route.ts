@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
-import { requireAuth } from "@/lib/supabase-server";
+import { requireAuth } from "@/lib/auth";
 import { uploadToR2, deleteFromR2, getPublicUrl } from "@/lib/r2";
+import { getDbHeroImages, saveDbHeroImages } from "@/lib/db";
 
 // POST — subir imagen o video nuevo
 export async function POST(req: NextRequest) {
@@ -9,21 +9,20 @@ export async function POST(req: NextRequest) {
   if (authError) return authError;
 
   const formData = await req.formData();
-  const file  = formData.get("file") as File | null;
-  const alt   = (formData.get("alt") as string) || "";
+  const file = formData.get("file") as File | null;
+  const alt = (formData.get("alt") as string) || "";
   const order = parseInt((formData.get("order") as string) || "0");
-  
-  // Si ya se subió directo por URL prefirmada (R2 Direct), recibimos la ruta del storage directamente
+
   let storagePath = formData.get("storagePath") as string | null;
 
   if (!storagePath) {
     if (!file) return NextResponse.json({ error: "Falta el archivo" }, { status: 400 });
 
-    const ext         = file.name.split(".").pop()?.toLowerCase() ?? "bin";
-    const isVideo     = file.type.startsWith("video/") || ["mp4", "mov", "webm", "m4v"].includes(ext);
-    const folderName  = isVideo ? "testimonios-home" : "portadas";
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "bin";
+    const isVideo = file.type.startsWith("video/") || ["mp4", "mov", "webm", "m4v"].includes(ext);
+    const folderName = isVideo ? "testimonios-home" : "portadas";
     storagePath = `${folderName}/portada-${Date.now()}.${ext}`;
-    const buffer      = Buffer.from(await file.arrayBuffer());
+    const buffer = Buffer.from(await file.arrayBuffer());
 
     try {
       await uploadToR2(buffer, storagePath, file.type);
@@ -33,23 +32,25 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const { data, error: dbError } = await supabaseAdmin
-    .from("hero_images")
-    .insert({ storage_path: storagePath, alt, order, active: true })
-    .select("id, storage_path, alt, order, active")
-    .single();
+  const images = await getDbHeroImages();
+  const maxId = images.reduce((max, img) => Math.max(max, img.id), 0);
+  const newId = maxId + 1;
 
-  if (dbError) {
-    // Solo borramos de R2 si fue subido en este request (tenemos el file)
-    if (file) {
-      await deleteFromR2(storagePath);
-    }
-    return NextResponse.json({ error: dbError.message }, { status: 500 });
-  }
+  const newImg = {
+    id: newId,
+    storage_path: storagePath,
+    alt,
+    order,
+    active: true,
+    created_at: new Date().toISOString(),
+  };
+
+  images.push(newImg);
+  await saveDbHeroImages(images);
 
   return NextResponse.json({
     ok: true,
-    image: { ...data, publicUrl: getPublicUrl(data.storage_path) },
+    image: { ...newImg, publicUrl: getPublicUrl(newImg.storage_path) },
   });
 }
 
@@ -58,16 +59,22 @@ export async function PUT(req: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
 
-  const id = req.nextUrl.searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
+  const idStr = req.nextUrl.searchParams.get("id");
+  if (!idStr) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
 
+  const id = Number(idStr);
   const { alt, active } = await req.json();
-  const { error } = await supabaseAdmin
-    .from("hero_images")
-    .update({ alt, active })
-    .eq("id", id);
+  const images = await getDbHeroImages();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const index = images.findIndex((img) => img.id === id);
+  if (index === -1) {
+    return NextResponse.json({ error: "Imagen no encontrada" }, { status: 404 });
+  }
+
+  if (alt !== undefined) images[index].alt = alt;
+  if (active !== undefined) images[index].active = Boolean(active);
+
+  await saveDbHeroImages(images);
   return NextResponse.json({ ok: true });
 }
 
@@ -77,11 +84,16 @@ export async function PATCH(req: NextRequest) {
   if (authError) return authError;
 
   const items: { id: number; order: number }[] = await req.json();
-  await Promise.all(
-    items.map(({ id, order }) =>
-      supabaseAdmin.from("hero_images").update({ order }).eq("id", id)
-    )
-  );
+  const images = await getDbHeroImages();
+
+  const map = new Map(items.map((i) => [i.id, i.order]));
+  images.forEach((img) => {
+    if (map.has(img.id)) {
+      img.order = map.get(img.id)!;
+    }
+  });
+
+  await saveDbHeroImages(images);
   return NextResponse.json({ ok: true });
 }
 
@@ -90,17 +102,19 @@ export async function DELETE(req: NextRequest) {
   const authError = await requireAuth();
   if (authError) return authError;
 
-  const id = req.nextUrl.searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
+  const idStr = req.nextUrl.searchParams.get("id");
+  if (!idStr) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
 
-  const { data: img } = await supabaseAdmin
-    .from("hero_images").select("storage_path").eq("id", id).single();
+  const id = Number(idStr);
+  const images = await getDbHeroImages();
 
-  if (img?.storage_path) {
-    await deleteFromR2(img.storage_path);
+  const target = images.find((img) => img.id === id);
+  if (target?.storage_path) {
+    await deleteFromR2(target.storage_path).catch(() => {});
   }
 
-  const { error } = await supabaseAdmin.from("hero_images").delete().eq("id", id);
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  const filtered = images.filter((img) => img.id !== id);
+  await saveDbHeroImages(filtered);
+
   return NextResponse.json({ ok: true });
 }

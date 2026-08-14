@@ -1,10 +1,5 @@
-import { createClient } from "@supabase/supabase-js";
 import { DESTINATIONS } from "@/data/destinations";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { getDbDestinations, getDbHeroImages } from "@/lib/db";
 
 export const HERO_BUCKET = "hero-images";
 export const DEST_BUCKET = "destinations";
@@ -37,70 +32,21 @@ export function resolveHeroUrl(storagePath: string): string {
   return `/r2-media/${storagePath.replace(/^\//, "")}`;
 }
 
-const R2_BASE = "/r2-media";
-
-const FALLBACK_HERO_IMAGES: HeroImageResolved[] = [
-  {
-    id: 1,
-    storage_path: "backgrounds/alma-europea-2026.webp",
-    alt: "Alma Europea 2026",
-    order: 1,
-    active: true,
-    created_at: new Date().toISOString(),
-    publicUrl: `${R2_BASE}/backgrounds/alma-europea-2026.webp`,
-  },
-  {
-    id: 2,
-    storage_path: "backgrounds/costa-rica-2026.jpg",
-    alt: "Costa Rica 2026",
-    order: 2,
-    active: true,
-    created_at: new Date().toISOString(),
-    publicUrl: `${R2_BASE}/backgrounds/costa-rica-2026.jpg`,
-  },
-  {
-    id: 3,
-    storage_path: "backgrounds/de-londres-a-viena-2026.jpg",
-    alt: "De Londres a Viena",
-    order: 3,
-    active: true,
-    created_at: new Date().toISOString(),
-    publicUrl: `${R2_BASE}/backgrounds/de-londres-a-viena-2026.jpg`,
-  },
-  {
-    id: 4,
-    storage_path: "backgrounds/new-york-miami-2026.webp",
-    alt: "New York & Miami",
-    order: 4,
-    active: true,
-    created_at: new Date().toISOString(),
-    publicUrl: `${R2_BASE}/backgrounds/new-york-miami-2026.webp`,
-  },
-];
-
 export async function getHeroImages(): Promise<HeroImageResolved[]> {
   try {
-    const { data, error } = await supabase
-      .from("hero_images")
-      .select("*")
-      .eq("active", true)
-      .order("order", { ascending: true });
+    const data = await getDbHeroImages();
+    const activeOnly = data.filter((img) => img.active);
+    activeOnly.sort((a, b) => a.order - b.order);
 
-    if (error || !data || data.length === 0) {
-      console.warn("Using fallback hero images (Supabase unavailable or empty)");
-      return FALLBACK_HERO_IMAGES;
-    }
-
-    return data.map((img: HeroImage) => ({
+    return activeOnly.map((img) => ({
       ...img,
       publicUrl: resolveHeroUrl(img.storage_path),
     }));
   } catch (err) {
     console.error("Exception fetching hero images:", err);
-    return FALLBACK_HERO_IMAGES;
+    return [];
   }
 }
-
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DESTINATIONS
@@ -117,7 +63,7 @@ export interface SupabaseDestination {
   cities: number;
   days: number;
   year: number;
-  departure_date: string;       // "13 Ago 2026", "2026", "Consultar", etc.
+  departure_date: string;
   return_date: string | null;
   departure_city: string;
   cover_path: string | null;
@@ -135,8 +81,6 @@ export interface SupabaseDestination {
   updated_at: string;
 }
 
-// Resuelve paths de storage a URLs públicas.
-// Si el path ya es una URL completa (http/https), lo devuelve tal cual.
 export function resolveDestUrl(path: string | null): string {
   if (!path) return "";
   if (path.startsWith("http")) {
@@ -148,15 +92,12 @@ export function resolveDestUrl(path: string | null): string {
   return `/r2-media/${path.replace(/^\//, "")}`;
 }
 
-// Construye el string de fecha para mostrar al usuario.
-// Acepta cualquier formato: ISO, ya formateado, "Consultar", solo año, etc.
 function buildDepartureLabel(departure: string, returnDate: string | null): string {
   if (!departure) return "";
   if (returnDate) return `${departure} – ${returnDate}`;
   return departure;
 }
 
-// Convierte una fila de Supabase al tipo Destination que usa el frontend
 export function toDestination(d: SupabaseDestination) {
   return {
     id: String(d.id),
@@ -188,51 +129,47 @@ export function toDestination(d: SupabaseDestination) {
 }
 
 export async function getActiveDestinations() {
-  const { data, error } = await supabase
-    .from("destinations")
-    .select("*")
-    .eq("active", true)
-    .order("year", { ascending: true })
-    .order("departure_date", { ascending: true });
+  try {
+    const data = await getDbDestinations();
+    const active = data.filter((d) => d.active);
 
-  if (error) {
-    console.error("Error fetching destinations:", error.message);
-    // Temporary: Hide partner departures that are not featured from fallback
-    return DESTINATIONS.filter(d => !d.partner || d.featured);
+    active.sort((a, b) => {
+      if (a.year !== b.year) return a.year - b.year;
+      return a.departure_date.localeCompare(b.departure_date);
+    });
+
+    const mapped = active.map(toDestination);
+    return mapped.filter((d) => !d.partner || d.featured);
+  } catch (err) {
+    console.error("Error fetching active destinations:", err);
+    return DESTINATIONS.filter((d) => !d.partner || d.featured);
   }
-
-  const mapped = (data as SupabaseDestination[]).map(toDestination);
-  // Temporary: Hide partner departures that are not featured
-  return mapped.filter(d => !d.partner || d.featured);
 }
 
 export async function getDestinationBySlugDB(slug: string) {
-  const { data, error } = await supabase
-    .from("destinations")
-    .select("*")
-    .eq("slug", slug)
-    .eq("active", true)
-    .single();
-
-  if (error || !data) return null;
-  const dest = toDestination(data as SupabaseDestination);
-  // Temporary: Hide partner departures that are not featured
-  if (dest.partner && !dest.featured) return null;
-  return dest;
+  try {
+    const data = await getDbDestinations();
+    const found = data.find((d) => d.slug === slug && d.active);
+    if (!found) return null;
+    const dest = toDestination(found);
+    if (dest.partner && !dest.featured) return null;
+    return dest;
+  } catch {
+    return null;
+  }
 }
 
-// Solo para el admin — trae todos incluyendo inactivos
 export async function getAllDestinationsAdmin() {
-  const { data, error } = await supabase
-    .from("destinations")
-    .select("*")
-    .order("year", { ascending: false })
-    .order("departure_date", { ascending: true });
-
-  if (error) {
-    console.error("Error fetching all destinations:", error.message);
+  try {
+    const data = await getDbDestinations();
+    const copy = [...data];
+    copy.sort((a, b) => {
+      if (a.year !== b.year) return b.year - a.year;
+      return a.departure_date.localeCompare(b.departure_date);
+    });
+    return copy;
+  } catch (err) {
+    console.error("Error fetching all destinations for admin:", err);
     return [];
   }
-
-  return data as SupabaseDestination[];
 }
