@@ -117,7 +117,7 @@ export default function TeamSection() {
       {/* Sección Directores */}
       <div>
         <div className="text-center mb-16">
-          <h3 className="text-[#a66d03] text-xs font-bold uppercase tracking-widest mb-2">
+          <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest mb-2">
             Liderazgo
           </h3>
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E1810]">
@@ -129,7 +129,7 @@ export default function TeamSection() {
           {DIRECTORS.map((director) => (
             <div
               key={director.name}
-              className="bg-[#F4F0EB] border border-[#a66d03]/20 rounded-3xl shadow-xl flex flex-col overflow-hidden w-full max-w-[340px] mx-auto border-b-8 border-b-[#a66d03] hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group"
+              className="bg-[#F4F0EB] border border-[#db5835]/20 rounded-3xl shadow-xl flex flex-col overflow-hidden w-full max-w-[340px] mx-auto border-b-8 border-b-[#db5835] hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group"
             >
               {/* Imagen Cuadrada de perfil 1:1 (Sin zoom click) */}
               <div className="w-full aspect-square overflow-hidden relative shrink-0">
@@ -144,7 +144,7 @@ export default function TeamSection() {
                   }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center bg-[#FAF7F2] -z-10">
-                  <span className="text-3xl font-black tracking-wider text-[#a66d03]">
+                  <span className="text-3xl font-black tracking-wider text-[#db5835]">
                     {getInitials(director.name)}
                   </span>
                 </div>
@@ -156,11 +156,11 @@ export default function TeamSection() {
                   <h3 className="text-2xl md:text-3xl font-bold font-serif text-[#0F213C] tracking-tight">
                     {director.name}
                   </h3>
-                  <div className="w-12 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-3.5" />
+                  <div className="w-12 h-0.5 bg-[#db5835] mx-auto mt-2 mb-3.5" />
                   <p className="text-[#0F213C] text-sm md:text-base font-bold tracking-[0.18em] uppercase">
                     {director.role}
                   </p>
-                  <p className="text-[#a66d03] text-xs md:text-sm font-bold tracking-[0.12em] uppercase">
+                  <p className="text-[#72500c] text-xs md:text-sm font-bold tracking-[0.12em] uppercase">
                     {director.title || "DIRECCIÓN GENERAL"}
                   </p>
                 </div>
@@ -168,7 +168,7 @@ export default function TeamSection() {
                 <div className="w-full">
                   <div className="w-full h-px bg-[#0F213C]/10 my-4" />
                   <div className="flex items-center gap-3.5 text-[#0F213C]/80">
-                    <Globe size={22} className="text-[#a66d03] shrink-0" />
+                    <Globe size={22} className="text-[#db5835] shrink-0" />
                     <div className="w-px h-8 bg-[#0F213C]/15 shrink-0" />
                     <p className="text-sm md:text-[16px] leading-snug text-left font-medium">
                       {director.description}
@@ -188,7 +188,7 @@ export default function TeamSection() {
             <div className="flex flex-col gap-10">
               {/* Info del departamento - Arriba y centrado */}
               <div className="text-center max-w-3xl mx-auto space-y-3.5">
-                <h3 className="text-2xl font-extrabold text-[#a66d03] tracking-tight">
+                <h3 className="text-2xl font-extrabold text-[#72500c] tracking-tight">
                   {dept.name}
                 </h3>
                 <p className="text-[#1E1810]/75 text-base sm:text-lg leading-relaxed">
@@ -201,7 +201,7 @@ export default function TeamSection() {
                 {dept.members.map((member) => (
                   <div
                     key={member.name}
-                    className="bg-[#F4F0EB] border border-[#1E1810]/5 rounded-3xl shadow-md flex flex-col overflow-hidden w-full max-w-[300px] border-b-8 border-b-[#a66d03] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 group"
+                    className="bg-[#F4F0EB] border border-[#1E1810]/5 rounded-3xl shadow-md flex flex-col overflow-hidden w-full max-w-[300px] border-b-8 border-b-[#db5835] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-500 group"
                   >
                     {/* Imagen Cuadrada de perfil 1:1 (Sin zoom click) */}
                     <div className="w-full aspect-square overflow-hidden relative shrink-0">
@@ -226,11 +226,11 @@ export default function TeamSection() {
                         <h3 className="text-xl md:text-2xl font-extrabold font-serif text-[#0F213C] tracking-tight">
                           {member.name}
                         </h3>
-                        <div className="w-8 h-0.5 bg-[#a66d03] mx-auto mt-2 mb-2.5" />
+                        <div className="w-8 h-0.5 bg-[#db5835] mx-auto mt-2 mb-2.5" />
                         <p className="text-[#0F213C] text-xs md:text-sm font-bold tracking-[0.15em] uppercase">
                           {member.role}
                         </p>
-                        <p className="text-[#a66d03] text-xs font-semibold tracking-[0.1em] uppercase">
+                        <p className="text-[#72500c] text-xs font-semibold tracking-[0.1em] uppercase">
                           {member.title || dept.name}
                         </p>
                       </div>
@@ -238,14 +238,14 @@ export default function TeamSection() {
                       <div className="w-full">
                         <div className="w-full h-px bg-[#0F213C]/10 my-3.5" />
                         <div className="flex items-center gap-3 text-[#0F213C]/80">
-                          <Globe size={18} className="text-[#a66d03] shrink-0" />
+                          <Globe size={18} className="text-[#db5835] shrink-0" />
                           <div className="w-px h-7 bg-[#0F213C]/15 shrink-0" />
                           <p className="text-sm md:text-[15px] leading-snug text-left font-medium">
                             {member.description ? (
                               member.description.includes("viaje") ? (
                                 <>
                                   Organizo cada detalle para que tu viaje sea{" "}
-                                  <span className="text-[#a66d03] font-bold">perfecto desde el primer momento.</span>
+                                  <span className="text-[#db5835] font-bold">perfecto desde el primer momento.</span>
                                 </>
                               ) : (
                                 member.description
@@ -253,7 +253,7 @@ export default function TeamSection() {
                             ) : (
                               <>
                                 Estamos para ayudarte a planificar tu{" "}
-                                <span className="text-[#a66d03] font-bold">próximo viaje.</span>
+                                <span className="text-[#db5835] font-bold">próximo viaje.</span>
                               </>
                             )}
                           </p>

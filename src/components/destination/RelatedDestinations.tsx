@@ -55,14 +55,14 @@ export default function RelatedDestinations({ current, allDestinations }: Props)
     <section className="py-20 px-6 bg-[#f5e6cc]/30">
       <div className="max-w-7xl mx-auto">
         <AnimatedSection className="flex items-center gap-3 mb-4">
-          <div className="h-px w-10 bg-[#a66d03]" />
-          <span className="text-[#a66d03] text-xs font-bold uppercase tracking-[0.3em]">
+          <div className="h-px w-10 bg-[#72500c]" />
+          <span className="text-[#72500c] text-xs font-bold uppercase tracking-[0.3em]">
             Seguí explorando
           </span>
         </AnimatedSection>
 
         <AnimatedSection delay={0.1} className="mb-10">
-          <h2 className="text-3xl md:text-4xl font-black uppercase text-[#5c3317] leading-tight">
+          <h2 className="text-3xl md:text-4xl font-black uppercase text-[#72500c] leading-tight">
             Otros destinos{" "}
             <span className="text-gold-gradient">que te pueden interesar</span>
           </h2>
@@ -77,7 +77,7 @@ export default function RelatedDestinations({ current, allDestinations }: Props)
         {/* Botón Ver más salidas */}
         <div className="flex justify-center mt-12">
           <Link href="/salidas" className="group flex flex-col items-center gap-2">
-            <span className="inline-flex items-center gap-3 px-8 py-4 btn-gold text-white rounded-full font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#a66d03]/20">
+            <span className="inline-flex items-center gap-3 px-8 py-4 btn-gold text-white rounded-full font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#db5835]/20">
               Ver más salidas
             </span>
           </Link>

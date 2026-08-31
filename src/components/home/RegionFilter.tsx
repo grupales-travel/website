@@ -102,16 +102,13 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
     />
   );
 
-  /* ─────────────────────────────────────────────────
-     PAGE MODE: hero oscuro (solo título) + filtro y grid en blanco
-  ───────────────────────────────────────────────── */
   if (pageMode) {
     return (
       <>
         {/* ── Hero oscuro — mismo header que Contacto ── */}
         <section className="relative pt-24 pb-10 px-6 bg-[#1E1810] overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(166,109,3,0.18),transparent)]" />
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#a66d03]/50 to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(219,88,53,0.18),transparent)]" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#db5835]/50 to-transparent" />
 
           <div className="max-w-4xl mx-auto relative z-10 text-center">
             <motion.div
@@ -120,21 +117,20 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center gap-3 mb-4"
             >
-              <div className="h-px w-10 bg-[#a66d03]" />
-              <span className="text-[#d9bf8f] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <div className="h-px w-10 bg-[#72500c]" />
+              <span className="text-[#db5835] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 {allDestinations.length} destinos confirmados
               </span>
-              <div className="h-px w-10 bg-[#a66d03]" />
+              <div className="h-px w-10 bg-[#72500c]" />
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight whitespace-nowrap"
-              style={{ color: "#f5e6cc" }}
+              className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight whitespace-nowrap text-white"
             >
-              Salidas Grupales <span className="text-gold-gradient">Acompañadas</span>
+              Salidas Grupales <span className="text-[#db5835]">Acompañadas</span>
             </motion.h1>
           </div>
         </section>
@@ -175,8 +171,8 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
                     exit={{ opacity: 0 }}
                     className="col-span-full flex flex-col items-center justify-center py-20 opacity-60"
                   >
-                    <p className="text-[#5c3317] font-bold text-lg">No encontramos viajes con esos filtros.</p>
-                    <p className="text-[#a66d03] text-sm mt-2">Intenta cambiar los criterios de búsqueda.</p>
+                    <p className="text-[#72500c] font-bold text-lg">No encontramos viajes con esos filtros.</p>
+                    <p className="text-[#db5835] text-sm mt-2">Intenta cambiar los criterios de búsqueda.</p>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -215,11 +211,11 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             transition={{ duration: 0.5 }}
             className="flex items-center justify-center gap-3 mb-4"
           >
-            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
-            <span className="text-[#a66d03] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
+            <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
               Explorá por región
             </span>
-            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
+            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
           </motion.div>
 
           <motion.h2
@@ -227,10 +223,10 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.87] whitespace-nowrap"
+            className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase leading-[0.87] whitespace-nowrap"
           >
-            Todos nuestros{" "}
-            <span className="text-gold-gradient">destinos</span>
+            <span className="text-[#72500c]">Todos nuestros </span>
+            <span className="text-[#db5835]">destinos</span>
           </motion.h2>
         </div>
 
@@ -256,8 +252,8 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
                 exit={{ opacity: 0 }}
                 className="col-span-full flex flex-col items-center justify-center py-20 opacity-60"
               >
-                <p className="text-[#5c3317] font-bold text-lg">No encontramos viajes con esos filtros.</p>
-                <p className="text-[#a66d03] text-sm mt-2">Intenta cambiar los criterios de búsqueda.</p>
+                <p className="text-[#72500c] font-bold text-lg">No encontramos viajes con esos filtros.</p>
+                <p className="text-[#db5835] text-sm mt-2">Intenta cambiar los criterios de búsqueda.</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -267,12 +263,12 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
         {limit && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="flex justify-center mt-12"
           >
             <Link href="/salidas" className="group flex flex-col items-center gap-2">
-              <span className="inline-flex items-center gap-3 px-8 py-4 btn-gold text-white rounded-full font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#a66d03]/20">
+              <span className="inline-flex items-center gap-3 px-8 py-4 btn-gold text-white rounded-full font-bold uppercase tracking-widest text-sm shadow-lg shadow-[#db5835]/20">
                 Ver todas las salidas
               </span>
             </Link>

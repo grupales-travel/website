@@ -72,7 +72,7 @@ export default function DestinationCard({
 
             // Determinar colores basados en el badge
             let badgeBg = "bg-[#d32f2f]"; // Rojo por defecto para agotado
-            if (destination.badge === 'ultimos') badgeBg = "bg-[#cda02a]"; // Dorado más claro/brillante
+            if (destination.badge === 'ultimos') badgeBg = "bg-[#db5835]"; // Naranja de marca
             if (destination.badge === 'nuevo') badgeBg = "bg-[#388e3c]"; // Verde (un poco más claro/vivo)
             if (destination.badge === 'popular') badgeBg = "bg-[#1976d2]"; // Azul
 
@@ -110,7 +110,7 @@ export default function DestinationCard({
               </p>
 
               {/* Días */}
-              <div className="flex items-center justify-center gap-1.5 text-[#d9bf8f] text-xs sm:text-sm font-bold mb-6 sm:mb-8 drop-shadow-md uppercase tracking-[0.2em]">
+              <div className="flex items-center justify-center gap-1.5 text-[#db5835] text-xs sm:text-sm font-bold mb-6 sm:mb-8 drop-shadow-md uppercase tracking-[0.2em]">
                 <Clock size={14} className="text-current" />
                 <span>{destination.days} DÍAS</span>
               </div>

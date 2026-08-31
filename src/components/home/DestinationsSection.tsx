@@ -36,8 +36,8 @@ export default function DestinationsSection({ destinations }: Props) {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-3 mb-4"
             >
-              <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
-              <span className="text-[#a66d03] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
+              <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Exclusivas
               </span>
             </motion.div>
@@ -49,7 +49,7 @@ export default function DestinationsSection({ destinations }: Props) {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[1.0]"
             >
-              <span className="text-[#5c3317]">Salidas Grupales</span>
+              <span className="text-[#72500c]">Salidas Grupales</span>
               <br />
               <span className="text-gold-gradient">Destacadas</span>
             </motion.h2>
@@ -64,7 +64,7 @@ export default function DestinationsSection({ destinations }: Props) {
           >
             <Link
               href="/salidas"
-              className="inline-flex items-center gap-2 text-sm font-bold text-[#a66d03] hover:text-[#bf8b2a] uppercase tracking-widest transition-colors duration-200 group"
+              className="inline-flex items-center gap-2 text-sm font-bold text-[#db5835] hover:text-[#e86543] uppercase tracking-widest transition-colors duration-200 group"
             >
               Ver todas
               <ArrowRight

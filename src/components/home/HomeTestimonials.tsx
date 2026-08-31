@@ -104,7 +104,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
               return (
                 <div
                   key={video.id}
-                  className="flex-shrink-0 w-80 max-w-[82vw] aspect-[9/16] rounded-3xl overflow-hidden snap-center bg-zinc-950 shadow-lg relative group/card cursor-pointer border-2 border-[#d9bf8f] hover:border-[#bf8b2a] hover:shadow-[#bf8b2a]/15 transition-all duration-300"
+                  className="flex-shrink-0 w-80 max-w-[82vw] aspect-[9/16] rounded-3xl overflow-hidden snap-center bg-zinc-950 shadow-lg relative group/card cursor-pointer border-2 border-[#db5835] hover:border-[#db5835] hover:shadow-[#db5835]/15 transition-all duration-300"
                   onClick={() => {
                     const videoEl = videoRefs.current[video.id];
                     if (!isCurrentPlaying) {
@@ -172,7 +172,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                           }
                         }
                       }}
-                      className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#a66d03] hover:text-white transition-all duration-300 shrink-0"
+                      className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#db5835] hover:text-white transition-all duration-300 shrink-0"
                     >
                       {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
                     </button>
@@ -205,7 +205,7 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
                             }
                           }
                         }}
-                        className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#a66d03]"
+                        className="w-full h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#db5835]"
                       />
                     </div>
                   </div>
@@ -231,11 +231,11 @@ export default function HomeTestimonials({ destinations, heroImages }: HomeTesti
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full h-full max-h-[85vh] sm:max-h-[90vh] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl bg-black border-2 border-[#d9bf8f]"
+              className="relative w-full h-full max-h-[85vh] sm:max-h-[90vh] aspect-[9/16] rounded-3xl overflow-hidden shadow-2xl bg-black border-2 border-[#db5835]"
             >
               <button
                 onClick={() => setActiveVideo(null)}
-                className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#a66d03] hover:text-white transition-all duration-300 cursor-pointer"
+                className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/90 hover:bg-[#db5835] hover:text-white transition-all duration-300 cursor-pointer"
               >
                 <X size={18} />
               </button>

@@ -92,10 +92,11 @@ export function resolveDestUrl(path: string | null): string {
   return `/r2-media/${path.replace(/^\//, "")}`;
 }
 
-function buildDepartureLabel(departure: string, returnDate: string | null): string {
-  if (!departure) return "";
-  if (returnDate) return `${departure} – ${returnDate}`;
-  return departure;
+function buildDepartureLabel(departure: string | number, returnDate: string | null): string {
+  const depStr = String(departure || "");
+  if (!depStr) return "";
+  if (returnDate) return `${depStr} – ${returnDate}`;
+  return depStr;
 }
 
 export function toDestination(d: SupabaseDestination) {
@@ -134,8 +135,8 @@ export async function getActiveDestinations() {
     const active = data.filter((d) => d.active);
 
     active.sort((a, b) => {
-      if (a.year !== b.year) return a.year - b.year;
-      return a.departure_date.localeCompare(b.departure_date);
+      if (a.year !== b.year) return (a.year || 0) - (b.year || 0);
+      return String(a.departure_date || "").localeCompare(String(b.departure_date || ""));
     });
 
     const mapped = active.map(toDestination);
@@ -164,8 +165,8 @@ export async function getAllDestinationsAdmin() {
     const data = await getDbDestinations();
     const copy = [...data];
     copy.sort((a, b) => {
-      if (a.year !== b.year) return b.year - a.year;
-      return a.departure_date.localeCompare(b.departure_date);
+      if (a.year !== b.year) return (b.year || 0) - (a.year || 0);
+      return String(a.departure_date || "").localeCompare(String(b.departure_date || ""));
     });
     return copy;
   } catch (err) {

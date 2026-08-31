@@ -41,8 +41,8 @@ export default function ExperienceSection() {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-3 mb-4"
             >
-              <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
-              <span className="text-[#a66d03] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
+              <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Por qué elegirnos
               </span>
             </motion.div>
@@ -53,9 +53,9 @@ export default function ExperienceSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.08 }}
-              className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#5c3317] leading-[0.88] mb-4 md:mb-7"
+              className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#db5835] leading-[0.88] mb-4 md:mb-7"
             >
-              Viví tu experiencia{" "}<span className="text-[#a66d03]">grupal</span>
+              Viví tu experiencia{" "}<span className="text-[#72500c]">grupal</span>
             </motion.h2>
 
             {/* Ventajas — texto más grande */}
@@ -67,12 +67,12 @@ export default function ExperienceSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.05 + i * 0.05 }}
-                  className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-white/50 border-l-2 border-[#a66d03]/45 hover:bg-white/70 transition-colors duration-200"
+                  className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-white/50 border-l-2 border-[#72500c]/45 hover:bg-white/70 transition-colors duration-200"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-[#a66d03]/10 flex items-center justify-center text-[#a66d03] shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#72500c]/10 flex items-center justify-center text-[#72500c] shrink-0">
                     {ICON_MAP[adv.icon]}
                   </div>
-                  <p className="font-bold text-[#5c3317] text-sm md:text-base uppercase tracking-wide leading-tight">
+                  <p className="font-bold text-[#72500c] text-sm md:text-base uppercase tracking-wide leading-tight">
                     {adv.title}
                   </p>
                 </motion.div>
@@ -104,16 +104,16 @@ export default function ExperienceSection() {
               </motion.a>
 
               {/* Separador vertical */}
-              <div className="h-10 w-px bg-[#a66d03]/20 hidden sm:block" />
+              <div className="h-10 w-px bg-[#72500c]/20 hidden sm:block" />
 
               {/* Stats a la derecha del botón */}
               <div className="hidden sm:flex items-center gap-0">
                 {STATS.map((s, i) => (
                   <div
                     key={i}
-                    className={`flex flex-col items-center ${i > 0 ? "pl-5 ml-5 border-l border-[#a66d03]/20" : ""}`}
+                    className={`flex flex-col items-center ${i > 0 ? "pl-5 ml-5 border-l border-[#72500c]/20" : ""}`}
                   >
-                    <span className="text-2xl font-black text-[#a66d03] leading-none tabular-nums">
+                    <span className="text-2xl font-black text-[#72500c] leading-none tabular-nums">
                       {s.value}
                     </span>
                     <span className="text-[10px] font-semibold text-[#1E1810]/45 uppercase tracking-wider mt-0.5">
@@ -134,7 +134,7 @@ export default function ExperienceSection() {
             className="relative h-full min-h-[280px] md:min-h-[420px] rounded-3xl overflow-hidden"
           >
             {/* Marco dorado offset decorativo */}
-            <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-3xl border border-[#a66d03]/30 pointer-events-none -z-10" />
+            <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-3xl border border-[#72500c]/30 pointer-events-none -z-10" />
 
             {/* La imagen — sola, sin overlays */}
             <div

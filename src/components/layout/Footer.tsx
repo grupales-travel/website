@@ -6,8 +6,8 @@ import { COMPANY, OFFICES } from "@/data/company";
 export default function Footer() {
   return (
     <footer className="bg-[#1E1810] text-white relative">
-      {/* Gold top border */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#a66d03] to-transparent" />
+      {/* Top border */}
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#db5835] to-transparent" />
 
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -58,18 +58,18 @@ export default function Footer() {
 
           {/* Col 2 — Oficinas */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest text-[#d9bf8f] mb-6">
+            <h4 className="text-sm font-bold uppercase tracking-widest text-[#db5835] mb-6">
               Nuestras Oficinas
             </h4>
             <ul className="flex flex-col gap-6">
               {OFFICES.map((office) => (
                 <li key={office.city}>
-                  <p className="text-[#f5e6cc]/70 font-semibold text-base mb-1.5">{office.city}</p>
+                  <p className="text-white/80 font-semibold text-base mb-1.5">{office.city}</p>
                   <a
                     href={`tel:${office.phone.replace(/[\s-]/g, "")}`}
-                    className="text-white/55 text-sm hover:text-[#d9bf8f] transition-colors duration-200 flex items-center gap-2 mb-1"
+                    className="text-white/55 text-sm hover:text-[#db5835] transition-colors duration-200 flex items-center gap-2 mb-1"
                   >
-                    <Phone size={13} className="text-[#a66d03] shrink-0" />
+                    <Phone size={13} className="text-[#db5835] shrink-0" />
                     {office.phone}
                   </a>
                   {office.address && office.mapsUrl && (
@@ -77,9 +77,9 @@ export default function Footer() {
                       href={office.mapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/55 text-sm hover:text-[#d9bf8f] transition-colors duration-200 flex items-center gap-2"
+                      className="text-white/55 text-sm hover:text-[#db5835] transition-colors duration-200 flex items-center gap-2"
                     >
-                      <MapPin size={13} className="text-[#a66d03] shrink-0" />
+                      <MapPin size={13} className="text-[#db5835] shrink-0" />
                       {office.address}
                     </a>
                   )}
@@ -90,7 +90,7 @@ export default function Footer() {
 
           {/* Col 3 — Links + contacto */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest text-[#d9bf8f] mb-6">
+            <h4 className="text-sm font-bold uppercase tracking-widest text-[#db5835] mb-6">
               Información
             </h4>
             <ul className="flex flex-col gap-3 mb-8">
@@ -108,7 +108,7 @@ export default function Footer() {
                     href={link.href}
                     target={link.href.endsWith(".pdf") ? "_blank" : undefined}
                     rel={link.href.endsWith(".pdf") ? "noopener noreferrer" : undefined}
-                    className="text-base text-white/55 hover:text-[#d9bf8f] transition-colors duration-200"
+                    className="text-base text-white/55 hover:text-[#db5835] transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -117,9 +117,9 @@ export default function Footer() {
             </ul>
             <a
               href={`mailto:${COMPANY.email}`}
-              className="inline-flex items-center gap-2 text-base text-white/55 hover:text-[#d9bf8f] transition-colors duration-200"
+              className="inline-flex items-center gap-2 text-base text-white/55 hover:text-[#db5835] transition-colors duration-200"
             >
-              <Mail size={15} className="text-[#a66d03]" />
+              <Mail size={15} className="text-[#db5835]" />
               {COMPANY.email}
             </a>
           </div>

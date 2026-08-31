@@ -101,9 +101,9 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
 
 function CTACard({ destination, onPreReserve }: { destination: Destination; onPreReserve: () => void }) {
   return (
-    <div className="rounded-2xl bg-[#1E1810] p-6 border border-[#a66d03]/20">
-      <p className="text-[#d9bf8f] text-sm font-bold uppercase tracking-widest mb-1">¿Te interesa?</p>
-      <h3 className="text-2xl font-black uppercase leading-tight mb-4" style={{ color: "#f5e6cc" }}>
+    <div className="rounded-2xl bg-[#1E1810] p-6 border border-[#db5835]/20">
+      <p className="text-[#db5835] text-sm font-bold uppercase tracking-widest mb-1">¿Te interesa?</p>
+      <h3 className="text-2xl font-black uppercase leading-tight mb-4 text-[#fafaf8]">
         Consultá sin compromiso
       </h3>
       <p className="text-white/50 text-base leading-relaxed mb-6">
@@ -178,11 +178,11 @@ export default function DestinationContent({ destination }: Props) {
             {/* 1. Descripción */}
             <div>
               <div className="flex items-center gap-3 mb-5">
-                <div className="h-px w-10 bg-[#a66d03]" />
-                <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">Sobre este viaje</span>
+                <div className="h-px w-10 bg-[#72500c]" />
+                <span className="text-[#72500c] text-sm font-bold uppercase tracking-[0.3em]">Sobre este viaje</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-[#5c3317] leading-[1.0] mb-6">
-                ¿Por qué elegir <span className="text-gold-gradient">{destination.title}?</span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-[#72500c] leading-[1.0] mb-6">
+                ¿Por qué elegir <span className="text-[#db5835]">{destination.title}?</span>
               </h2>
               <p className="text-[#1E1810]/65 text-lg leading-relaxed">{destination.description}</p>
             </div>
@@ -195,11 +195,11 @@ export default function DestinationContent({ destination }: Props) {
             {/* 3. Qué incluye */}
             {includes.length > 0 && (
               <div>
-                <h3 className="text-2xl font-black uppercase text-[#5c3317] tracking-wide mb-6">Qué incluye</h3>
+                <h3 className="text-2xl font-black uppercase text-[#72500c] tracking-wide mb-6">Qué incluye</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {visibleIncludes.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-[#f5e6cc]/40 border border-[#a66d03]/10">
-                      <CheckCircle size={16} className="text-[#a66d03] flex-shrink-0 mt-0.5" />
+                    <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-[#f5e6cc]/40 border border-[#db5835]/15">
+                      <CheckCircle size={16} className="text-[#db5835] flex-shrink-0 mt-0.5" />
                       <span className="text-base text-[#1E1810]/70 leading-snug">{item}</span>
                     </div>
                   ))}
@@ -208,7 +208,7 @@ export default function DestinationContent({ destination }: Props) {
                 {includes.length > INCLUDES_PREVIEW && (
                   <button
                     onClick={() => setShowAllIncludes(!showAllIncludes)}
-                    className="mt-4 flex items-center gap-2 text-[#a66d03] text-sm font-bold uppercase tracking-widest hover:text-[#bf8b2a] transition-colors duration-200 group"
+                    className="mt-4 flex items-center gap-2 text-[#db5835] text-sm font-bold uppercase tracking-widest hover:text-[#72500c] transition-colors duration-200 group"
                   >
                     <motion.span animate={{ rotate: showAllIncludes ? 180 : 0 }} transition={{ duration: 0.2 }}>
                       <ChevronDown size={16} />
@@ -222,7 +222,7 @@ export default function DestinationContent({ destination }: Props) {
                     href={destination.itineraryPdfUrl || formatWhatsAppUrl(destination.whatsappUrl || "", destination.title)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full border border-[#a66d03] text-[#a66d03] font-bold text-sm uppercase tracking-widest hover:bg-[#a66d03] hover:text-white transition-all duration-300 group"
+                    className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full border border-[#db5835] text-[#db5835] font-bold text-sm uppercase tracking-widest hover:bg-[#db5835] hover:text-white transition-all duration-300 group"
                   >
                     <FileText size={16} />
                     {destination.itineraryPdfUrl ? "Ver itinerario completo" : "Solicitar itinerario por WhatsApp"}
@@ -235,11 +235,11 @@ export default function DestinationContent({ destination }: Props) {
             {destination.mapImageUrl && (
               <div>
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-px w-10 bg-[#a66d03]" />
-                  <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">Mapa del recorrido</span>
+                  <div className="h-px w-10 bg-[#72500c]" />
+                  <span className="text-[#72500c] text-sm font-bold uppercase tracking-[0.3em]">Mapa del recorrido</span>
                 </div>
                 <div
-                  className="rounded-2xl overflow-hidden border border-[#a66d03]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group lg:cursor-pointer shadow-sm"
+                  className="rounded-2xl overflow-hidden border border-[#db5835]/20 bg-[#f5e6cc]/20 relative aspect-[4/3] group lg:cursor-pointer shadow-sm"
                   onClick={() => {
                     if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
                       setMapMode("expanded");
@@ -255,7 +255,7 @@ export default function DestinationContent({ destination }: Props) {
                     unoptimized
                   />
                   <div className="absolute inset-0 bg-black/0 hidden lg:flex group-hover:bg-black/20 transition-colors duration-300 items-center justify-center opacity-0 group-hover:opacity-100">
-                    <div className="bg-white/90 p-3 rounded-full text-[#a66d03] shadow-lg">
+                    <div className="bg-white/90 p-3 rounded-full text-[#db5835] shadow-lg">
                       <Maximize2 size={22} />
                     </div>
                   </div>
@@ -267,14 +267,14 @@ export default function DestinationContent({ destination }: Props) {
             {destination.videoTestimonials && destination.videoTestimonials.length > 0 && (
               <div>
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="h-px w-10 bg-[#a66d03]" />
-                  <span className="text-[#a66d03] text-sm font-bold uppercase tracking-[0.3em]">Videos</span>
+                  <div className="h-px w-10 bg-[#72500c]" />
+                  <span className="text-[#72500c] text-sm font-bold uppercase tracking-[0.3em]">Videos</span>
                 </div>
-                <h3 className="text-xl font-bold uppercase text-[#5c3317] tracking-wide mb-4">Descubrí el destino</h3>
+                <h3 className="text-xl font-bold uppercase text-[#72500c] tracking-wide mb-4">Descubrí el destino</h3>
                 <div className="relative group/gallery">
                   <button
                     onClick={() => scrollVideos("left")}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-[#a66d03]/20 flex items-center justify-center text-[#a66d03] opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-200 hover:bg-[#a66d03] hover:text-white"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-[#db5835]/20 flex items-center justify-center text-[#db5835] opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-200 hover:bg-[#db5835] hover:text-white"
                   >
                     <ChevronLeft size={20} strokeWidth={2.5} />
                   </button>
@@ -285,7 +285,7 @@ export default function DestinationContent({ destination }: Props) {
                   </div>
                   <button
                     onClick={() => scrollVideos("right")}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-[#a66d03]/20 flex items-center justify-center text-[#a66d03] opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-200 hover:bg-[#a66d03] hover:text-white"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-[#db5835]/20 flex items-center justify-center text-[#db5835] opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-200 hover:bg-[#db5835] hover:text-white"
                   >
                     <ChevronRight size={20} strokeWidth={2.5} />
                   </button>
@@ -326,7 +326,7 @@ export default function DestinationContent({ destination }: Props) {
             >
               <button
                 onClick={() => setActiveVideo(null)}
-                className="absolute top-6 right-4 sm:top-3 sm:right-3 z-[60] w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white/80 hover:bg-[#a66d03] hover:text-white transition-colors"
+                className="absolute top-6 right-4 sm:top-3 sm:right-3 z-[60] w-9 h-9 flex items-center justify-center rounded-full bg-black/60 text-white/80 hover:bg-[#db5835] hover:text-white transition-colors"
               >
                 <X size={18} />
               </button>
@@ -361,12 +361,12 @@ export default function DestinationContent({ destination }: Props) {
               <button
                 onClick={() => setMapMode(null)}
                 className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[100000] w-11 h-11 flex items-center justify-center rounded-full shadow-lg transition-opacity duration-200 hover:opacity-80"
-                style={{ background: "#5c3317" }}
+                style={{ background: "#72500c" }}
               >
                 <X size={20} color="#f5e6cc" />
               </button>
 
-              <div className="relative w-full h-full max-h-full max-w-6xl flex items-center justify-center rounded-3xl overflow-hidden shadow-2xl bg-white/70 border-2 border-[#a66d03]/40">
+              <div className="relative w-full h-full max-h-full max-w-6xl flex items-center justify-center rounded-3xl overflow-hidden shadow-2xl bg-white/70 border-2 border-[#db5835]/40">
                 <img
                   src={destination.mapImageUrl}
                   alt={`Mapa del recorrido ${destination.title}`}

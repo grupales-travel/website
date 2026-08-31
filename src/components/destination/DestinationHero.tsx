@@ -106,8 +106,8 @@ export default function DestinationHero({ destination }: Props) {
       >
         {/* Label — una sola fila */}
         <div className="flex items-center gap-2 mb-4 overflow-hidden">
-          <div className="h-px w-6 sm:w-10 bg-[#a66d03] shrink-0" />
-          <span className="text-[#d9bf8f] text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.08em] sm:tracking-[0.2em] md:tracking-[0.3em] whitespace-nowrap overflow-hidden text-ellipsis">
+          <div className="h-px w-6 sm:w-10 bg-[#72500c] shrink-0" />
+          <span className="text-[#db5835] text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.08em] sm:tracking-[0.2em] md:tracking-[0.3em] whitespace-nowrap overflow-hidden text-ellipsis">
             Salida Grupal Acompañada · Desde {destination.departureCity || "Buenos Aires"}
           </span>
         </div>
@@ -126,8 +126,8 @@ export default function DestinationHero({ destination }: Props) {
             <div key={i} className="flex items-center gap-x-2 md:gap-x-4 shrink-0">
               {i > 0 && <div className="h-4 md:h-5 w-px bg-white/30 shrink-0" />}
               <div className="flex items-center gap-1 sm:gap-2 drop-shadow-md">
-                <span className="text-[#d9bf8f] shrink-0 sm:hidden">{item.iconSm}</span>
-                <span className="text-[#d9bf8f] shrink-0 hidden sm:inline">{item.icon}</span>
+                <span className="text-[#db5835] shrink-0 sm:hidden">{item.iconSm}</span>
+                <span className="text-[#db5835] shrink-0 hidden sm:inline">{item.icon}</span>
                 <span className="text-white text-[10px] sm:text-[13px] md:text-[17px] font-black uppercase tracking-[0.05em] sm:tracking-[0.1em] whitespace-nowrap">
                   <span className="sm:hidden">{item.label}</span>
                   <span className="hidden sm:inline">{(item as any).labelFull ?? item.label}</span>

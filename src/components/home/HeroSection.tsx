@@ -106,7 +106,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
       />
 
       {/* Gold accent línea vertical */}
-      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-[#a66d03] to-transparent opacity-60 z-20" />
+      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-[#db5835] to-transparent opacity-60 z-20" />
 
       {/* Dots indicadores */}
       {images.length > 1 && (
@@ -117,7 +117,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
               onClick={() => setCurrentIndex(i)}
               aria-label={`Imagen ${i + 1}`}
               className={`w-1.5 rounded-full transition-all duration-500 ${i === currentIndex
-                ? "h-6 bg-[#a66d03]"
+                ? "h-6 bg-[#db5835]"
                 : "h-1.5 bg-white/30 hover:bg-white/60"
                 }`}
             />
@@ -242,7 +242,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ArrowDown size={18} className="text-[#a66d03]" />
+          <ArrowDown size={18} className="text-[#db5835]" />
         </motion.div>
       </motion.div>
     </section>

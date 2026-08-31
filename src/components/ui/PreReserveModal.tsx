@@ -187,8 +187,8 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
             className="relative w-full max-w-[500px] bg-white border border-[#a66d03]/30 rounded-2xl shadow-2xl overflow-hidden my-auto"
           >
             {/* Header decorativo */}
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#a66d03] via-[#d9bf8f] to-[#a66d03]" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(166,109,3,0.05),transparent)] pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#72500c] via-[#db5835] to-[#72500c]" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(219,88,53,0.05),transparent)] pointer-events-none" />
             
             <button
               onClick={onClose}
@@ -200,7 +200,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
             <div className="p-6 sm:p-8 relative z-10">
               {submitted ? (
                 <div className="flex flex-col items-center justify-center text-center py-4">
-                  <div className="w-16 h-16 rounded-full bg-[#a66d03]/20 flex items-center justify-center text-[#a66d03] mb-5">
+                  <div className="w-16 h-16 rounded-full bg-[#db5835]/20 flex items-center justify-center text-[#db5835] mb-5">
                     <CheckCircle size={32} />
                   </div>
                   <h3 className="text-xl font-black uppercase mb-2 text-[#1E1810]">
@@ -224,11 +224,11 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                   exit={{ opacity: 0, x: 20 }}
                 >
                   <div className="mb-6 text-center">
-                    <div className="inline-block px-3 py-1 rounded-full bg-[#a66d03]/10 border border-[#a66d03]/20 text-[#a66d03] text-[9px] font-bold uppercase tracking-widest mb-3">
+                    <div className="inline-block px-3 py-1 rounded-full bg-[#db5835]/10 border border-[#db5835]/20 text-[#db5835] text-[9px] font-bold uppercase tracking-widest mb-3">
                       Paso 1 de 2 · Contacto
                     </div>
                     <h3 className="text-xl sm:text-2xl font-black uppercase leading-tight mb-2 text-[#1E1810]">
-                      Pre-reservá <span className="text-[#a66d03]">tu lugar</span>
+                      Pre-reservá <span className="text-[#db5835]">tu lugar</span>
                     </h3>
                   </div>
 
@@ -243,7 +243,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                         required
                         value={contactForm.email}
                         onChange={handleContactChange}
-                        className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                        className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                         placeholder="Ej: juan@ejemplo.com"
                       />
                     </div>
@@ -258,7 +258,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                         required
                         value={contactForm.telefono}
                         onChange={handleContactChange}
-                        className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                        className="w-full bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                         placeholder="Ej: +54 9 11 1234 5678"
                       />
                     </div>
@@ -272,7 +272,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                           name="cantidadPasajeros"
                           value={contactForm.cantidadPasajeros}
                           onChange={handleContactChange}
-                          className="w-full appearance-none bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                          className="w-full appearance-none bg-white border border-gray-300 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                         >
                           {Array.from({ length: 20 }, (_, i) => i + 1).map((num) => (
                             <option key={num} value={num} className="bg-white text-gray-900">
@@ -292,7 +292,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                       type="submit"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="mt-2 flex items-center justify-center gap-2 w-full py-3 rounded-full btn-gold text-white text-xs font-black uppercase tracking-widest shadow-lg shadow-[#a66d03]/25"
+                      className="mt-2 flex items-center justify-center gap-2 w-full py-3 rounded-full btn-gold text-white text-xs font-black uppercase tracking-widest shadow-lg shadow-[#db5835]/25"
                     >
                       Siguiente
                       <ChevronRight size={14} />
@@ -314,7 +314,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                       <ChevronLeft size={14} />
                     </button>
                     <div>
-                      <div className="text-[#a66d03] text-[9px] font-bold uppercase tracking-widest mb-0.5">
+                      <div className="text-[#db5835] text-[9px] font-bold uppercase tracking-widest mb-0.5">
                         Paso 2 de 2
                       </div>
                       <h3 className="text-lg font-black uppercase leading-tight text-[#1E1810]">
@@ -327,13 +327,13 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                     <div className="max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar flex flex-col gap-4">
                       {passengers.map((p, index) => (
                         <div key={index} className="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#a66d03] mb-3">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#db5835] mb-3">
                             Pasajero {index + 1}
                           </h4>
                           <div className="flex flex-col gap-3">
                             <div className="grid grid-cols-2 gap-3">
                               <div>
-                                <label className="block text-[9px] font-bold uppercase tracking-wider text-white/50 mb-1 ml-1">
+                                <label className="block text-[9px] font-bold uppercase tracking-wider text-gray-600 mb-1 ml-1">
                                   Nombre *
                                 </label>
                                 <input
@@ -342,7 +342,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                   required
                                   value={p.nombre}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-black/20 border border-white/5 rounded-lg px-3 py-2 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                                 />
                               </div>
                               <div>
@@ -355,7 +355,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                   required
                                   value={p.apellido}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                                 />
                               </div>
                             </div>
@@ -371,7 +371,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                   required
                                   value={p.dni}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                                 />
                               </div>
                               <div>
@@ -384,7 +384,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                   required
                                   value={p.provincia}
                                   onChange={(e) => handlePassengerChange(index, e)}
-                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                                  className="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                                 />
                               </div>
                             </div>
@@ -401,14 +401,14 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                     required
                                     value={p.diaNac}
                                     onChange={(e) => handlePassengerChange(index, e)}
-                                    className="w-full appearance-none bg-black/20 border border-white/5 rounded-lg pl-3 pr-6 py-2.5 text-xs text-white focus:outline-none focus:border-[#a66d03] focus:bg-white/5 transition-all duration-300"
+                                    className="w-full appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-6 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                                   >
                                     <option value="" disabled>Día</option>
                                     {DAYS.map(d => (
-                                      <option key={d} value={d} className="bg-[#1E1810] text-white">{d}</option>
+                                      <option key={d} value={d} className="bg-white text-gray-900">{d}</option>
                                     ))}
                                   </select>
-                                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none text-white/40">
+                                  <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none text-gray-500">
                                     <svg width="8" height="5" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
@@ -422,7 +422,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                     required
                                     value={p.mesNac}
                                     onChange={(e) => handlePassengerChange(index, e)}
-                                    className="w-full appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-6 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                                    className="w-full appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-6 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                                   >
                                     <option value="" disabled>Mes</option>
                                     {MONTHS.map((m, i) => (
@@ -443,7 +443,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                                     required
                                     value={p.anioNac}
                                     onChange={(e) => handlePassengerChange(index, e)}
-                                    className="w-full appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-6 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#a66d03] focus:ring-1 focus:ring-[#a66d03] transition-all duration-300 shadow-sm"
+                                    className="w-full appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-6 py-2.5 text-xs text-gray-900 focus:outline-none focus:border-[#db5835] focus:ring-1 focus:ring-[#db5835] transition-all duration-300 shadow-sm"
                                   >
                                     <option value="" disabled>Año</option>
                                     {YEARS.map(y => (
@@ -468,7 +468,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                       disabled={sending}
                       whileHover={{ scale: sending ? 1 : 1.02 }}
                       whileTap={{ scale: sending ? 1 : 0.98 }}
-                      className="mt-1 flex items-center justify-center gap-2 w-full py-3 rounded-full btn-gold text-white text-xs font-black uppercase tracking-widest disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-[#a66d03]/25"
+                      className="mt-1 flex items-center justify-center gap-2 w-full py-3 rounded-full btn-gold text-white text-xs font-black uppercase tracking-widest disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-[#db5835]/25"
                     >
                       {sending ? (
                         <>

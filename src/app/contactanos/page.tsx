@@ -58,8 +58,8 @@ export default function ContactanosPage() {
 
         {/* Hero compacto */}
         <section className="relative pt-24 pb-10 px-6 bg-[#1E1810] overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(166,109,3,0.18),transparent)]" />
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#a66d03]/50 to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(219,88,53,0.18),transparent)]" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#db5835]/50 to-transparent" />
 
           <div className="max-w-4xl mx-auto relative z-10 text-center">
             <motion.div
@@ -68,21 +68,20 @@ export default function ContactanosPage() {
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center gap-3 mb-4"
             >
-              <div className="h-px w-10 bg-[#a66d03]" />
-              <span className="text-[#d9bf8f] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <div className="h-px w-10 bg-[#72500c]" />
+              <span className="text-[#db5835] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Estamos para ayudarte
               </span>
-              <div className="h-px w-10 bg-[#a66d03]" />
+              <div className="h-px w-10 bg-[#72500c]" />
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight whitespace-nowrap"
-              style={{ color: "#f5e6cc" }}
+              className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight text-white"
             >
-              Hablemos de <span className="text-gold-gradient">tu próximo viaje</span>
+              Hablemos de <span className="text-[#db5835]">tu próximo viaje</span>
             </motion.h1>
           </div>
         </section>
@@ -106,15 +105,15 @@ export default function ContactanosPage() {
             {/* Form — 3 cols */}
             <div className="lg:col-span-3">
               <AnimatedSection>
-                <h2 className="text-3xl font-black uppercase mb-8 leading-tight" style={{ color: "#5c3317" }}>
-                  Envianos una <span className="text-gold-gradient">consulta</span>
+                <h2 className="text-3xl font-black uppercase mb-8 leading-tight text-[#72500c]">
+                  Envianos una <span className="text-[#db5835]">consulta</span>
                 </h2>
               </AnimatedSection>
 
               {submitted ? (
                 <AnimatedSection direction="up">
                   <div className="flex flex-col items-center justify-center py-20 text-center">
-                    <div className="w-20 h-20 rounded-full bg-[#a66d03]/10 flex items-center justify-center text-[#a66d03] mb-6">
+                    <div className="w-20 h-20 rounded-full bg-[#db5835]/10 flex items-center justify-center text-[#db5835] mb-6">
                       <CheckCircle size={40} />
                     </div>
                     <h3 className="text-2xl font-black uppercase text-[#1E1810] mb-3">
@@ -125,7 +124,7 @@ export default function ContactanosPage() {
                     </p>
                     <button
                       onClick={() => { setSubmitted(false); setForm({ name: "", phone: "", email: "", message: "" }); }}
-                      className="mt-8 text-[#a66d03] text-sm font-bold uppercase tracking-widest hover:underline"
+                      className="mt-8 text-[#db5835] text-sm font-bold uppercase tracking-widest hover:underline"
                     >
                       Enviar otra consulta
                     </button>
@@ -137,7 +136,7 @@ export default function ContactanosPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#a66d03] mb-2">
+                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
                           Nombre completo *
                         </label>
                         <input
@@ -147,11 +146,11 @@ export default function ContactanosPage() {
                           onChange={handleChange}
                           required
                           placeholder="Juan García"
-                          className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#a66d03] focus:shadow-[0_0_0_3px_rgba(166,109,3,0.08)] transition-all duration-300"
+                          className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#a66d03] mb-2">
+                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
                           Teléfono / WhatsApp *
                         </label>
                         <input
@@ -161,13 +160,13 @@ export default function ContactanosPage() {
                           onChange={handleChange}
                           required
                           placeholder="+54 9 266 000-0000"
-                          className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#a66d03] focus:shadow-[0_0_0_3px_rgba(166,109,3,0.08)] transition-all duration-300"
+                          className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#a66d03] mb-2">
+                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
                         Email *
                       </label>
                       <input
@@ -177,12 +176,12 @@ export default function ContactanosPage() {
                         onChange={handleChange}
                         required
                         placeholder="juan@ejemplo.com"
-                        className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#a66d03] focus:shadow-[0_0_0_3px_rgba(166,109,3,0.08)] transition-all duration-300"
+                        className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#a66d03] mb-2">
+                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
                         Mensaje *
                       </label>
                       <textarea
@@ -192,7 +191,7 @@ export default function ContactanosPage() {
                         required
                         rows={5}
                         placeholder="Contanos adónde querés ir, cuántas personas viajan, fechas tentativas..."
-                        className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#a66d03] focus:shadow-[0_0_0_3px_rgba(166,109,3,0.08)] transition-all duration-300 resize-none"
+                        className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300 resize-none"
                       />
                     </div>
 
@@ -201,7 +200,7 @@ export default function ContactanosPage() {
                       disabled={sending}
                       whileHover={{ scale: sending ? 1 : 1.03 }}
                       whileTap={{ scale: sending ? 1 : 0.97 }}
-                      className="self-start flex items-center gap-2.5 px-10 py-4 rounded-full btn-gold text-white text-sm font-black uppercase tracking-widest disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-[#a66d03]/25"
+                      className="self-start flex items-center gap-2.5 px-10 py-4 rounded-full btn-gold text-white text-sm font-black uppercase tracking-widest disabled:opacity-60 disabled:cursor-not-allowed shadow-lg shadow-[#db5835]/25"
                     >
                       {sending ? (
                         <>
@@ -220,44 +219,43 @@ export default function ContactanosPage() {
               )}
             </div>
 
-            {/* Sidebar — 2 cols — panel oscuro estilo ContactCTA */}
+            {/* Sidebar — 2 cols — panel tarjetas Naranja #db5835 */}
             <div className="lg:col-span-2">
-              <div className="rounded-3xl bg-[#1E1810] p-7 flex flex-col gap-5 relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(166,109,3,0.15),transparent)] pointer-events-none" />
-                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#a66d03]/60 to-transparent" />
+              <div className="rounded-3xl bg-[#72500c] p-6 flex flex-col gap-4 relative overflow-hidden shadow-xl">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(219,88,53,0.25),transparent)] pointer-events-none" />
 
                 {OFFICES.map((office) => (
-                  <div key={office.city} className="relative z-10 rounded-2xl border border-[#a66d03]/25 bg-white/5 p-5 flex flex-col gap-3">
+                  <div key={office.city} className="relative z-10 rounded-2xl bg-[#db5835] p-5 flex flex-col gap-3 text-white shadow-md">
 
-                      <h3 className="text-base font-black uppercase tracking-wide" style={{ color: "#f5e6cc" }}>
+                      <h3 className="text-lg font-black uppercase tracking-wide text-center text-white">
                         {office.city}
                       </h3>
 
-                      <a href={`tel:${office.phone.replace(/[\s-]/g, "")}`} className="group flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#a66d03]/20 flex items-center justify-center group-hover:bg-[#a66d03] transition-colors duration-200 shrink-0">
-                          <Phone size={13} className="text-[#a66d03] group-hover:text-white transition-colors" />
+                      <a href={`tel:${office.phone.replace(/[\s-]/g, "")}`} className="group flex items-center gap-3 hover:opacity-90">
+                        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                          <Phone size={13} className="text-white" />
                         </div>
-                        <span className="text-white/80 font-bold text-sm group-hover:text-[#d9bf8f] transition-colors duration-200">
+                        <span className="text-white font-bold text-sm">
                           {office.phone}
                         </span>
                       </a>
 
                       {office.address && (
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-[#a66d03]/20 flex items-center justify-center shrink-0">
-                            <MapPin size={13} className="text-[#a66d03]" />
+                          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                            <MapPin size={13} className="text-white" />
                           </div>
-                          <span className="text-white/55 text-sm">{office.address}</span>
+                          <span className="text-white/95 text-sm font-semibold">{office.address}</span>
                         </div>
                       )}
 
-                      <div className="flex gap-2 pt-2 border-t border-white/8">
+                      <div className="flex gap-2 pt-2 border-t border-white/20">
                         {office.whatsapp && (
                           <a
                             href={office.whatsapp}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl btn-gold text-white text-xs font-black uppercase tracking-wider"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-white text-[#db5835] text-xs font-black uppercase tracking-wider hover:bg-white/90 transition-all duration-200"
                           >
                             <img src="/wp-icon.png" alt="WhatsApp" className="w-3.5 h-3.5 object-contain" />
                             WhatsApp
@@ -268,10 +266,10 @@ export default function ContactanosPage() {
                             href={office.mapsUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-white/8 border border-white/15 text-white/70 text-xs font-bold uppercase tracking-wider hover:bg-white/15 hover:text-white transition-all duration-200"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-white/20 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/30 transition-all duration-200"
                           >
                             <Navigation size={12} />
-                            Oficina
+                            Mapa
                           </a>
                         )}
                       </div>

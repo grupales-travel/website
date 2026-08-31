@@ -52,11 +52,11 @@ export default function BeneficiosPage() {
         </div>
 
         {/* Stats */}
-        <section className="py-10 px-6 bg-[#f5e6cc]/50 border-b border-[#a66d03]/12">
+        <section className="py-10 px-6 bg-[#f5e6cc]/50 border-b border-[#db5835]/12">
           <div className="max-w-5xl mx-auto grid grid-cols-4 gap-3">
             {STATS.map((stat, i) => (
               <AnimatedSection key={stat.label} delay={i * 0.07} direction="up" className="flex flex-col items-center justify-center text-center">
-                <p className="text-lg sm:text-3xl md:text-4xl font-black text-[#a66d03] leading-none mb-0.5">
+                <p className="text-lg sm:text-3xl md:text-4xl font-black text-[#db5835] leading-none mb-0.5">
                   {stat.value}
                 </p>
                 <p className="text-[#1E1810]/55 text-[8px] sm:text-sm font-bold uppercase tracking-wide leading-tight">
@@ -69,22 +69,22 @@ export default function BeneficiosPage() {
 
         {/* Beneficios */}
         <section className="py-14 px-6 bg-[#f5e6cc] overflow-hidden relative">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_75%_at_80%_50%,rgba(166,109,3,0.09),transparent)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_55%_75%_at_80%_50%,rgba(219,88,53,0.09),transparent)] pointer-events-none" />
           <div className="max-w-6xl mx-auto relative">
             <div className="text-center mb-5">
-              <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight" style={{ color: "#5c3317" }}>
-                Todo lo que <span className="text-gold-gradient">necesitás</span>
+              <h2 className="text-3xl md:text-4xl font-black uppercase leading-tight text-[#72500c]">
+                Todo lo que <span className="text-[#db5835]">necesitás</span>
               </h2>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {ADVANTAGES.filter((adv) => adv.id !== "room").map((adv) => (
-                <div key={adv.id} className="flex items-start gap-4 px-6 py-6 rounded-xl border-l-2 bg-white/50 border-[#a66d03]/45 hover:bg-white/70 transition-colors duration-200">
-                  <div className="w-10 h-10 rounded-lg bg-[#a66d03]/10 flex items-center justify-center text-[#a66d03] shrink-0 mt-0.5">
+                <div key={adv.id} className="flex items-start gap-4 px-6 py-6 rounded-xl border-l-2 bg-white/50 border-[#db5835]/45 hover:bg-white/70 transition-colors duration-200">
+                  <div className="w-10 h-10 rounded-lg bg-[#db5835]/10 flex items-center justify-center text-[#db5835] shrink-0 mt-0.5">
                     {ICON_COMPONENTS[adv.icon]}
                   </div>
                   <div>
-                    <p className="font-black text-[#8c5a2b] text-lg uppercase tracking-wide leading-tight mb-0.5">
+                    <p className="font-black text-[#72500c] text-lg uppercase tracking-wide leading-tight mb-0.5">
                       {adv.title}
                     </p>
                     <p className="text-[#1E1810]/60 text-lg leading-[1.2]">
@@ -109,12 +109,12 @@ export default function BeneficiosPage() {
 
         {/* Quote */}
         <section className="py-16 px-6 bg-[#1E1810] relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_80%_at_30%_50%,rgba(166,109,3,0.12),transparent)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_80%_at_30%_50%,rgba(219,88,53,0.12),transparent)]" />
           <div className="max-w-4xl mx-auto relative z-10">
             <AnimatedSection>
               <div className="flex items-center gap-3 mb-5">
-                <div className="h-px w-10 bg-[#a66d03]" />
-                <span className="text-[#d9bf8f] text-xs font-bold uppercase tracking-[0.3em]">
+                <div className="h-px w-10 bg-[#72500c]" />
+                <span className="text-[#db5835] text-xs font-bold uppercase tracking-[0.3em]">
                   Nuestra filosofía
                 </span>
               </div>

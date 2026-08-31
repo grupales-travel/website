@@ -68,11 +68,12 @@ const MONTHS: Record<string, number> = {
     jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11
 };
 
-function parseDateScore(dateStr: string, year: number): number {
-    if (!dateStr || dateStr.toLowerCase() === "consultar") return 9999999999999;
+function parseDateScore(dateStr: string | number, year: number): number {
+    const str = String(dateStr || "");
+    if (!str || str.toLowerCase() === "consultar") return 9999999999999;
 
     // Try to parse something like "13 Ago" or "Ago"
-    const lower = dateStr.toLowerCase();
+    const lower = str.toLowerCase();
     let monthScore = 0;
     let dayScore = 1;
 

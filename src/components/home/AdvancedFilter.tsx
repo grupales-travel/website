@@ -108,7 +108,7 @@ export default function AdvancedFilter({
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck={false}
-              className="w-full pl-9 pr-9 py-2.5 rounded-full bg-white text-[#1E1810] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.08)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/40 placeholder:text-[#1E1810]/40"
+              className="w-full pl-9 pr-9 py-2.5 rounded-full bg-white text-[#1E1810] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.08)] focus:outline-none focus:ring-2 focus:ring-[#db5835]/40 placeholder:text-[#1E1810]/40"
               style={{ fontSize: 16 }}
             />
             {filters.search && (
@@ -134,7 +134,7 @@ export default function AdvancedFilter({
                 placeholder="Buscar por título..."
                 value={filters.search}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07)] focus:outline-none focus:ring-2 focus:ring-[#a66d03]/50 transition-shadow placeholder:text-[#1E1810]/40"
+                className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07)] focus:outline-none focus:ring-2 focus:ring-[#db5835]/50 transition-shadow placeholder:text-[#1E1810]/40"
               />
             </div>
 
@@ -261,9 +261,9 @@ function FilterPill({
             : "bg-white text-[#1E1810]/65 shadow-[0_1px_4px_rgba(0,0,0,0.08)] hover:text-[#1E1810]"
           }
         `}
-        style={isDark ? { backgroundColor: "#5c3317", boxShadow: "0 4px_20px_rgba(92,51,23,0.3)" } : {}}
+        style={isDark ? { backgroundColor: "#72500c", boxShadow: "0 4px 20px rgba(114,80,12,0.3)" } : {}}
       >
-        <span className={`shrink-0 ${isDark ? "text-[#cd9720]" : "text-[#1E1810]/35"}`}>
+        <span className={`shrink-0 ${isDark ? "text-[#db5835]" : "text-[#1E1810]/35"}`}>
           {icon}
         </span>
         <span className="text-[12px] sm:text-[15px] font-semibold leading-none whitespace-nowrap">
@@ -319,7 +319,7 @@ function SheetOption({ label, selected, onClick }: { label: string; selected: bo
         w-full flex items-center justify-between px-4 py-2.5 text-left
         text-[14px] leading-none transition-colors duration-75 cursor-pointer
         ${selected
-          ? "text-[#5c3317] font-semibold bg-[#f5e6cc]/60"
+          ? "text-[#72500c] font-semibold bg-[#fcebe6]"
           : "text-[#1E1810]/60 font-medium hover:bg-black/[0.03] hover:text-[#1E1810]/90"
         }
       `}
@@ -334,7 +334,7 @@ function SheetOption({ label, selected, onClick }: { label: string; selected: bo
             transition={{ duration: 0.1 }}
             className="ml-4 shrink-0"
           >
-            <Check size={14} strokeWidth={2.5} className="text-[#cd9720]" />
+            <Check size={14} strokeWidth={2.5} className="text-[#db5835]" />
           </motion.span>
         )}
       </AnimatePresence>

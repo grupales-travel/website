@@ -113,7 +113,7 @@ export default function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-[100] transition-all duration-500",
           (scrolled || !isHome)
-            ? "bg-[#1E1810]/95 backdrop-blur-md border-b border-[#a66d03]/30 py-2"
+            ? "bg-[#72500c]/95 backdrop-blur-md border-b border-[#db5835]/30 py-2 shadow-lg"
             : "bg-transparent py-3"
         )}
       >
@@ -211,7 +211,7 @@ export default function Navbar() {
             className="fixed inset-0 z-[95] flex flex-col bg-[#1E1810]"
             style={{ touchAction: "none" }}
           >
-            <div className="h-1 w-full bg-gradient-to-r from-[#a66d03] via-[#bf8b2a] to-[#a66d03]" />
+            <div className="h-1 w-full bg-gradient-to-r from-[#72500c] via-[#db5835] to-[#72500c]" />
             <div className="flex-1 flex flex-col justify-center px-8 py-20">
               <nav className="flex flex-col gap-2">
                 {NAV_LINKS.map((link, i) => (
@@ -224,7 +224,7 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="text-3xl font-black text-white/90 hover:text-[#d9bf8f] uppercase tracking-tight transition-colors duration-200 block py-1"
+                      className="text-3xl font-black text-white/90 hover:text-[#db5835] uppercase tracking-tight transition-colors duration-200 block py-1"
                     >
                       {link.label}
                     </Link>

@@ -6,15 +6,11 @@ import { COMPANY, OFFICES } from "@/data/company";
 
 export default function ContactCTA() {
   return (
-    <section className="relative py-10 md:py-14 lg:py-16 px-6 overflow-hidden bg-[#1E1810]">
-      {/* Gradient sutil */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(166,109,3,0.15),transparent)] pointer-events-none" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#a66d03]/60 to-transparent" />
-
+    <section className="relative py-12 md:py-16 lg:py-20 px-6 overflow-hidden bg-[#fafaf8]">
       <div className="relative max-w-6xl mx-auto">
 
         {/* ── Título ── */}
-        <div className="text-center mb-6 md:mb-8">
+        <div className="text-center mb-8 md:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -22,11 +18,11 @@ export default function ContactCTA() {
             transition={{ duration: 0.5 }}
             className="flex items-center justify-center gap-3 mb-3"
           >
-            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
-            <span className="text-[#d9bf8f] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
+            <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
               Hablemos
             </span>
-            <div className="h-px w-6 sm:w-10 bg-[#a66d03]" />
+            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
           </motion.div>
 
           <motion.h2
@@ -34,14 +30,14 @@ export default function ContactCTA() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.92] whitespace-nowrap"
-            style={{ color: "#f5e6cc" }}
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.92]"
           >
-            Comunicate con <span className="text-gold-gradient">nosotros</span>
+            <span className="text-[#db5835]">Comunicate con </span>
+            <span className="text-[#72500c]">nosotros</span>
           </motion.h2>
         </div>
 
-        {/* ── Oficinas ── */}
+        {/* ── Oficinas (Tarjetas Naranja #db5835) ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {OFFICES.map((office, i) => (
             <motion.div
@@ -50,48 +46,48 @@ export default function ContactCTA() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 + i * 0.08 }}
-              className="rounded-2xl border border-[#a66d03]/25 bg-white/5 p-6 flex flex-col gap-4"
+              className="rounded-2xl bg-[#db5835] text-white p-6 flex flex-col gap-4 shadow-xl shadow-[#db5835]/20"
             >
-              {/* Ciudad — centrada */}
-              <h3 className="text-2xl font-black uppercase tracking-wide text-center" style={{ color: "#f5e6cc" }}>
+              {/* Ciudad */}
+              <h3 className="text-2xl font-black uppercase tracking-wide text-center text-white">
                 {office.city}
               </h3>
 
               {/* Teléfono */}
               <a
                 href={`tel:${office.phone.replace(/[\s-]/g, "")}`}
-                className="group flex items-center gap-3"
+                className="group flex items-center gap-3 hover:opacity-90 transition-opacity"
               >
-                <div className="w-10 h-10 rounded-full bg-[#a66d03]/20 flex items-center justify-center group-hover:bg-[#a66d03] transition-colors duration-200 shrink-0">
-                  <Phone size={16} className="text-[#a66d03] group-hover:text-white transition-colors" />
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <Phone size={16} className="text-white" />
                 </div>
-                <span className="text-base md:text-lg font-black text-white/80 group-hover:text-[#d9bf8f] transition-colors duration-200 tracking-wide">
+                <span className="text-base md:text-lg font-black text-white tracking-wide">
                   {office.phone}
                 </span>
               </a>
 
-              {/* Dirección — mismo tamaño y color que teléfono */}
+              {/* Dirección */}
               {office.address && (
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#a66d03]/20 flex items-center justify-center shrink-0">
-                    <MapPin size={16} className="text-[#a66d03]" />
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                    <MapPin size={16} className="text-white" />
                   </div>
-                  <span className="text-base md:text-lg font-black text-white/80 tracking-wide">
+                  <span className="text-base md:text-lg font-black text-white/95 tracking-wide">
                     {office.address}
                   </span>
                 </div>
               )}
 
-              {/* Acciones */}
-              <div className="flex gap-3 mt-auto pt-2 border-t border-white/8">
+              {/* Acciones (Botones Blancos) */}
+              <div className="flex gap-3 mt-auto pt-3 border-t border-white/20">
                 {office.whatsapp && (
                   <a
                     href={office.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl btn-gold text-white text-sm font-black uppercase tracking-wider shadow-lg shadow-[#a66d03]/30"
+                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white text-[#db5835] text-xs font-black uppercase tracking-wider hover:bg-white/90 transition-all duration-200 shadow-md"
                   >
-                    <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
+                    <img src="/wp-icon.png" alt="WhatsApp" className="w-3.5 h-3.5 object-contain" />
                     WhatsApp
                   </a>
                 )}
@@ -100,10 +96,10 @@ export default function ContactCTA() {
                     href={office.mapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white/8 border border-white/15 text-white/70 text-sm font-bold uppercase tracking-wider hover:bg-white/15 hover:text-white transition-all duration-200"
+                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-white/20 text-white text-xs font-bold uppercase tracking-wider hover:bg-white/30 transition-all duration-200"
                   >
-                    <Navigation size={14} />
-                    Oficina
+                    <Navigation size={13} />
+                    Mapa
                   </a>
                 )}
               </div>
@@ -117,16 +113,18 @@ export default function ContactCTA() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-7"
+          className="text-center mt-10"
         >
           <a
             href={`mailto:${COMPANY.email}`}
-            className="inline-flex items-center gap-2 text-base font-semibold text-white/40 hover:text-[#d9bf8f] transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-base font-bold text-[#db5835] hover:text-[#72500c] uppercase tracking-wider transition-colors duration-200"
           >
-            <Mail size={15} className="text-[#a66d03]" />
+            <Mail size={16} className="text-[#db5835]" />
             {COMPANY.email}
           </a>
-          <p className="text-white/25 text-sm mt-1">Respondemos en menos de 24 horas hábiles</p>
+          <p className="text-[#72500c]/70 text-xs font-bold uppercase tracking-widest mt-1">
+            Respondemos en menos de 24 hrs. hábiles
+          </p>
         </motion.div>
 
       </div>

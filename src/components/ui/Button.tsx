@@ -20,7 +20,7 @@ interface ButtonProps {
 
 const variants = {
   gold: "btn-gold text-white drop-shadow-md",
-  outline: "bg-transparent text-[#a66d03] border border-[#a66d03] hover:bg-[#a66d03] hover:text-white",
+  outline: "bg-transparent text-[#db5835] border border-[#db5835] hover:bg-[#db5835] hover:text-white",
   ghost: "bg-transparent text-white border border-white/30 hover:bg-white/10 hover:border-white/60",
   dark: "bg-[#1E1810] text-white border border-[#1E1810] hover:bg-[#2d2418]",
 };
@@ -46,7 +46,7 @@ export default function Button({
 }: ButtonProps) {
   const baseClasses = cn(
     "inline-flex items-center justify-center gap-2.5 rounded-full font-semibold uppercase transition-all duration-300",
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a66d03] focus-visible:ring-offset-2",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#db5835] focus-visible:ring-offset-2",
     "select-none cursor-pointer",
     variants[variant],
     sizes[size],
