@@ -18,11 +18,11 @@ export default function ContactCTA() {
             transition={{ duration: 0.5 }}
             className="flex items-center justify-center gap-3 mb-3"
           >
-            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
-            <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+            <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
+            <span className="text-[#ba8728] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
               Hablemos
             </span>
-            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
+            <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
           </motion.div>
 
           <motion.h2
@@ -33,7 +33,7 @@ export default function ContactCTA() {
             className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.92]"
           >
             <span className="text-[#db5835]">Comunicate con </span>
-            <span className="text-[#72500c]">nosotros</span>
+            <span className="text-[#ba8728]">nosotros</span>
           </motion.h2>
         </div>
 

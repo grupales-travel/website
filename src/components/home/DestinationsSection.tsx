@@ -36,8 +36,8 @@ export default function DestinationsSection({ destinations }: Props) {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-3 mb-4"
             >
-              <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
-              <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
+              <span className="text-[#ba8728] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Exclusivas
               </span>
             </motion.div>
@@ -49,7 +49,7 @@ export default function DestinationsSection({ destinations }: Props) {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-[1.0]"
             >
-              <span className="text-[#72500c]">Salidas Grupales</span>
+              <span className="text-[#db5835]">Salidas Grupales</span>
               <br />
               <span className="text-gold-gradient">Destacadas</span>
             </motion.h2>

@@ -187,7 +187,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
             className="relative w-full max-w-[500px] bg-white border border-[#a66d03]/30 rounded-2xl shadow-2xl overflow-hidden my-auto"
           >
             {/* Header decorativo */}
-            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#72500c] via-[#db5835] to-[#72500c]" />
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ba8728] via-[#db5835] to-[#ba8728]" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(219,88,53,0.05),transparent)] pointer-events-none" />
             
             <button

@@ -94,9 +94,10 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
           </motion.div>
         ))}
 
-        {/* Overlays — siempre visibles, no animados */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1E1810]/60 via-transparent to-transparent" />
+        {/* Overlays — Luminoso y cálido con luz natural y glow ámbar/dorado */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/15 to-black/60 pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-[#db5835]/30 via-[#ba8728]/15 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent pointer-events-none" />
       </div>
 
       {/* Grain — archivo estático cacheado */}

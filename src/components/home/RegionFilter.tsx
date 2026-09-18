@@ -117,11 +117,11 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center gap-3 mb-4"
             >
-              <div className="h-px w-10 bg-[#72500c]" />
+              <div className="h-px w-10 bg-[#ba8728]" />
               <span className="text-[#db5835] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 {allDestinations.length} destinos confirmados
               </span>
-              <div className="h-px w-10 bg-[#72500c]" />
+              <div className="h-px w-10 bg-[#ba8728]" />
             </motion.div>
 
             <motion.h1
@@ -211,11 +211,11 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             transition={{ duration: 0.5 }}
             className="flex items-center justify-center gap-3 mb-4"
           >
-            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
-            <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+            <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
+            <span className="text-[#ba8728] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
               Explorá por región
             </span>
-            <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
+            <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
           </motion.div>
 
           <motion.h2
@@ -225,8 +225,8 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase leading-[0.87] whitespace-nowrap"
           >
-            <span className="text-[#72500c]">Todos nuestros </span>
-            <span className="text-[#db5835]">destinos</span>
+            <span className="text-[#db5835]">Todos nuestros </span>
+            <span className="text-[#ba8728]">destinos</span>
           </motion.h2>
         </div>
 
@@ -252,7 +252,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
                 exit={{ opacity: 0 }}
                 className="col-span-full flex flex-col items-center justify-center py-20 opacity-60"
               >
-                <p className="text-[#72500c] font-bold text-lg">No encontramos viajes con esos filtros.</p>
+                <p className="text-[#ba8728] font-bold text-lg">No encontramos viajes con esos filtros.</p>
                 <p className="text-[#db5835] text-sm mt-2">Intenta cambiar los criterios de búsqueda.</p>
               </motion.div>
             )}

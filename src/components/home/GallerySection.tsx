@@ -87,11 +87,11 @@ export default function GallerySection() {
           transition={{ duration: 0.5 }}
           className="flex items-center justify-center gap-3 mb-4"
         >
-          <div className="h-px w-10 bg-[#72500c]" />
-          <span className="text-[#72500c] text-xs font-bold uppercase tracking-[0.3em]">
+          <div className="h-px w-10 bg-[#ba8728]" />
+          <span className="text-[#ba8728] text-xs font-bold uppercase tracking-[0.3em]">
             Nuestros viajeros
           </span>
-          <div className="h-px w-10 bg-[#72500c]" />
+          <div className="h-px w-10 bg-[#ba8728]" />
         </motion.div>
 
         <motion.h2
@@ -102,7 +102,7 @@ export default function GallerySection() {
           className="text-3xl md:text-4xl lg:text-5xl font-black uppercase text-[#db5835] leading-tight"
         >
           La experiencia{" "}
-          <span className="text-[#72500c]">lo es todo</span>
+          <span className="text-[#ba8728]">lo es todo</span>
         </motion.h2>
       </div>
 

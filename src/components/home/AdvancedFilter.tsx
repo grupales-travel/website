@@ -261,7 +261,7 @@ function FilterPill({
             : "bg-white text-[#1E1810]/65 shadow-[0_1px_4px_rgba(0,0,0,0.08)] hover:text-[#1E1810]"
           }
         `}
-        style={isDark ? { backgroundColor: "#72500c", boxShadow: "0 4px 20px rgba(114,80,12,0.3)" } : {}}
+        style={isDark ? { backgroundColor: "#ba8728", boxShadow: "0 4px 20px rgba(186,135,40,0.3)" } : {}}
       >
         <span className={`shrink-0 ${isDark ? "text-[#db5835]" : "text-[#1E1810]/35"}`}>
           {icon}
@@ -319,7 +319,7 @@ function SheetOption({ label, selected, onClick }: { label: string; selected: bo
         w-full flex items-center justify-between px-4 py-2.5 text-left
         text-[14px] leading-none transition-colors duration-75 cursor-pointer
         ${selected
-          ? "text-[#72500c] font-semibold bg-[#fcebe6]"
+          ? "text-[#ba8728] font-semibold bg-[#fcebe6]"
           : "text-[#1E1810]/60 font-medium hover:bg-black/[0.03] hover:text-[#1E1810]/90"
         }
       `}

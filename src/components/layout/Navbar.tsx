@@ -113,7 +113,7 @@ export default function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-[100] transition-all duration-500",
           (scrolled || !isHome)
-            ? "bg-[#72500c]/95 backdrop-blur-md border-b border-[#db5835]/30 py-2 shadow-lg"
+            ? "bg-[#ba8728]/95 backdrop-blur-md border-b border-white/20 py-2 shadow-lg"
             : "bg-transparent py-3"
         )}
       >
@@ -148,22 +148,30 @@ export default function Navbar() {
 
           {/* Right — social + CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <a
                 href={COMPANY.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center hover:opacity-75 transition-opacity duration-200"
+                aria-label="Instagram"
+                className="w-7.5 h-7.5 rounded-full bg-white flex items-center justify-center text-[#ba8728] hover:scale-110 shadow-sm transition-transform duration-200"
               >
-                <img src="/ig-icon.png" alt="Instagram" className="w-7 h-7 object-contain" />
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                </svg>
               </a>
               <a
                 href={COMPANY.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center hover:opacity-75 transition-opacity duration-200"
+                aria-label="Facebook"
+                className="w-7.5 h-7.5 rounded-full bg-white flex items-center justify-center text-[#ba8728] hover:scale-110 shadow-sm transition-transform duration-200"
               >
-                <img src="/fb-icon.png" alt="Facebook" className="w-7 h-7 object-contain" />
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
               </a>
             </div>
             <motion.a
@@ -211,7 +219,7 @@ export default function Navbar() {
             className="fixed inset-0 z-[95] flex flex-col bg-[#1E1810]"
             style={{ touchAction: "none" }}
           >
-            <div className="h-1 w-full bg-gradient-to-r from-[#72500c] via-[#db5835] to-[#72500c]" />
+            <div className="h-1 w-full bg-gradient-to-r from-[#ba8728] via-[#db5835] to-[#ba8728]" />
             <div className="flex-1 flex flex-col justify-center px-8 py-20">
               <nav className="flex flex-col gap-2">
                 {NAV_LINKS.map((link, i) => (
@@ -249,8 +257,30 @@ export default function Navbar() {
                   Consultar por WhatsApp
                 </a>
                 <div className="flex items-center justify-center gap-4 mt-2">
-                  <a href={COMPANY.instagram} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity"><img src="/ig-icon.png" alt="Instagram" className="w-8 h-8 object-contain" /></a>
-                  <a href={COMPANY.facebook} target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity"><img src="/fb-icon.png" alt="Facebook" className="w-8 h-8 object-contain" /></a>
+                  <a
+                    href={COMPANY.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#ba8728] hover:opacity-90 transition-opacity"
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                    </svg>
+                  </a>
+                  <a
+                    href={COMPANY.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Facebook"
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-[#ba8728] hover:opacity-90 transition-opacity"
+                  >
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                    </svg>
+                  </a>
                 </div>
               </motion.div>
             </div>

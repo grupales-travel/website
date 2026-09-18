@@ -41,8 +41,8 @@ export default function ExperienceSection() {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-3 mb-4"
             >
-              <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
-              <span className="text-[#72500c] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
+              <span className="text-[#ba8728] text-[10px] sm:text-sm font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Por qué elegirnos
               </span>
             </motion.div>
@@ -55,7 +55,7 @@ export default function ExperienceSection() {
               transition={{ duration: 0.6, delay: 0.08 }}
               className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#db5835] leading-[0.88] mb-4 md:mb-7"
             >
-              Viví tu experiencia{" "}<span className="text-[#72500c]">grupal</span>
+              Viví tu experiencia{" "}<span className="text-[#ba8728]">grupal</span>
             </motion.h2>
 
             {/* Ventajas — texto más grande */}
@@ -67,12 +67,12 @@ export default function ExperienceSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.05 + i * 0.05 }}
-                  className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-white/50 border-l-2 border-[#72500c]/45 hover:bg-white/70 transition-colors duration-200"
+                  className="flex items-center gap-2.5 px-3.5 py-3 rounded-xl bg-white/50 border-l-2 border-[#ba8728]/45 hover:bg-white/70 transition-colors duration-200"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-[#72500c]/10 flex items-center justify-center text-[#72500c] shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-[#ba8728]/10 flex items-center justify-center text-[#ba8728] shrink-0">
                     {ICON_MAP[adv.icon]}
                   </div>
-                  <p className="font-bold text-[#72500c] text-sm md:text-base uppercase tracking-wide leading-tight">
+                  <p className="font-bold text-[#ba8728] text-sm md:text-base uppercase tracking-wide leading-tight">
                     {adv.title}
                   </p>
                 </motion.div>
