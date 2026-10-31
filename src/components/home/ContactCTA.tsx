@@ -38,7 +38,7 @@ export default function ContactCTA() {
         </div>
 
         {/* ── Oficinas (Tarjetas Naranja #db5835) centradas para 3 sedes ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 max-w-5xl mx-auto w-full">
           {OFFICES.map((office, i) => (
             <motion.div
               key={office.city}
