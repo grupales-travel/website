@@ -1,16 +1,19 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
+import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import OfficeCard from "@/components/quienes-somos/OfficeCard";
-import TeamSection from "@/components/quienes-somos/TeamSection";
-import { OFFICES } from "@/data/company";
-import { Check } from "lucide-react";
+import { ArrowRight, Users2 } from "lucide-react";
+import type { Metadata } from "next";
 
-// Horarios de atención y placeholders adicionales para las oficinas
+export const metadata: Metadata = {
+  title: "Quiénes Somos — Trayectoria y Oficinas | Grupales Travel",
+  description:
+    "Conocé la historia, trayectoria y sedes comerciales de Grupales Travel. Más de 8 años acompañando viajeros por el mundo.",
+};
+
+// Sedes de atención presencial activas (San Luis y Villa Mercedes)
 const OFFICE_DETAILS = [
   {
     id: "san-luis",
@@ -32,16 +35,6 @@ const OFFICE_DETAILS = [
     hours: "Lunes a Viernes: 09:00 a 13:00 hs y 16:30 a 20:30 hs. Sábados: 09:30 a 13:00 hs.",
     imagePlaceholder: "/placeholder-office-vm.jpg",
   },
-  {
-    id: "cordoba",
-    city: "Córdoba",
-    phone: "+54 9 351 212-3128",
-    whatsapp: "https://wa.me/5493512123128",
-    address: "La Rioja 590, oficina 14",
-    mapsUrl: "https://maps.app.goo.gl/keemdMTUaXw2nwEC8",
-    hours: "Lunes a Viernes: 09:00 a 18:00 hs. Sábados: 09:00 a 13:00 hs.",
-    imagePlaceholder: "/placeholder-office-cba.jpg",
-  },
 ];
 
 const TIMELINE = [
@@ -53,44 +46,33 @@ const TIMELINE = [
   {
     year: "2020",
     title: "Adaptabilidad y Resiliencia",
-    text: "Frente a los mayores desafíos del turismo global, consolidamos nuestras bases tecnológicas y operativas para cuidar de cada pasajero.",
+    text: "Frente a los desafíos del turismo global, consolidamos nuestras bases tecnológicas y operativas para cuidar a cada uno de nuestros pasajeros.",
   },
   {
     year: "2022",
     title: "Crecimiento de Oficinas",
-    text: "Inauguramos nuevos puntos de atención al público en San Luis y Villa Mercedes, fortaleciendo la cercanía y el asesoramiento uno a uno.",
+    text: "Inauguramos nuestros puntos de atención al público en San Luis y Villa Mercedes, fortaleciendo la cercanía y el asesoramiento uno a uno.",
   },
   {
     year: "2024",
-    title: "Desembarco en Córdoba",
-    text: "Expandimos nuestra presencia física con oficinas comerciales en la Ciudad de Córdoba, conformando un equipo robusto e interdisciplinario.",
+    title: "Expansión y Red Nacional",
+    text: "Consolidamos nuestra red de representantes comerciales y ampliamos los destinos internacionales con nuevos circuitos por Europa, América y Asia.",
   },
   {
     year: "2026",
-    title: "Presencia Nacional",
-    text: "Con oficinas físicas y representantes comerciales activos en Neuquén, Río Negro, Córdoba y CABA, diseñamos y coordinamos experiencias mundiales.",
+    title: "Presencia en Todo el País",
+    text: "Con nuestras sedes presenciales y representantes comerciales activos en distintas regiones (Neuquén, Río Negro, Córdoba y CABA), coordinamos viajes grupales a todo el mundo.",
   },
 ];
 
-const ADVANTAGES_LIST = [
-  "Más de 8 años de experiencia coordinando salidas grupales.",
-  "Equipo profesional especializado en cada destino.",
-  "Salidas grupales cuidadosamente diseñadas desde cero.",
-  "Acompañamiento permanente de coordinadores desde Argentina.",
-  "Atención personalizada y asesoramiento pre y post viaje.",
-  "Presencia física con oficinas comerciales en distintas ciudades.",
-  "Representantes comerciales en diferentes regiones del país.",
-];
-
 export default function QuienesSomosPage() {
-
   return (
     <>
       <Navbar />
       <main className="bg-[#FAF7F2] text-[#1E1810] relative">
         
-        {/* Banner Principal / Hero */}
-        <section className="relative min-h-[60vh] flex items-center justify-center pt-24 pb-16 px-6 overflow-hidden">
+        {/* Banner Principal / Hero (Espaciado optimizado sin reducir tipografía) */}
+        <section className="relative flex items-center justify-center pt-24 pb-12 sm:pb-14 px-6 overflow-hidden">
           {/* Background overlay */}
           <div className="absolute inset-0 bg-black/[0.02] z-10" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_100%,rgba(166,109,3,0.06),transparent)] z-10" />
@@ -101,14 +83,14 @@ export default function QuienesSomosPage() {
               src="/office-san-luis.webp"
               alt="Grupales Travel Office"
               fill
-              className="object-cover opacity-[0.12] filter blur-[2px]"
+              className="object-cover opacity-[0.10] filter blur-[2px]"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-[#FAF7F2] via-transparent to-[#FAF7F2]" />
           </div>
 
-          <div className="max-w-4xl mx-auto relative z-20 text-center space-y-6">
+          <div className="max-w-4xl mx-auto relative z-20 text-center space-y-4">
             <AnimatedSection>
-              <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="flex items-center justify-center gap-3 mb-1">
                 <div className="h-px w-10 bg-[#72500c]" />
                 <span className="text-[#72500c] text-xs font-bold uppercase tracking-[0.3em]">
                   Grupales Travel
@@ -117,7 +99,7 @@ export default function QuienesSomosPage() {
               </div>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.15}>
+            <AnimatedSection delay={0.1}>
               <h1 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase leading-tight text-[#1E1810]">
                 Más que una agencia, <br />
                 <span className="text-gold-gradient">
@@ -126,7 +108,7 @@ export default function QuienesSomosPage() {
               </h1>
             </AnimatedSection>
 
-            <AnimatedSection delay={0.3}>
+            <AnimatedSection delay={0.2}>
               <p className="text-[#1E1810]/75 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-light">
                 En Grupales Travel creemos que los grandes viajes comienzan mucho antes del embarque. 
                 Comienzan con un equipo de personas apasionadas por el turismo que trabaja cada día para diseñar 
@@ -137,57 +119,56 @@ export default function QuienesSomosPage() {
           </div>
         </section>
 
-        {/* Nuestra Historia */}
-        <section className="py-24 px-6 relative border-t border-[#1E1810]/5">
+        {/* Nuestra Historia / Trayectoria (Espaciado equilibrado y compacto) */}
+        <section className="py-12 md:py-16 px-6 relative border-t border-[#1E1810]/5">
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               
               {/* Textos descriptivos */}
-              <div className="lg:col-span-5 space-y-6">
+              <div className="lg:col-span-5 space-y-4">
                 <AnimatedSection>
-                  <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest mb-2">
+                  <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest mb-1">
                     Trayectoria
                   </h3>
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#1E1810] leading-tight">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810] leading-tight">
                     Una empresa en constante crecimiento
                   </h2>
                 </AnimatedSection>
 
-                <AnimatedSection delay={0.15}>
-                  <p className="text-[#1E1810]/75 text-lg md:text-xl leading-relaxed">
+                <AnimatedSection delay={0.1}>
+                  <p className="text-[#1E1810]/75 text-base sm:text-lg leading-relaxed">
                     Grupales Travel nació con el propósito de ofrecer salidas grupales cuidadosamente diseñadas, 
                     combinando el asesoramiento personalizado con una operación profesional y un acompañamiento permanente.
                   </p>
-                  <p className="text-[#1E1810]/75 text-lg md:text-xl leading-relaxed mt-4">
-                    Con el paso de los años fuimos creciendo, incorporando nuevas oficinas, representantes en distintas 
-                    ciudades y un equipo multidisciplinario que hoy nos permite brindar un servicio integral antes, 
-                    durante y después de cada viaje.
+                  <p className="text-[#1E1810]/75 text-base sm:text-lg leading-relaxed mt-3">
+                    Con el paso de los años fuimos consolidando nuestras oficinas centrales, sumando representantes en distintas 
+                    provincias y un equipo interdisciplinario que hoy brinda un servicio integral antes, durante y después del viaje.
                   </p>
                 </AnimatedSection>
               </div>
 
               {/* Línea de tiempo interactiva */}
-              <div className="lg:col-span-7 pl-0 lg:pl-10 relative">
+              <div className="lg:col-span-7 pl-0 lg:pl-8 relative">
                 <div className="absolute left-4 lg:left-6 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#72500c] via-[#db5835]/30 to-transparent" />
                 
-                <div className="space-y-10">
+                <div className="space-y-6 sm:space-y-7">
                   {TIMELINE.map((item, index) => (
                     <AnimatedSection
                       key={item.year}
-                      delay={index * 0.1}
+                      delay={index * 0.08}
                       className="relative pl-12 lg:pl-16 group"
                     >
                       {/* Puntero de línea de tiempo */}
-                      <div className="absolute left-[9px] lg:left-[17px] top-1.5 w-4 h-4 rounded-full bg-[#FAF7F2] border-2 border-[#db5835] group-hover:bg-[#db5835] transition-all duration-300 shadow-lg shadow-[#db5835]/10" />
+                      <div className="absolute left-[9px] lg:left-[17px] top-1.5 w-4 h-4 rounded-full bg-[#FAF7F2] border-2 border-[#db5835] group-hover:bg-[#db5835] transition-all duration-300 shadow-md shadow-[#db5835]/15" />
                       
-                      <div className="space-y-1">
-                        <span className="text-2xl font-black text-[#db5835] tracking-tight block">
+                      <div className="space-y-0.5">
+                        <span className="text-xl sm:text-2xl font-black text-[#db5835] tracking-tight block">
                           {item.year}
                         </span>
-                        <h4 className="text-lg font-bold text-[#1E1810] group-hover:text-[#db5835] transition-colors duration-200">
+                        <h4 className="text-base sm:text-lg font-bold text-[#1E1810] group-hover:text-[#db5835] transition-colors duration-200">
                           {item.title}
                         </h4>
-                        <p className="text-[#1E1810]/70 text-base md:text-lg leading-relaxed max-w-lg">
+                        <p className="text-[#1E1810]/70 text-sm sm:text-base leading-relaxed max-w-lg">
                           {item.text}
                         </p>
                       </div>
@@ -200,25 +181,26 @@ export default function QuienesSomosPage() {
           </div>
         </section>
 
-        {/* Nuestras Oficinas */}
-        <section className="py-24 px-6 bg-[#FAF7F2] relative border-y border-[#1E1810]/5">
-          <div className="max-w-7xl mx-auto space-y-16">
+        {/* Nuestras Oficinas (Ahora 2 sedes presenciales, diseño centrado y no tan amplio) */}
+        <section className="py-12 md:py-16 px-6 bg-[#FAF7F2] relative border-y border-[#1E1810]/5">
+          <div className="max-w-4xl mx-auto space-y-10">
             
-            <div className="text-center max-w-4xl mx-auto space-y-4">
+            <div className="text-center max-w-2xl mx-auto space-y-2.5">
               <AnimatedSection>
-                <h3 className="text-[#72500c] text-sm font-bold uppercase tracking-widest">
-                  Ubicaciones
+                <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest">
+                  Sedes Presenciales
                 </h3>
-                <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810]">
-                  Estamos cerca tuyo
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810]">
+                  Nuestras Oficinas
                 </h2>
-                <p className="text-[#1E1810]/75 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
-                  Acercate a cualquiera de nuestras sedes presenciales o coordiná una llamada virtual con nuestros representantes.
+                <p className="text-[#1E1810]/75 text-sm sm:text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+                  Acercate a nuestras oficinas comerciales en San Luis y Villa Mercedes o coordiná una llamada virtual con nuestros asesores.
                 </p>
               </AnimatedSection>
             </div>
-            {/* Tarjetas de Oficinas */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto w-full">
+
+            {/* Tarjetas de Oficinas: 2 columnas centradas con ancho equilibrado */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto w-full">
               {OFFICE_DETAILS.map((office, index) => (
                 <AnimatedSection key={office.id} delay={index * 0.1} className="h-full">
                   <OfficeCard
@@ -230,102 +212,31 @@ export default function QuienesSomosPage() {
           </div>
         </section>
 
-        {/* Nuestro Equipo */}
-        <section className="py-24 px-6 relative">
-          <div className="max-w-7xl mx-auto space-y-16">
-            
-            <div className="text-center max-w-3xl mx-auto space-y-4">
-              <AnimatedSection>
-                <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest">
-                  Profesionales
-                </h3>
-                <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810]">
-                  Nuestro Equipo
-                </h2>
-                <p className="text-[#1E1810]/75 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                  Cada viaje es el resultado del trabajo coordinado de profesionales especializados en distintas áreas. 
-                  Nuestro compromiso es acompañarte en cada etapa del proceso para que solo tengas que disfrutar la experiencia.
-                </p>
-              </AnimatedSection>
-            </div>
-
-            <TeamSection />
-
-          </div>
-        </section>
-
-        {/* ¿Por qué elegir Grupales Travel? */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAF7F2] relative border-t border-[#1E1810]/5">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12 space-y-3">
-              <AnimatedSection>
-                <h3 className="text-[#72500c] text-sm font-bold uppercase tracking-widest mb-1">
-                  Diferenciales
-                </h3>
-                <h2 className="text-3xl md:text-5xl font-extrabold text-[#1E1810] flex flex-col items-center gap-1.5">
-                  <span>¿Por qué elegir</span>
-                  <span className="text-gold-gradient">
-                    Grupales Travel?
-                  </span>
-                </h2>
-              </AnimatedSection>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {ADVANTAGES_LIST.map((adv, index) => (
-                <AnimatedSection
-                  key={index}
-                  delay={index * 0.05}
-                  className="flex items-center gap-4 bg-white border border-[#db5835]/15 p-4 rounded-2xl hover:border-[#db5835]/40 transition-colors shadow-sm"
-                >
-                  <div className="w-8 h-8 rounded-full bg-[#db5835]/10 flex items-center justify-center shrink-0 border border-[#db5835]/20">
-                    <Check size={16} className="text-[#db5835]" />
-                  </div>
-                  <p className="text-[#1E1810]/85 text-base sm:text-lg font-bold leading-snug">
-                    {adv}
-                  </p>
-                </AnimatedSection>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Cierre / Frase Final */}
-        <section className="pt-10 pb-16 md:py-24 px-6 relative border-t border-[#1E1810]/5 overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(219,88,53,0.05),transparent)] pointer-events-none" />
-          
-          <div className="max-w-3xl mx-auto text-center space-y-10 relative z-10">
-            {/* Foto grupal */}
+        {/* Enlace / Puente hacia Nuestro Equipo */}
+        <section className="py-12 md:py-14 px-6 bg-white relative border-t border-[#1E1810]/5 overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(186,135,40,0.06),transparent)] pointer-events-none" />
+          <div className="max-w-3xl mx-auto text-center space-y-4 relative z-10">
             <AnimatedSection>
-              <div className="relative aspect-[21/9] w-full border border-[#1E1810]/5 rounded-3xl overflow-hidden shadow-xl group">
-                <Image
-                  src="/foto-grupal-equipo.webp"
-                  alt="Equipo de Grupales Travel"
-                  fill
-                  className="object-cover group-hover:scale-[1.01] transition-transform duration-700"
-                  sizes="(max-w-3xl) 100vw"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ba8728]/10 text-[#72500c] text-xs font-bold uppercase tracking-wider mb-1">
+                <Users2 className="w-4 h-4 text-[#ba8728]" />
+                Conocé a los protagonistas
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810]">
+                Detrás de cada salida hay un gran equipo
+              </h2>
+              <p className="text-[#1E1810]/75 text-sm sm:text-base max-w-xl mx-auto mt-2 leading-relaxed">
+                Coordinadores, asesores comerciales, especialistas en operaciones y directores dedicados a que tu viaje sea inolvidable.
+              </p>
+              <div className="pt-4">
+                <Link
+                  href="/nuestro-equipo"
+                  className="inline-flex items-center gap-2.5 px-7 py-3 rounded-full btn-gold text-white font-bold text-xs uppercase tracking-widest shadow-lg shadow-amber-900/15 hover:scale-105 transition-all duration-300"
+                >
+                  Ver Nuestro Equipo
+                  <ArrowRight size={16} />
+                </Link>
               </div>
             </AnimatedSection>
-
-            <div className="space-y-4">
-              <AnimatedSection delay={0.15}>
-                <p className="text-[#72500c] text-xs font-bold uppercase tracking-widest">
-                  Nuestro Compromiso
-                </p>
-              </AnimatedSection>
-              
-              <AnimatedSection delay={0.25}>
-                <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810] leading-tight">
-                  "Detrás de cada salida hay un equipo comprometido con un mismo objetivo: <br />
-                  <span className="text-gold-gradient">
-                    Que cada viaje se convierta en una experiencia inolvidable.
-                  </span>"
-                </h3>
-              </AnimatedSection>
-            </div>
           </div>
         </section>
 

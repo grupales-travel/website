@@ -97,6 +97,7 @@ export default function Footer() {
               {[
                 { label: "Inicio", href: "/" },
                 { label: "Quiénes Somos", href: "/quienes-somos" },
+                { label: "Nuestro Equipo", href: "/nuestro-equipo" },
                 { label: "Beneficios", href: "/ventajas" },
                 { label: "Contacto", href: "/contactanos" },
                 { label: "Salidas Grupales", href: "/salidas" },

@@ -12,6 +12,7 @@ import { COMPANY } from "@/data/company";
 const NAV_LINKS = [
   { label: "Inicio", href: "/" },
   { label: "Quiénes Somos", href: "/quienes-somos" },
+  { label: "Nuestro Equipo", href: "/nuestro-equipo" },
   { label: "Salidas Grupales", href: "/salidas" },
   { label: "Beneficios", href: "/ventajas" },
   { label: "Contacto", href: "/contactanos" },
@@ -134,12 +135,17 @@ export default function Navbar() {
           </Link>
 
           {/* Nav Desktop */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="px-4 py-2 rounded-full text-base font-bold tracking-widest uppercase transition-all duration-200 text-white/85 hover:text-white hover:bg-white/10"
+                className={cn(
+                  "px-2.5 xl:px-3.5 py-1.5 rounded-full text-xs xl:text-sm font-bold tracking-wider xl:tracking-widest uppercase transition-all duration-200",
+                  pathname === link.href
+                    ? "text-white bg-white/20 shadow-sm"
+                    : "text-white/85 hover:text-white hover:bg-white/10"
+                )}
               >
                 {link.label}
               </Link>

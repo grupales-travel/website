@@ -1,25 +1,91 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Destination } from "@/types";
-import { Clock } from "lucide-react";
+import { ArrowRight, Sparkles, CheckCircle2 } from "lucide-react";
 
 interface DestinationCardProps {
   destination: Destination;
   index?: number;
 }
 
+const MONTH_NAMES: Record<string, string> = {
+  ene: "ENERO",
+  feb: "FEBRERO",
+  mar: "MARZO",
+  abr: "ABRIL",
+  may: "MAYO",
+  jun: "JUNIO",
+  jul: "JULIO",
+  ago: "AGOSTO",
+  sep: "SEPTIEMBRE",
+  oct: "OCTUBRE",
+  nov: "NOVIEMBRE",
+  dic: "DICIEMBRE",
+};
+
+// Extrae fecha completa (día + mes) y año del destino
+function extractDateBadge(destination: Destination) {
+  const raw = destination.departureDate || "";
+  const year = destination.year ? String(destination.year) : "2027";
+
+  // Buscar formato con día: "21 de Marzo", "13 Ago 2026", "13 Abr – 4 May"
+  const dayMonthMatch = raw.match(/(\d{1,2})\s*(?:de\s+)?([a-záéíóú]+)/i);
+  if (dayMonthMatch) {
+    const day = dayMonthMatch[1].padStart(2, "0");
+    const mKey = dayMonthMatch[2].toLowerCase().substring(0, 3);
+    const month = MONTH_NAMES[mKey] || dayMonthMatch[2].toUpperCase();
+    return {
+      dateLabel: `${day} DE ${month}`,
+      year,
+    };
+  }
+
+  // Buscar solo mes
+  const lower = raw.toLowerCase();
+  for (const [key, val] of Object.entries(MONTH_NAMES)) {
+    if (lower.includes(key)) {
+      return {
+        dateLabel: val,
+        year,
+      };
+    }
+  }
+
+  // Caso especial Perú
+  if (destination.id.includes("peru") || destination.slug.includes("peru")) {
+    return { dateLabel: "21 DE MARZO", year: "2027" };
+  }
+
+  return { dateLabel: "SALIDA", year };
+}
+
 export default function DestinationCard({
   destination,
   index = 0,
 }: DestinationCardProps) {
-
-  const isPartner = destination.partner;
+  const [hovered, setHovered] = useState(false);
   const href = `/destinos/${destination.slug}`;
   const prefetched = useRef(false);
+
+  const { dateLabel, year } = extractDateBadge(destination);
+
+  // Limpiar año repetido en el título (ej: "Gira Ibérica 2027" -> "Gira Ibérica")
+  const cleanTitle = destination.title.replace(/\s+202[5-9]$/i, "").trim().toUpperCase();
+
+  // Priorizar foto limpia de paisaje (backgrounds) sobre portadas con texto
+  const imageSrc = (() => {
+    if (destination.heroImage && !destination.heroImage.includes("portadas")) {
+      return destination.heroImage;
+    }
+    if (destination.thumbnailImage && destination.thumbnailImage.includes("portadas")) {
+      return destination.thumbnailImage.replace("portadas", "backgrounds");
+    }
+    return destination.heroImage || destination.thumbnailImage || "/r2-media/backgrounds/encantos-de-peru-2026-1771874661985.jpg";
+  })();
 
   const prefetchHeroImage = useCallback(() => {
     if (prefetched.current) return;
@@ -27,102 +93,146 @@ export default function DestinationCard({
     const link = document.createElement("link");
     link.rel = "preload";
     link.as = "image";
-    link.href = destination.heroImage;
+    link.href = imageSrc;
     (link as HTMLLinkElement & { fetchPriority: string }).fetchPriority = "high";
     document.head.appendChild(link);
-  }, [destination.heroImage]);
+  }, [imageSrc]);
 
   return (
     <motion.div
       layout
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className="h-full"
+      transition={{ duration: 0.3, delay: Math.min(index * 0.04, 0.25) }}
+      className="h-full flex flex-col"
+      onMouseEnter={() => {
+        setHovered(true);
+        prefetchHeroImage();
+      }}
+      onMouseLeave={() => setHovered(false)}
     >
       <Link
         href={href}
-        className="group block"
-        onMouseEnter={prefetchHeroImage}
+        className={`group flex flex-col h-full bg-white rounded-2xl overflow-hidden transition-all duration-300 transform ${
+          hovered
+            ? "border-2 border-[#ba8728] shadow-[0_16px_44px_rgba(186,135,40,0.28)] -translate-y-2"
+            : "border border-[#e5dfd5] hover:border-[#ba8728] shadow-md hover:shadow-2xl hover:-translate-y-2"
+        }`}
         onTouchStart={prefetchHeroImage}
       >
-        <div className="relative rounded-2xl overflow-hidden aspect-[15/16] bg-[#2d2418]">
-
-          {/* Imagen con zoom en hover */}
+        {/* ── 1. FOTOGRAFÍA HEROICA LIMPIA ── */}
+        <div className="relative aspect-[4/3] sm:aspect-[1/1] w-full overflow-hidden bg-[#242930]">
           <Image
-            src={destination.thumbnailImage || destination.heroImage}
-            alt={destination.title}
+            src={imageSrc}
+            alt={cleanTitle}
             fill
-            sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-            priority={index < 4}
-            quality={75}
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+            priority={index < 2}
+            quality={85}
             unoptimized={true}
           />
 
-          {/* Badge dinámico */}
-          {(destination.badge && destination.badge !== 'ninguno') && (() => {
-            const badgeText = {
-              'agotado': 'CUPOS AGOTADOS',
-              'ultimos': 'ÚLTIMOS CUPOS',
-              'nuevo': 'NUEVO',
-              'popular': 'POPULAR'
-            }[destination.badge as string] || destination.badge;
+          {/* Sutil viñeta superior para legibilidad impecable del badge */}
+          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/65 via-black/25 to-transparent pointer-events-none" />
 
-            // Determinar colores basados en el badge
-            let badgeBg = "bg-[#d32f2f]"; // Rojo por defecto para agotado
-            if (destination.badge === 'ultimos') badgeBg = "bg-[#db5835]"; // Naranja de marca
-            if (destination.badge === 'nuevo') badgeBg = "bg-[#388e3c]"; // Verde (un poco más claro/vivo)
-            if (destination.badge === 'popular') badgeBg = "bg-[#1976d2]"; // Azul
-
-            return (
-              <div
-                className={`absolute top-6 -right-14 w-52 sm:-right-16 sm:top-8 sm:w-64 flex items-center justify-center rotate-45 z-20 shadow-xl ${badgeBg} border-y border-white/30 uppercase overflow-hidden py-0.5 sm:py-1`}
-              >
-                {/* Brillo de la cinta (Shine effect) */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/35 to-transparent pointer-events-none" />
-
-                {/* Texto */}
-                <div className="relative text-white font-medium text-[0.95rem] sm:text-[1.1rem] leading-none tracking-tight drop-shadow-md pb-[1px] sm:pb-[2px]">
-                  {badgeText}
-                </div>
-              </div>
-            );
-          })()}
-
-          {/* Overlay inferior siempre visible — desaparece en hover desktop */}
-          <div className="absolute inset-x-0 bottom-0 z-10 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent rounded-b-2xl" />
+          {/* Badge Fecha: Año + Píldora con Día y Mes (en Dorado) */}
+          <div className="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 z-10 flex flex-col items-start gap-1.5">
+            <span className="text-white font-extrabold text-xs sm:text-sm md:text-base tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+              {year}
+            </span>
+            <span className="px-3 sm:px-4 py-1 sm:py-1.5 text-[10px] sm:text-xs md:text-sm font-black tracking-wider uppercase rounded-md shadow-lg shadow-black/40 text-white bg-gradient-to-r from-[#ba8728] via-[#c59b3f] to-[#ba8728] border border-white/20 whitespace-nowrap">
+              {dateLabel}
+            </span>
           </div>
 
-          {/* Overlay en hover para que destaque el texto */}
-          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {/* Badge de Cupo / Novedad (si existe) */}
+          {destination.badge && destination.badge !== "ninguno" && (
+            <div className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-10">
+              <span
+                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-xs font-black uppercase tracking-wider rounded-md shadow-lg border ${
+                  destination.badge === "agotado"
+                    ? "bg-[#282d35] text-[#ba8728] border-[#ba8728]/40"
+                    : destination.badge === "ultimos"
+                    ? "bg-[#ba8728] text-white border-white/30"
+                    : destination.badge === "nuevo"
+                    ? "bg-white text-[#20252c] border-[#ba8728]"
+                    : "bg-white text-[#20252c] border-white/80"
+                }`}
+              >
+                {destination.badge === "agotado"
+                  ? "AGOTADO"
+                  : destination.badge === "ultimos"
+                  ? "ÚLTIMOS CUPOS"
+                  : destination.badge === "nuevo"
+                  ? "NUEVO"
+                  : destination.badge}
+              </span>
+            </div>
+          )}
+        </div>
 
-          {/* Contenido centrado (solo visible en hover — desktop) */}
-          <div className="absolute inset-0 p-4 sm:p-6 z-10 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+        {/* ── 2. SECCIÓN EDITORIAL (TEXTO Y LOGO) ── */}
+        <div className="p-4 sm:p-5 md:p-6 flex flex-col justify-between flex-grow bg-white">
+          <div>
+            {/* USP Estrella arriba ocupando todo el ancho: Habitación Doble a Compartir Garantizada */}
+            <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black text-[#ba8728] uppercase tracking-[0.14em] md:tracking-[0.16em] mb-1.5 sm:mb-2 flex items-center gap-1.5 leading-tight">
+              <Sparkles size={13} className="text-[#ba8728] flex-shrink-0" />
+              <span>Habitación Doble a Compartir Garantizada</span>
+            </p>
 
-            <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex flex-col items-center justify-center w-full h-full">
+            {/* Nombre del destino — MAYÚSCULA COMPLETA, sin año repetido, fuente grande con transición a Dorado */}
+            <h3
+              className={`text-lg sm:text-xl md:text-2xl font-black leading-tight tracking-tight uppercase mb-2 sm:mb-2.5 line-clamp-2 transition-colors duration-200 ${
+                hovered ? "text-[#ba8728]" : "text-[#1a1f26] group-hover:text-[#ba8728]"
+              }`}
+            >
+              {cleanTitle}
+            </h3>
 
-              {/* Fechas */}
-              <p className="text-white font-black text-lg sm:text-xl lg:text-[22px] mb-3 drop-shadow-lg leading-tight uppercase tracking-wider whitespace-nowrap">
-                {destination.departureDate}
+            {/* Bajada de ruta / desglose de ciudades */}
+            {destination.tagline && (
+              <p className="text-xs sm:text-sm text-[#4a525d] font-semibold line-clamp-1 mb-3 sm:mb-4 tracking-wide">
+                {destination.tagline}
               </p>
+            )}
+          </div>
 
-              {/* Días */}
-              <div className="flex items-center justify-center gap-1.5 text-[#db5835] text-xs sm:text-sm font-bold mb-6 sm:mb-8 drop-shadow-md uppercase tracking-[0.2em]">
-                <Clock size={14} className="text-current" />
-                <span>{destination.days} DÍAS</span>
-              </div>
+          {/* Fila inferior: "Salida Grupal Acompañada" a la izquierda + Logo Grupales Travel a la derecha */}
+          <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-[#ede7de] mt-2">
+            <div className="flex items-center gap-1.5 text-[11px] sm:text-xs md:text-[13px] font-black text-[#242930] uppercase tracking-wider">
+              <CheckCircle2 size={14} className="text-[#ba8728] flex-shrink-0" />
+              <span className="leading-tight">Salida Grupal Acompañada</span>
+            </div>
 
-              <div className="mt-1">
-                <span className="flex items-center gap-2 px-5 py-2.5 rounded-full btn-gold text-white text-[10px] sm:text-xs font-bold uppercase tracking-widest shadow-lg shadow-black/20 group-hover:scale-105 transition-transform duration-300">
-                  VER ITINERARIO
-                </span>
-              </div>
-
+            {/* Logo de Grupales Travel con mayor tamaño y nitidez */}
+            <div className="relative h-7 sm:h-9 md:h-11 w-24 sm:w-32 md:w-40 flex items-center justify-end flex-shrink-0 ml-2">
+              <Image
+                src="/logo-footer.png"
+                alt="Grupales Travel"
+                fill
+                className="object-contain object-right opacity-90 group-hover:opacity-100 transition-all duration-300 group-hover:scale-105"
+              />
             </div>
           </div>
+        </div>
+
+        {/* ── 3. BARRA DE ACCIÓN INFERIOR: GRIS OSCURO ESTILO ANTIGRAVITY CON HOVER DORADO ── */}
+        <div
+          className={`px-4 sm:px-5 md:px-6 py-3.5 sm:py-4 flex items-center justify-between text-xs sm:text-sm md:text-base font-black uppercase tracking-widest transition-all duration-300 border-t ${
+            hovered
+              ? "bg-gradient-to-r from-[#ba8728] via-[#c59b3f] to-[#ba8728] text-white shadow-md border-transparent"
+              : "bg-gradient-to-r from-[#323842] via-[#3f4652] to-[#323842] text-[#f3f4f6] border-white/10 group-hover:bg-[#ba8728] group-hover:border-transparent"
+          }`}
+        >
+          <span className="leading-none flex items-center gap-2">
+            FECHAS & TARIFAS
+          </span>
+          <ArrowRight
+            size={16}
+            className="transform transition-transform duration-300 group-hover:translate-x-2 text-white"
+          />
         </div>
       </Link>
     </motion.div>
