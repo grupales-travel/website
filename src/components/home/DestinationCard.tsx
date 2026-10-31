@@ -76,16 +76,11 @@ export default function DestinationCard({
   // Limpiar año repetido en el título (ej: "Gira Ibérica 2027" -> "Gira Ibérica")
   const cleanTitle = destination.title.replace(/\s+202[5-9]$/i, "").trim().toUpperCase();
 
-  // Priorizar foto limpia de paisaje (backgrounds) sobre portadas con texto
-  const imageSrc = (() => {
-    if (destination.heroImage && !destination.heroImage.includes("portadas")) {
-      return destination.heroImage;
-    }
-    if (destination.thumbnailImage && destination.thumbnailImage.includes("portadas")) {
-      return destination.thumbnailImage.replace("portadas", "backgrounds");
-    }
-    return destination.heroImage || destination.thumbnailImage || "/r2-media/backgrounds/encantos-de-peru-2026-1771874661985.jpg";
-  })();
+  // Priorizar la portada específica de la tarjeta (card). Si no existe, usar la imagen de fondo (hero) como respaldo.
+  const imageSrc =
+    destination.thumbnailImage ||
+    destination.heroImage ||
+    "/r2-media/backgrounds/encantos-de-peru-2026-1771874661985.jpg";
 
   const prefetchHeroImage = useCallback(() => {
     if (prefetched.current) return;

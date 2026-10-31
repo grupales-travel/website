@@ -93,11 +93,11 @@ export default function DestinationCardEditorial({
   // Limpiar año repetido en el título (ej: "Gira Ibérica 2027" -> "Gira Ibérica")
   const cleanTitle = destination.title.replace(/\s+202[5-9]$/i, "").trim().toUpperCase();
 
-  // Elegir imagen limpia (priorizar heroImage sobre thumbnail con texto incrustado)
+  // Priorizar portada específica de la tarjeta (card). Si no existe, usar imagen de fondo como respaldo.
   const imageSrc =
     customHero ||
-    destination.heroImage ||
     destination.thumbnailImage ||
+    destination.heroImage ||
     "/pruebas/peru-clean-hero.jpg";
 
   const prefetchHeroImage = useCallback(() => {
