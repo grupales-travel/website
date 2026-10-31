@@ -109,11 +109,10 @@ export default function DestinationCard({
     >
       <Link
         href={href}
-        className={`group flex flex-col h-full bg-white rounded-2xl overflow-hidden transition-all duration-300 transform ${
-          hovered
+        className={`group flex flex-col h-full bg-white rounded-2xl overflow-hidden transition-all duration-300 transform ${hovered
             ? "border-2 border-[#ba8728] shadow-[0_16px_44px_rgba(186,135,40,0.28)] -translate-y-2"
             : "border border-[#e5dfd5] hover:border-[#ba8728] shadow-md hover:shadow-2xl hover:-translate-y-2"
-        }`}
+          }`}
         onTouchStart={prefetchHeroImage}
       >
         {/* ── 1. FOTOGRAFÍA HEROICA LIMPIA ── */}
@@ -146,23 +145,22 @@ export default function DestinationCard({
           {destination.badge && destination.badge !== "ninguno" && (
             <div className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-10">
               <span
-                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-xs font-black uppercase tracking-wider rounded-md shadow-lg border ${
-                  destination.badge === "agotado"
+                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-[9px] sm:text-xs font-black uppercase tracking-wider rounded-md shadow-lg border ${destination.badge === "agotado"
                     ? "bg-[#282d35] text-[#ba8728] border-[#ba8728]/40"
                     : destination.badge === "ultimos"
-                    ? "bg-[#ba8728] text-white border-white/30"
-                    : destination.badge === "nuevo"
-                    ? "bg-white text-[#20252c] border-[#ba8728]"
-                    : "bg-white text-[#20252c] border-white/80"
-                }`}
+                      ? "bg-[#ba8728] text-white border-white/30"
+                      : destination.badge === "nuevo"
+                        ? "bg-white text-[#20252c] border-[#ba8728]"
+                        : "bg-white text-[#20252c] border-white/80"
+                  }`}
               >
                 {destination.badge === "agotado"
                   ? "AGOTADO"
                   : destination.badge === "ultimos"
-                  ? "ÚLTIMOS CUPOS"
-                  : destination.badge === "nuevo"
-                  ? "NUEVO"
-                  : destination.badge}
+                    ? "ÚLTIMOS CUPOS"
+                    : destination.badge === "nuevo"
+                      ? "NUEVO"
+                      : destination.badge}
               </span>
             </div>
           )}
@@ -179,9 +177,8 @@ export default function DestinationCard({
 
             {/* Nombre del destino — MAYÚSCULA COMPLETA, sin año repetido, fuente grande con transición a Dorado */}
             <h3
-              className={`text-lg sm:text-xl md:text-2xl font-black leading-tight tracking-tight uppercase mb-2 sm:mb-2.5 line-clamp-2 transition-colors duration-200 ${
-                hovered ? "text-[#ba8728]" : "text-[#1a1f26] group-hover:text-[#ba8728]"
-              }`}
+              className={`text-lg sm:text-xl md:text-2xl font-black leading-tight tracking-tight uppercase mb-2 sm:mb-2.5 line-clamp-2 transition-colors duration-200 ${hovered ? "text-[#ba8728]" : "text-[#1a1f26] group-hover:text-[#ba8728]"
+                }`}
             >
               {cleanTitle}
             </h3>
@@ -215,11 +212,10 @@ export default function DestinationCard({
 
         {/* ── 3. BARRA DE ACCIÓN INFERIOR: GRIS OSCURO ESTILO ANTIGRAVITY CON HOVER DORADO ── */}
         <div
-          className={`px-4 sm:px-5 md:px-6 py-3.5 sm:py-4 flex items-center justify-between text-xs sm:text-sm md:text-base font-black uppercase tracking-widest transition-all duration-300 border-t ${
-            hovered
+          className={`px-4 sm:px-5 md:px-6 py-3.5 sm:py-4 flex items-center justify-between text-xs sm:text-sm md:text-base font-black uppercase tracking-widest transition-all duration-300 border-t ${hovered
               ? "bg-gradient-to-r from-[#ba8728] via-[#c59b3f] to-[#ba8728] text-white shadow-md border-transparent"
               : "bg-gradient-to-r from-[#323842] via-[#3f4652] to-[#323842] text-[#f3f4f6] border-white/10 group-hover:bg-[#ba8728] group-hover:border-transparent"
-          }`}
+            }`}
         >
           <span className="leading-none flex items-center gap-2">
             FECHAS & TARIFAS
