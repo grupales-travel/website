@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 
 export default function VentajasHero() {
   return (
-    <section className="relative pt-24 pb-10 px-6 bg-[#1E1810] overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(219,88,53,0.18),transparent)]" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#db5835]/50 to-transparent" />
+    <section className="relative pt-24 pb-10 px-6 bg-[#1f242c] overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(186,135,40,0.15),transparent)]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ba8728]/50 to-transparent" />
 
       <div className="max-w-4xl mx-auto relative z-10 text-center">
         <motion.div
@@ -15,11 +15,11 @@ export default function VentajasHero() {
           transition={{ duration: 0.5 }}
           className="flex items-center justify-center gap-3 mb-4"
         >
-          <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
-          <span className="text-[#db5835] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+          <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
+          <span className="text-[#ba8728] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
             Por qué elegirnos
           </span>
-          <div className="h-px w-6 sm:w-10 bg-[#72500c]" />
+          <div className="h-px w-6 sm:w-10 bg-[#ba8728]" />
         </motion.div>
 
         <motion.h1

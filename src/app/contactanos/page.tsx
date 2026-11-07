@@ -57,9 +57,9 @@ export default function ContactanosPage() {
       <main>
 
         {/* Hero compacto */}
-        <section className="relative pt-24 pb-10 px-6 bg-[#1E1810] overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(219,88,53,0.18),transparent)]" />
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#db5835]/50 to-transparent" />
+        <section className="relative pt-24 pb-10 px-6 bg-[#1f242c] overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(186,135,40,0.15),transparent)]" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ba8728]/50 to-transparent" />
 
           <div className="max-w-4xl mx-auto relative z-10 text-center">
             <motion.div
@@ -68,11 +68,11 @@ export default function ContactanosPage() {
               transition={{ duration: 0.5 }}
               className="flex items-center justify-center gap-3 mb-4"
             >
-              <div className="h-px w-10 bg-[#72500c]" />
-              <span className="text-[#db5835] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <div className="h-px w-10 bg-[#ba8728]" />
+              <span className="text-[#ba8728] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 Estamos para ayudarte
               </span>
-              <div className="h-px w-10 bg-[#72500c]" />
+              <div className="h-px w-10 bg-[#ba8728]" />
             </motion.div>
 
             <motion.h1
@@ -81,7 +81,7 @@ export default function ContactanosPage() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight text-white"
             >
-              Hablemos de <span className="text-[#db5835]">tu próximo viaje</span>
+              Hablemos de <span className="text-[#ba8728]">tu próximo viaje</span>
             </motion.h1>
           </div>
         </section>
@@ -105,26 +105,26 @@ export default function ContactanosPage() {
             {/* Form — 3 cols */}
             <div className="lg:col-span-3">
               <AnimatedSection>
-                <h2 className="text-3xl font-black uppercase mb-8 leading-tight text-[#72500c]">
-                  Envianos una <span className="text-[#db5835]">consulta</span>
+                <h2 className="text-3xl font-black uppercase mb-8 leading-tight text-[#ba8728]">
+                  Envianos una <span className="text-[#ba8728]">consulta</span>
                 </h2>
               </AnimatedSection>
 
               {submitted ? (
                 <AnimatedSection direction="up">
                   <div className="flex flex-col items-center justify-center py-20 text-center">
-                    <div className="w-20 h-20 rounded-full bg-[#db5835]/10 flex items-center justify-center text-[#db5835] mb-6">
+                    <div className="w-20 h-20 rounded-full bg-[#ba8728]/10 flex items-center justify-center text-[#ba8728] mb-6">
                       <CheckCircle size={40} />
                     </div>
-                    <h3 className="text-2xl font-black uppercase text-[#1E1810] mb-3">
+                    <h3 className="text-2xl font-black uppercase text-[#242930] mb-3">
                       ¡Consulta recibida!
                     </h3>
-                    <p className="text-[#1E1810]/55 text-sm max-w-sm leading-relaxed">
+                    <p className="text-[#242930]/65 text-sm max-w-sm leading-relaxed">
                       Gracias por escribirnos. Nos pondremos en contacto en menos de 24 horas.
                     </p>
                     <button
                       onClick={() => { setSubmitted(false); setForm({ name: "", phone: "", email: "", message: "" }); }}
-                      className="mt-8 text-[#db5835] text-sm font-bold uppercase tracking-widest hover:underline"
+                      className="mt-8 text-[#ba8728] text-sm font-bold uppercase tracking-widest hover:underline"
                     >
                       Enviar otra consulta
                     </button>
@@ -136,7 +136,7 @@ export default function ContactanosPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
-                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
+                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#ba8728] mb-2">
                           Nombre completo *
                         </label>
                         <input
@@ -146,11 +146,11 @@ export default function ContactanosPage() {
                           onChange={handleChange}
                           required
                           placeholder="Juan García"
-                          className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300"
+                          className="w-full bg-white border border-[#242930]/15 rounded-2xl px-5 py-4 text-[#242930] text-base placeholder:text-[#242930]/30 focus:outline-none focus:border-[#ba8728] focus:shadow-[0_0_0_3px_rgba(186,135,40,0.12)] transition-all duration-300"
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
+                        <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#ba8728] mb-2">
                           Teléfono / WhatsApp *
                         </label>
                         <input
@@ -160,13 +160,13 @@ export default function ContactanosPage() {
                           onChange={handleChange}
                           required
                           placeholder="+54 9 266 000-0000"
-                          className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300"
+                          className="w-full bg-white border border-[#242930]/15 rounded-2xl px-5 py-4 text-[#242930] text-base placeholder:text-[#242930]/30 focus:outline-none focus:border-[#ba8728] focus:shadow-[0_0_0_3px_rgba(186,135,40,0.12)] transition-all duration-300"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
+                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#ba8728] mb-2">
                         Email *
                       </label>
                       <input
@@ -176,12 +176,12 @@ export default function ContactanosPage() {
                         onChange={handleChange}
                         required
                         placeholder="juan@ejemplo.com"
-                        className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300"
+                        className="w-full bg-white border border-[#242930]/15 rounded-2xl px-5 py-4 text-[#242930] text-base placeholder:text-[#242930]/30 focus:outline-none focus:border-[#ba8728] focus:shadow-[0_0_0_3px_rgba(186,135,40,0.12)] transition-all duration-300"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#db5835] mb-2">
+                      <label className="block text-xs font-black uppercase tracking-[0.15em] text-[#ba8728] mb-2">
                         Mensaje *
                       </label>
                       <textarea
@@ -191,7 +191,7 @@ export default function ContactanosPage() {
                         required
                         rows={5}
                         placeholder="Contanos adónde querés ir, cuántas personas viajan, fechas tentativas..."
-                        className="w-full bg-white border border-[#1E1810]/10 rounded-2xl px-5 py-4 text-[#1E1810] text-base placeholder:text-[#1E1810]/25 focus:outline-none focus:border-[#db5835] focus:shadow-[0_0_0_3px_rgba(219,88,53,0.08)] transition-all duration-300 resize-none"
+                        className="w-full bg-white border border-[#242930]/15 rounded-2xl px-5 py-4 text-[#242930] text-base placeholder:text-[#242930]/30 focus:outline-none focus:border-[#ba8728] focus:shadow-[0_0_0_3px_rgba(186,135,40,0.12)] transition-all duration-300 resize-none"
                       />
                     </div>
 

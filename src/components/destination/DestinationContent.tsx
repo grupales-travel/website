@@ -56,7 +56,7 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
 
   return (
     <div
-      className="flex-shrink-0 w-52 sm:w-56 md:w-72 aspect-[9/16] rounded-2xl overflow-hidden snap-start bg-[#1E1810] shadow-md relative group/card cursor-pointer"
+      className="flex-shrink-0 w-52 sm:w-56 md:w-72 aspect-[9/16] rounded-2xl overflow-hidden snap-start bg-[#1f242c] shadow-md relative group/card cursor-pointer"
       onClick={handleTogglePlay}
     >
       <div className="absolute inset-0 overflow-hidden">
@@ -101,8 +101,8 @@ function VideoCard({ url, onExpand }: { url: string; onExpand: (u: string) => vo
 
 function CTACard({ destination, onPreReserve }: { destination: Destination; onPreReserve: () => void }) {
   return (
-    <div className="rounded-2xl bg-[#1E1810] p-6 border border-[#db5835]/20">
-      <p className="text-[#db5835] text-sm font-bold uppercase tracking-widest mb-1">¿Te interesa?</p>
+    <div className="rounded-2xl bg-[#1f242c] p-6 border border-[#ba8728]/20">
+      <p className="text-[#ba8728] text-sm font-bold uppercase tracking-widest mb-1">¿Te interesa?</p>
       <h3 className="text-2xl font-black uppercase leading-tight mb-4 text-[#fafaf8]">
         Consultá sin compromiso
       </h3>
@@ -182,9 +182,9 @@ export default function DestinationContent({ destination }: Props) {
                 <span className="text-[#72500c] text-sm font-bold uppercase tracking-[0.3em]">Sobre este viaje</span>
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase text-[#72500c] leading-[1.0] mb-6">
-                ¿Por qué elegir <span className="text-[#db5835]">{destination.title}?</span>
+                ¿Por qué elegir <span className="text-[#ba8728]">{destination.title}?</span>
               </h2>
-              <p className="text-[#1E1810]/65 text-lg leading-relaxed">{destination.description}</p>
+              <p className="text-[#242930]/75 text-lg leading-relaxed">{destination.description}</p>
             </div>
 
             {/* 2. CTA — solo mobile */}
@@ -198,9 +198,9 @@ export default function DestinationContent({ destination }: Props) {
                 <h3 className="text-2xl font-black uppercase text-[#72500c] tracking-wide mb-6">Qué incluye</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {visibleIncludes.map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-[#f5e6cc]/40 border border-[#db5835]/15">
-                      <CheckCircle size={16} className="text-[#db5835] flex-shrink-0 mt-0.5" />
-                      <span className="text-base text-[#1E1810]/70 leading-snug">{item}</span>
+                    <div key={i} className="flex items-start gap-3 p-4 rounded-xl bg-[#f5e6cc]/40 border border-[#ba8728]/20">
+                      <CheckCircle size={16} className="text-[#ba8728] flex-shrink-0 mt-0.5" />
+                      <span className="text-base text-[#242930]/80 leading-snug">{item}</span>
                     </div>
                   ))}
                 </div>

@@ -52,7 +52,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
 
       <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-2xl font-extrabold text-[#1E1810] mb-5 group-hover:text-[#db5835] transition-colors duration-200">
+          <h3 className="text-2xl font-extrabold text-[#242930] mb-5 group-hover:text-[#db5835] transition-colors duration-200">
             {office.city === "San Luis" ? "San Luis Capital" : office.city}
           </h3>
 
@@ -62,7 +62,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
               <MapPin size={20} className="text-[#db5835] shrink-0 mt-0.5" />
               <div>
                 <p className="text-xs font-bold text-[#72500c] uppercase tracking-wider">Dirección</p>
-                <p className="text-[#1E1810]/80 font-medium text-base mt-0.5">{office.address}</p>
+                <p className="text-[#242930]/80 font-medium text-base mt-0.5">{office.address}</p>
               </div>
             </div>
 
@@ -71,7 +71,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
               <Clock size={20} className="text-[#db5835] shrink-0 mt-0.5" />
               <div>
                 <p className="text-xs font-bold text-[#72500c] uppercase tracking-wider">Horarios de Atención</p>
-                <p className="text-[#1E1810]/80 font-medium text-base mt-0.5 leading-snug">{office.hours}</p>
+                <p className="text-[#242930]/80 font-medium text-base mt-0.5 leading-snug">{office.hours}</p>
               </div>
             </div>
 
@@ -94,7 +94,7 @@ export default function OfficeCard({ office }: OfficeCardProps) {
         </div>
 
         {/* Acciones */}
-        <div className="mt-6 pt-4 border-t border-[#1E1810]/5">
+        <div className="mt-6 pt-4 border-t border-[#242930]/10">
           <a
             href={office.mapsUrl}
             target="_blank"

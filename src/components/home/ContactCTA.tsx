@@ -32,8 +32,7 @@ export default function ContactCTA() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase leading-[0.92]"
           >
-            <span className="text-[#db5835]">Comunicate con </span>
-            <span className="text-[#ba8728]">nosotros</span>
+            <span className="text-[#ba8728]">Comunicate con nosotros</span>
           </motion.h2>
         </div>
 
@@ -117,12 +116,12 @@ export default function ContactCTA() {
         >
           <a
             href={`mailto:${COMPANY.email}`}
-            className="inline-flex items-center gap-2 text-base font-bold text-[#db5835] hover:text-[#72500c] uppercase tracking-wider transition-colors duration-200"
+            className="inline-flex items-center gap-2 text-base sm:text-lg font-bold text-[#ba8728] hover:text-[#c59b3f] uppercase tracking-wider transition-colors duration-200"
           >
-            <Mail size={16} className="text-[#db5835]" />
+            <Mail size={18} className="text-[#ba8728]" />
             {COMPANY.email}
           </a>
-          <p className="text-[#72500c]/70 text-xs font-bold uppercase tracking-widest mt-1">
+          <p className="text-[#242930]/65 text-xs font-bold uppercase tracking-widest mt-1">
             Respondemos en menos de 24 hrs. hábiles
           </p>
         </motion.div>

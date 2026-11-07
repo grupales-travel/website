@@ -200,10 +200,10 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
             <div className="p-6 sm:p-8 relative z-10">
               {submitted ? (
                 <div className="flex flex-col items-center justify-center text-center py-4">
-                  <div className="w-16 h-16 rounded-full bg-[#db5835]/20 flex items-center justify-center text-[#db5835] mb-5">
+                  <div className="w-16 h-16 rounded-full bg-[#ba8728]/15 flex items-center justify-center text-[#ba8728] mb-5">
                     <CheckCircle size={32} />
                   </div>
-                  <h3 className="text-xl font-black uppercase mb-2 text-[#1E1810]">
+                  <h3 className="text-xl font-black uppercase mb-2 text-[#242930]">
                     ¡Pre-reserva recibida!
                   </h3>
                   <p className="text-gray-600 text-sm leading-relaxed mb-6">
@@ -224,11 +224,11 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                   exit={{ opacity: 0, x: 20 }}
                 >
                   <div className="mb-6 text-center">
-                    <div className="inline-block px-3 py-1 rounded-full bg-[#db5835]/10 border border-[#db5835]/20 text-[#db5835] text-[9px] font-bold uppercase tracking-widest mb-3">
+                    <div className="inline-block px-3 py-1 rounded-full bg-[#ba8728]/10 border border-[#ba8728]/20 text-[#ba8728] text-[9px] font-bold uppercase tracking-widest mb-3">
                       Paso 1 de 2 · Contacto
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-black uppercase leading-tight mb-2 text-[#1E1810]">
-                      Pre-reservá <span className="text-[#db5835]">tu lugar</span>
+                    <h3 className="text-xl sm:text-2xl font-black uppercase leading-tight mb-2 text-[#242930]">
+                      Pre-reservá <span className="text-[#ba8728]">tu lugar</span>
                     </h3>
                   </div>
 
@@ -314,10 +314,10 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                       <ChevronLeft size={14} />
                     </button>
                     <div>
-                      <div className="text-[#db5835] text-[9px] font-bold uppercase tracking-widest mb-0.5">
+                      <div className="text-[#ba8728] text-[9px] font-bold uppercase tracking-widest mb-0.5">
                         Paso 2 de 2
                       </div>
-                      <h3 className="text-lg font-black uppercase leading-tight text-[#1E1810]">
+                      <h3 className="text-lg font-black uppercase leading-tight text-[#242930]">
                         Datos de los pasajeros
                       </h3>
                     </div>
@@ -327,7 +327,7 @@ Fecha de Nacimiento: ${p.fechaNacimiento}
                     <div className="max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar flex flex-col gap-4">
                       {passengers.map((p, index) => (
                         <div key={index} className="p-4 rounded-xl bg-gray-50 border border-gray-200">
-                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#db5835] mb-3">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-[#ba8728] mb-3">
                             Pasajero {index + 1}
                           </h4>
                           <div className="flex flex-col gap-3">

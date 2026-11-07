@@ -69,7 +69,7 @@ export default function QuienesSomosPage() {
   return (
     <>
       <Navbar />
-      <main className="bg-[#FAF7F2] text-[#1E1810] relative">
+      <main className="bg-[#FAF7F2] text-[#242930] relative">
         
         {/* Banner Principal / Hero (Espaciado optimizado sin reducir tipografía) */}
         <section className="relative flex items-center justify-center pt-24 pb-12 sm:pb-14 px-6 overflow-hidden">
@@ -91,16 +91,16 @@ export default function QuienesSomosPage() {
           <div className="max-w-4xl mx-auto relative z-20 text-center space-y-4">
             <AnimatedSection>
               <div className="flex items-center justify-center gap-3 mb-1">
-                <div className="h-px w-10 bg-[#72500c]" />
-                <span className="text-[#72500c] text-xs font-bold uppercase tracking-[0.3em]">
+                <div className="h-px w-10 bg-[#ba8728]" />
+                <span className="text-[#ba8728] text-xs font-bold uppercase tracking-[0.3em]">
                   Grupales Travel
                 </span>
-                <div className="h-px w-10 bg-[#72500c]" />
+                <div className="h-px w-10 bg-[#ba8728]" />
               </div>
             </AnimatedSection>
 
             <AnimatedSection delay={0.1}>
-              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase leading-tight text-[#1E1810]">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase leading-tight text-[#242930]">
                 Más que una agencia, <br />
                 <span className="text-gold-gradient">
                   un equipo que crea experiencias
@@ -109,7 +109,7 @@ export default function QuienesSomosPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
-              <p className="text-[#1E1810]/75 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-light">
+              <p className="text-[#242930]/75 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-light">
                 En Grupales Travel creemos que los grandes viajes comienzan mucho antes del embarque. 
                 Comienzan con un equipo de personas apasionadas por el turismo que trabaja cada día para diseñar 
                 experiencias únicas, acompañar a nuestros pasajeros y cuidar cada detalle desde la primera consulta 
@@ -120,27 +120,27 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* Nuestra Historia / Trayectoria (Espaciado equilibrado y compacto) */}
-        <section className="py-12 md:py-16 px-6 relative border-t border-[#1E1810]/5">
+        <section className="py-12 md:py-16 px-6 relative border-t border-[#242930]/5">
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
               
               {/* Textos descriptivos */}
               <div className="lg:col-span-5 space-y-4">
                 <AnimatedSection>
-                  <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest mb-1">
+                  <h3 className="text-[#ba8728] text-xs font-bold uppercase tracking-widest mb-1">
                     Trayectoria
                   </h3>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810] leading-tight">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#242930] leading-tight">
                     Una empresa en constante crecimiento
                   </h2>
                 </AnimatedSection>
 
                 <AnimatedSection delay={0.1}>
-                  <p className="text-[#1E1810]/75 text-base sm:text-lg leading-relaxed">
+                  <p className="text-[#242930]/75 text-base sm:text-lg leading-relaxed">
                     Grupales Travel nació con el propósito de ofrecer salidas grupales cuidadosamente diseñadas, 
                     combinando el asesoramiento personalizado con una operación profesional y un acompañamiento permanente.
                   </p>
-                  <p className="text-[#1E1810]/75 text-base sm:text-lg leading-relaxed mt-3">
+                  <p className="text-[#242930]/75 text-base sm:text-lg leading-relaxed mt-3">
                     Con el paso de los años fuimos consolidando nuestras oficinas centrales, sumando representantes en distintas 
                     provincias y un equipo interdisciplinario que hoy brinda un servicio integral antes, durante y después del viaje.
                   </p>
@@ -149,7 +149,7 @@ export default function QuienesSomosPage() {
 
               {/* Línea de tiempo interactiva */}
               <div className="lg:col-span-7 pl-0 lg:pl-8 relative">
-                <div className="absolute left-4 lg:left-6 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#72500c] via-[#db5835]/30 to-transparent" />
+                <div className="absolute left-4 lg:left-6 top-2 bottom-2 w-0.5 bg-gradient-to-b from-[#ba8728] via-[#ba8728]/30 to-transparent" />
                 
                 <div className="space-y-6 sm:space-y-7">
                   {TIMELINE.map((item, index) => (
@@ -159,16 +159,16 @@ export default function QuienesSomosPage() {
                       className="relative pl-12 lg:pl-16 group"
                     >
                       {/* Puntero de línea de tiempo */}
-                      <div className="absolute left-[9px] lg:left-[17px] top-1.5 w-4 h-4 rounded-full bg-[#FAF7F2] border-2 border-[#db5835] group-hover:bg-[#db5835] transition-all duration-300 shadow-md shadow-[#db5835]/15" />
+                      <div className="absolute left-[9px] lg:left-[17px] top-1.5 w-4 h-4 rounded-full bg-[#FAF7F2] border-2 border-[#ba8728] group-hover:bg-[#ba8728] transition-all duration-300 shadow-md shadow-[#ba8728]/15" />
                       
                       <div className="space-y-0.5">
-                        <span className="text-xl sm:text-2xl font-black text-[#db5835] tracking-tight block">
+                        <span className="text-xl sm:text-2xl font-black text-[#ba8728] tracking-tight block">
                           {item.year}
                         </span>
-                        <h4 className="text-base sm:text-lg font-bold text-[#1E1810] group-hover:text-[#db5835] transition-colors duration-200">
+                        <h4 className="text-base sm:text-lg font-bold text-[#242930] group-hover:text-[#ba8728] transition-colors duration-200">
                           {item.title}
                         </h4>
-                        <p className="text-[#1E1810]/70 text-sm sm:text-base leading-relaxed max-w-lg">
+                        <p className="text-[#242930]/70 text-sm sm:text-base leading-relaxed max-w-lg">
                           {item.text}
                         </p>
                       </div>
@@ -182,18 +182,18 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* Nuestras Oficinas (Ahora 2 sedes presenciales, diseño centrado y no tan amplio) */}
-        <section className="py-12 md:py-16 px-6 bg-[#FAF7F2] relative border-y border-[#1E1810]/5">
+        <section className="py-12 md:py-16 px-6 bg-[#FAF7F2] relative border-y border-[#242930]/5">
           <div className="max-w-4xl mx-auto space-y-10">
             
             <div className="text-center max-w-2xl mx-auto space-y-2.5">
               <AnimatedSection>
-                <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest">
+                <h3 className="text-[#ba8728] text-xs font-bold uppercase tracking-widest">
                   Sedes Presenciales
                 </h3>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810]">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#242930]">
                   Nuestras Oficinas
                 </h2>
-                <p className="text-[#1E1810]/75 text-sm sm:text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+                <p className="text-[#242930]/75 text-sm sm:text-base md:text-lg max-w-xl mx-auto leading-relaxed">
                   Acercate a nuestras oficinas comerciales en San Luis y Villa Mercedes o coordiná una llamada virtual con nuestros asesores.
                 </p>
               </AnimatedSection>
@@ -213,7 +213,7 @@ export default function QuienesSomosPage() {
         </section>
 
         {/* Enlace / Puente hacia Nuestro Equipo */}
-        <section className="py-12 md:py-14 px-6 bg-white relative border-t border-[#1E1810]/5 overflow-hidden">
+        <section className="py-12 md:py-14 px-6 bg-white relative border-t border-[#242930]/5 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(186,135,40,0.06),transparent)] pointer-events-none" />
           <div className="max-w-3xl mx-auto text-center space-y-4 relative z-10">
             <AnimatedSection>
@@ -221,10 +221,10 @@ export default function QuienesSomosPage() {
                 <Users2 className="w-4 h-4 text-[#ba8728]" />
                 Conocé a los protagonistas
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810]">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#242930]">
                 Detrás de cada salida hay un gran equipo
               </h2>
-              <p className="text-[#1E1810]/75 text-sm sm:text-base max-w-xl mx-auto mt-2 leading-relaxed">
+              <p className="text-[#242930]/75 text-sm sm:text-base max-w-xl mx-auto mt-2 leading-relaxed">
                 Coordinadores, asesores comerciales, especialistas en operaciones y directores dedicados a que tu viaje sea inolvidable.
               </p>
               <div className="pt-4">

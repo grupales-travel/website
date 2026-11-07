@@ -5,13 +5,13 @@ import { COMPANY, OFFICES } from "@/data/company";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1E1810] text-white relative">
+    <footer className="bg-[#1f242c] text-white relative border-t border-[#ba8728]/30">
       {/* Top border */}
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#db5835] to-transparent" />
+      <div className="h-0.5 w-full bg-gradient-to-r from-transparent via-[#ba8728] to-transparent" />
 
       {/* Main footer content */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="max-w-7xl mx-auto px-6 py-16 sm:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
 
           {/* Col 1 — Marca */}
           <div>
@@ -19,57 +19,57 @@ export default function Footer() {
               <Image
                 src="/logo-footer.png"
                 alt="Grupales Travel"
-                width={220}
-                height={66}
-                className="h-14 w-auto object-contain mb-5"
+                width={240}
+                height={72}
+                className="h-16 w-auto object-contain mb-6"
               />
             </Link>
-            <p className="text-white/55 text-base leading-relaxed mb-6 max-w-xs">
+            <p className="text-white/70 text-lg sm:text-xl leading-relaxed mb-8 max-w-sm font-medium">
               {COMPANY.description}
             </p>
             {/* Social */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <a
                 href={COMPANY.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:opacity-75 transition-opacity duration-200"
+                className="hover:scale-110 transition-transform duration-200"
               >
-                <img src="/wp-icon-gold.png" alt="WhatsApp" className="w-8 h-8 object-contain" />
+                <img src="/wp-icon-gold.png" alt="WhatsApp" className="w-9 h-9 object-contain" />
               </a>
               <a
                 href={COMPANY.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:opacity-75 transition-opacity duration-200"
+                className="hover:scale-110 transition-transform duration-200"
               >
-                <img src="/ig-icon.png" alt="Instagram" className="w-8 h-8 object-contain" />
+                <img src="/ig-icon.png" alt="Instagram" className="w-9 h-9 object-contain" />
               </a>
               <a
                 href={COMPANY.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:opacity-75 transition-opacity duration-200"
+                className="hover:scale-110 transition-transform duration-200"
               >
-                <img src="/fb-icon.png" alt="Facebook" className="w-8 h-8 object-contain" />
+                <img src="/fb-icon.png" alt="Facebook" className="w-9 h-9 object-contain" />
               </a>
             </div>
           </div>
 
           {/* Col 2 — Oficinas */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest text-[#db5835] mb-6">
+            <h4 className="text-base sm:text-lg font-black uppercase tracking-wider text-[#c59b3f] mb-6 flex items-center gap-2">
               Nuestras Oficinas
             </h4>
-            <ul className="flex flex-col gap-6">
+            <ul className="flex flex-col gap-7">
               {OFFICES.map((office) => (
-                <li key={office.city}>
-                  <p className="text-white/80 font-semibold text-base mb-1.5">{office.city}</p>
+                <li key={office.city} className="space-y-1.5">
+                  <p className="text-white font-bold text-lg sm:text-xl tracking-wide">{office.city}</p>
                   <a
                     href={`tel:${office.phone.replace(/[\s-]/g, "")}`}
-                    className="text-white/55 text-sm hover:text-[#db5835] transition-colors duration-200 flex items-center gap-2 mb-1"
+                    className="text-white/75 text-base sm:text-lg font-semibold hover:text-[#ba8728] transition-colors duration-200 flex items-center gap-2.5"
                   >
-                    <Phone size={13} className="text-[#db5835] shrink-0" />
+                    <Phone size={15} className="text-[#ba8728] shrink-0" />
                     {office.phone}
                   </a>
                   {office.address && office.mapsUrl && (
@@ -77,9 +77,9 @@ export default function Footer() {
                       href={office.mapsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/55 text-sm hover:text-[#db5835] transition-colors duration-200 flex items-center gap-2"
+                      className="text-white/70 text-base sm:text-lg hover:text-[#ba8728] transition-colors duration-200 flex items-center gap-2.5"
                     >
-                      <MapPin size={13} className="text-[#db5835] shrink-0" />
+                      <MapPin size={15} className="text-[#ba8728] shrink-0" />
                       {office.address}
                     </a>
                   )}
@@ -90,10 +90,10 @@ export default function Footer() {
 
           {/* Col 3 — Links + contacto */}
           <div>
-            <h4 className="text-sm font-bold uppercase tracking-widest text-[#db5835] mb-6">
+            <h4 className="text-base sm:text-lg font-black uppercase tracking-wider text-[#c59b3f] mb-6">
               Información
             </h4>
-            <ul className="flex flex-col gap-3 mb-8">
+            <ul className="flex flex-col gap-3.5 mb-8">
               {[
                 { label: "Inicio", href: "/" },
                 { label: "Quiénes Somos", href: "/quienes-somos" },
@@ -109,7 +109,7 @@ export default function Footer() {
                     href={link.href}
                     target={link.href.endsWith(".pdf") ? "_blank" : undefined}
                     rel={link.href.endsWith(".pdf") ? "noopener noreferrer" : undefined}
-                    className="text-base text-white/55 hover:text-[#db5835] transition-colors duration-200"
+                    className="text-lg sm:text-[19px] font-semibold text-white/75 hover:text-[#ba8728] transition-colors duration-200"
                   >
                     {link.label}
                   </Link>
@@ -118,9 +118,9 @@ export default function Footer() {
             </ul>
             <a
               href={`mailto:${COMPANY.email}`}
-              className="inline-flex items-center gap-2 text-base text-white/55 hover:text-[#db5835] transition-colors duration-200"
+              className="inline-flex items-center gap-2.5 text-lg sm:text-xl font-bold text-white/85 hover:text-[#ba8728] transition-colors duration-200"
             >
-              <Mail size={15} className="text-[#db5835]" />
+              <Mail size={18} className="text-[#ba8728]" />
               {COMPANY.email}
             </a>
           </div>
@@ -129,12 +129,12 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/8">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-white/30 text-xs text-center sm:text-left">
+      <div className="border-t border-white/10 bg-black/20">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-white/50 text-sm sm:text-base font-medium text-center sm:text-left">
             © {new Date().getFullYear()} Grupales Travel. Todos los derechos reservados.
           </p>
-          <p className="text-white/30 text-xs text-center sm:text-right">
+          <p className="text-white/60 text-sm sm:text-base font-semibold text-center sm:text-right">
             Agencia de Viajes y Turismo · Legajo {COMPANY.license} · Desde {COMPANY.founded}
           </p>
         </div>

@@ -50,7 +50,6 @@ const TEAM_MEMBERS: TeamMember[] = [
 
   // Representantes
   { name: "Andrés Méndez", role: "Representante", title: "Neuquén y Río Negro", department: "Representantes", category: "representantes" },
-  { name: "Leandro Pérez", role: "Representante", title: "Córdoba", department: "Representantes", category: "representantes" },
   { name: "Silvana Martínez", role: "Representante", title: "CABA", department: "Representantes", category: "representantes" },
 
   // Operaciones y Administración
@@ -62,17 +61,16 @@ const TEAM_MEMBERS: TeamMember[] = [
   // Marketing y Sistemas
   { name: "Martín Estanguet", role: "Manager Design", department: "Marketing", category: "marketing-sistemas" },
   { name: "Juan Pablo Olivares", role: "Marketing y Comunicación", department: "Marketing", category: "marketing-sistemas" },
-  { name: "Facundo Cortines", role: "Marketing y Comunicación", department: "Marketing", category: "marketing-sistemas" },
   { name: "Matías Amoroso", role: "Sistemas & Circuitos", title: "Técnico en Turismo", department: "Sistemas", category: "marketing-sistemas" },
 ];
 
 const CATEGORIES = [
-  { id: "todos", label: "Todo el Equipo", count: 16 },
+  { id: "todos", label: "Todo el Equipo", count: 14 },
   { id: "direccion", label: "Dirección", count: 2 },
   { id: "comercial", label: "Comercial", count: 3 },
-  { id: "representantes", label: "Representantes", count: 3 },
+  { id: "representantes", label: "Representantes", count: 2 },
   { id: "operaciones-admin", label: "Operaciones & Admin", count: 4 },
-  { id: "marketing-sistemas", label: "Marketing & Sistemas", count: 4 },
+  { id: "marketing-sistemas", label: "Marketing & Sistemas", count: 3 },
 ] as const;
 
 export default function TeamSection() {
@@ -107,11 +105,11 @@ export default function TeamSection() {
               className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex items-center gap-2 ${
                 isActive
                   ? "bg-[#ba8728] text-white shadow-md shadow-[#ba8728]/25 scale-105"
-                  : "bg-white text-[#1E1810]/70 border border-[#1E1810]/10 hover:border-[#ba8728] hover:text-[#1E1810]"
+                  : "bg-white text-[#242930]/70 border border-[#242930]/10 hover:border-[#ba8728] hover:text-[#242930]"
               }`}
             >
               <span>{cat.label}</span>
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? "bg-white/25 text-white" : "bg-[#1E1810]/5 text-[#1E1810]/50"}`}>
+              <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? "bg-white/25 text-white" : "bg-[#242930]/5 text-[#242930]/50"}`}>
                 {cat.count}
               </span>
             </button>
@@ -126,7 +124,7 @@ export default function TeamSection() {
             <span className="text-[#72500c] text-[11px] font-bold uppercase tracking-widest">
               Liderazgo
             </span>
-            <h3 className="text-xl sm:text-2xl font-black text-[#1E1810] tracking-tight">
+            <h3 className="text-xl sm:text-2xl font-black text-[#242930] tracking-tight">
               Dirección General
             </h3>
           </div>
@@ -169,7 +167,7 @@ export default function TeamSection() {
                 </p>
 
                 {/* Reseña estratégica */}
-                <p className="text-[#1E1810]/75 text-xs sm:text-sm leading-relaxed mt-2 max-w-xs">
+                <p className="text-[#242930]/75 text-xs sm:text-sm leading-relaxed mt-2 max-w-xs">
                   {director.description}
                 </p>
               </div>
@@ -186,7 +184,7 @@ export default function TeamSection() {
               <span className="text-[#72500c] text-[11px] font-bold uppercase tracking-widest">
                 Especialistas
               </span>
-              <h3 className="text-xl sm:text-2xl font-black text-[#1E1810] tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-black text-[#242930] tracking-tight">
                 Equipo Interdisciplinario
               </h3>
             </div>
@@ -205,10 +203,10 @@ export default function TeamSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-white border border-[#1E1810]/10 hover:border-[#ba8728] rounded-2xl p-2.5 sm:p-3 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group"
+                  className="bg-white border border-[#242930]/10 hover:border-[#ba8728] rounded-2xl p-2.5 sm:p-3 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group"
                 >
                   {/* Foto con margen/borde de relleno controlado y bordes redondeados elegantes */}
-                  <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-2.5 bg-[#FAF7F2] border border-[#1E1810]/5">
+                  <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-2.5 bg-[#FAF7F2] border border-[#242930]/5">
                     <img
                       src={getImagePath(member.name)}
                       alt={member.name}
@@ -220,7 +218,7 @@ export default function TeamSection() {
                       }}
                     />
                     <div className="absolute inset-0 flex items-center justify-center bg-[#FAF7F2] -z-10">
-                      <User size={32} className="text-[#1E1810]/20" />
+                      <User size={32} className="text-[#242930]/20" />
                     </div>
                   </div>
 
@@ -230,12 +228,12 @@ export default function TeamSection() {
                       {member.name}
                     </h4>
                     
-                    <p className="text-xs font-semibold text-[#db5835] leading-tight">
+                    <p className="text-xs font-semibold text-[#ba8728] leading-tight">
                       {member.role}
                     </p>
 
                     {member.title ? (
-                      <p className="text-[11px] font-medium text-[#1E1810]/60 leading-tight">
+                      <p className="text-[11px] font-medium text-[#242930]/60 leading-tight">
                         {member.title}
                       </p>
                     ) : (

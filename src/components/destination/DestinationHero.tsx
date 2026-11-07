@@ -65,7 +65,7 @@ export default function DestinationHero({ destination }: Props) {
   return (
     <section
       ref={ref}
-      className="relative w-full overflow-hidden bg-[#1E1810]"
+      className="relative w-full overflow-hidden bg-[#1f242c]"
       style={heroHeight ? { height: heroHeight } : { height: "100svh" }}
     >
       {/* Back Button */}
@@ -87,10 +87,10 @@ export default function DestinationHero({ destination }: Props) {
           className="object-cover"
           sizes="100vw"
           placeholder="blur"
-          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxRTE4MTAiLz48L3N2Zz4="
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMxZjI0MmMiLz48L3N2Zz4="
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1E1810]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1f242c]/50 to-transparent" />
       </div>
 
       {/* Grain */}
@@ -106,8 +106,8 @@ export default function DestinationHero({ destination }: Props) {
       >
         {/* Label — una sola fila */}
         <div className="flex items-center gap-2 mb-4 overflow-hidden">
-          <div className="h-px w-6 sm:w-10 bg-[#72500c] shrink-0" />
-          <span className="text-[#db5835] text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.08em] sm:tracking-[0.2em] md:tracking-[0.3em] whitespace-nowrap overflow-hidden text-ellipsis">
+          <div className="h-px w-6 sm:w-10 bg-[#ba8728] shrink-0" />
+          <span className="text-[#ba8728] text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.08em] sm:tracking-[0.2em] md:tracking-[0.3em] whitespace-nowrap overflow-hidden text-ellipsis">
             Salida Grupal Acompañada · Desde {destination.departureCity || "Buenos Aires"}
           </span>
         </div>

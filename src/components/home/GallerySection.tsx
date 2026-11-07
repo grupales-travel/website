@@ -99,10 +99,9 @@ export default function GallerySection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-3xl md:text-4xl lg:text-5xl font-black uppercase text-[#db5835] leading-tight"
+          className="text-3xl md:text-4xl lg:text-5xl font-black uppercase text-[#ba8728] leading-tight"
         >
-          La experiencia{" "}
-          <span className="text-[#ba8728]">lo es todo</span>
+          La experiencia lo es todo
         </motion.h2>
       </div>
 

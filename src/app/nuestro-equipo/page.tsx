@@ -28,7 +28,7 @@ export default function NuestroEquipoPage() {
   return (
     <>
       <Navbar />
-      <main className="bg-[#FAF7F2] text-[#1E1810] relative">
+      <main className="bg-[#FAF7F2] text-[#242930] relative">
 
         {/* Banner Principal / Hero de Nuestro Equipo */}
         <section className="relative flex items-center justify-center pt-24 sm:pt-28 pb-8 sm:pb-10 px-6 overflow-hidden">
@@ -60,13 +60,13 @@ export default function NuestroEquipoPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.1}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#1E1810]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight text-[#242930]">
                 NUESTRO <span className="text-gold-gradient">EQUIPO</span>
               </h1>
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
-              <p className="text-[#1E1810]/75 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+              <p className="text-[#242930]/75 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed font-light">
                 Cada viaje es el resultado del trabajo coordinado de profesionales especializados en distintas áreas. 
                 Nuestro compromiso es acompañarte en cada etapa del proceso para que solo tengas que disfrutar la experiencia.
               </p>
@@ -75,21 +75,21 @@ export default function NuestroEquipoPage() {
         </section>
 
         {/* Sección del Equipo (Grilla compacta y filtros) */}
-        <section className="py-8 md:py-12 px-4 sm:px-6 relative border-t border-[#1E1810]/5">
+        <section className="py-8 md:py-12 px-4 sm:px-6 relative border-t border-[#242930]/5">
           <div className="max-w-7xl mx-auto">
             <TeamSection />
           </div>
         </section>
 
         {/* ¿Por qué elegir Grupales Travel? (Formato compacto) */}
-        <section className="py-12 md:py-16 px-6 bg-[#FAF7F2] relative border-t border-[#1E1810]/5">
+        <section className="py-12 md:py-16 px-6 bg-[#FAF7F2] relative border-t border-[#242930]/5">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8 space-y-2">
               <AnimatedSection>
                 <h3 className="text-[#72500c] text-xs font-bold uppercase tracking-widest">
                   Diferenciales
                 </h3>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E1810]">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#242930]">
                   ¿Por qué elegir <span className="text-gold-gradient">Grupales Travel?</span>
                 </h2>
               </AnimatedSection>
@@ -100,12 +100,12 @@ export default function NuestroEquipoPage() {
                 <AnimatedSection
                   key={index}
                   delay={index * 0.04}
-                  className="flex items-center gap-3 bg-white border border-[#db5835]/15 p-3 sm:p-3.5 rounded-xl hover:border-[#db5835]/40 transition-colors shadow-sm"
+                  className="flex items-center gap-3 bg-white border border-[#ba8728]/20 p-3 sm:p-3.5 rounded-xl hover:border-[#ba8728]/50 transition-colors shadow-sm"
                 >
-                  <div className="w-7 h-7 rounded-full bg-[#db5835]/10 flex items-center justify-center shrink-0 border border-[#db5835]/20">
-                    <Check size={14} className="text-[#db5835]" />
+                  <div className="w-7 h-7 rounded-full bg-[#ba8728]/10 flex items-center justify-center shrink-0 border border-[#ba8728]/25">
+                    <Check size={14} className="text-[#ba8728]" />
                   </div>
-                  <p className="text-[#1E1810]/85 text-xs sm:text-sm font-bold leading-snug">
+                  <p className="text-[#242930]/85 text-xs sm:text-sm font-bold leading-snug">
                     {adv}
                   </p>
                 </AnimatedSection>
@@ -115,13 +115,13 @@ export default function NuestroEquipoPage() {
         </section>
 
         {/* Cierre / Frase Final con Foto Grupal (Proporción estilizada) */}
-        <section className="py-10 md:py-14 px-6 relative border-t border-[#1E1810]/5 overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(219,88,53,0.04),transparent)] pointer-events-none" />
+        <section className="py-10 md:py-14 px-6 relative border-t border-[#242930]/5 overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(186,135,40,0.04),transparent)] pointer-events-none" />
           
           <div className="max-w-3xl mx-auto text-center space-y-6 relative z-10">
             {/* Foto grupal compacta */}
             <AnimatedSection>
-              <div className="relative aspect-[24/9] w-full border border-[#1E1810]/5 rounded-2xl overflow-hidden shadow-lg group">
+              <div className="relative aspect-[24/9] w-full border border-[#242930]/10 rounded-2xl overflow-hidden shadow-lg group">
                 <Image
                   src="/foto-grupal-equipo.webp"
                   alt="Equipo de Grupales Travel"
@@ -141,7 +141,7 @@ export default function NuestroEquipoPage() {
               </AnimatedSection>
               
               <AnimatedSection delay={0.15}>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#1E1810] leading-snug">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#242930] leading-snug">
                   &ldquo;Detrás de cada salida hay un equipo comprometido con un mismo objetivo: <br />
                   <span className="text-gold-gradient">
                     Que cada viaje se convierta en una experiencia inolvidable.
@@ -162,9 +162,9 @@ export default function NuestroEquipoPage() {
                   </a>
                   <Link
                     href="/salidas"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-[#1E1810]/15 hover:border-[#db5835] text-[#1E1810] font-bold text-xs uppercase tracking-widest transition-all duration-300"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white border border-[#242930]/15 hover:border-[#ba8728] text-[#242930] font-bold text-xs uppercase tracking-widest transition-all duration-300"
                   >
-                    <Compass size={15} className="text-[#db5835]" />
+                    <Compass size={15} className="text-[#ba8728]" />
                     Explorar salidas grupales
                   </Link>
                 </div>

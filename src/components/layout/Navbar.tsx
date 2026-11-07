@@ -222,10 +222,10 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
-            className="fixed inset-0 z-[95] flex flex-col bg-[#1E1810]"
+            className="fixed inset-0 z-[95] flex flex-col bg-[#1f242c]"
             style={{ touchAction: "none" }}
           >
-            <div className="h-1 w-full bg-gradient-to-r from-[#ba8728] via-[#db5835] to-[#ba8728]" />
+            <div className="h-1 w-full bg-gradient-to-r from-[#ba8728] via-[#dfb44f] to-[#ba8728]" />
             <div className="flex-1 flex flex-col justify-center px-8 py-20">
               <nav className="flex flex-col gap-2">
                 {NAV_LINKS.map((link, i) => (
@@ -238,7 +238,7 @@ export default function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="text-3xl font-black text-white/90 hover:text-[#db5835] uppercase tracking-tight transition-colors duration-200 block py-1"
+                      className="text-3xl font-black text-white/90 hover:text-[#ba8728] uppercase tracking-tight transition-colors duration-200 block py-1"
                     >
                       {link.label}
                     </Link>

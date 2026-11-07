@@ -95,9 +95,9 @@ export default function AdvancedFilter({
           className="relative"
         >
           {/* ── Barra de búsqueda (mobile) — siempre visible, encima de los filtros ── */}
-          <div className="sm:hidden relative mb-2">
+          <div className="sm:hidden relative mb-2.5">
             <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
-              <Search size={15} className="text-[#1E1810]/35" />
+              <Search size={16} className="text-[#ba8728]" />
             </div>
             <input
               type="text"
@@ -108,15 +108,15 @@ export default function AdvancedFilter({
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck={false}
-              className="w-full pl-9 pr-9 py-2.5 rounded-full bg-white text-[#1E1810] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.08)] focus:outline-none focus:ring-2 focus:ring-[#db5835]/40 placeholder:text-[#1E1810]/40"
+              className="w-full pl-10 pr-9 py-3 rounded-full bg-white text-[#242930] font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#323842]/15 focus:outline-none focus:ring-2 focus:ring-[#ba8728]/40 placeholder:text-[#717b8a]"
               style={{ fontSize: 16 }}
             />
             {filters.search && (
               <button
                 onMouseDown={(e) => { e.preventDefault(); handleSearchChange(""); }}
-                className="absolute inset-y-0 right-3 flex items-center text-[#1E1810]/35 hover:text-[#1E1810]/70"
+                className="absolute inset-y-0 right-3.5 flex items-center text-[#717b8a] hover:text-[#242930]"
               >
-                <X size={14} />
+                <X size={15} />
               </button>
             )}
           </div>
@@ -127,14 +127,14 @@ export default function AdvancedFilter({
             {/* Input completo (desktop) */}
             <div className="hidden sm:block relative flex-grow max-w-[280px]">
               <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                <Search size={16} className="text-[#1E1810]/40" />
+                <Search size={18} className="text-[#ba8728]" />
               </div>
               <input
                 type="text"
                 placeholder="Buscar por título..."
                 value={filters.search}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 rounded-full bg-white text-[#1E1810] text-[15px] font-medium shadow-[0_1px_4px_rgba(0,0,0,0.07)] focus:outline-none focus:ring-2 focus:ring-[#db5835]/50 transition-shadow placeholder:text-[#1E1810]/40"
+                className="w-full pl-12 pr-4 py-3.5 rounded-full bg-white text-[#242930] text-base sm:text-lg font-medium shadow-[0_2px_8px_rgba(0,0,0,0.06)] border border-[#323842]/15 focus:outline-none focus:ring-2 focus:ring-[#ba8728]/50 transition-all placeholder:text-[#717b8a]"
               />
             </div>
 
@@ -214,10 +214,10 @@ export default function AdvancedFilter({
                   exit={{ opacity: 0, scale: 0.7 }}
                   transition={{ duration: 0.15 }}
                   onClick={clearFilters}
-                  className="flex items-center justify-center w-7 h-7 rounded-full bg-[#1E1810]/10 text-[#1E1810]/45 hover:bg-[#1E1810]/18 hover:text-[#1E1810]/70 transition-colors shrink-0"
+                  className="flex items-center justify-center w-8 h-8 rounded-full bg-[#242930]/10 text-[#242930]/60 hover:bg-[#242930]/20 hover:text-[#242930] transition-colors shrink-0"
                   aria-label="Limpiar filtros"
                 >
-                  <X size={13} />
+                  <X size={14} />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -252,29 +252,29 @@ function FilterPill({
         whileTap={{ scale: 0.96 }}
         transition={{ duration: 0.1 }}
         className={`
-          flex items-center gap-1.5 sm:gap-3
-          pl-3 pr-2 py-2 sm:pl-5 sm:pr-4 sm:py-3
+          flex items-center gap-2 sm:gap-3
+          pl-4 pr-3 py-2.5 sm:pl-6 sm:pr-5 sm:py-3.5
           rounded-full cursor-pointer select-none
-          transition-colors duration-100
+          transition-all duration-200
           ${isDark
             ? "text-white"
-            : "bg-white text-[#1E1810]/65 shadow-[0_1px_4px_rgba(0,0,0,0.08)] hover:text-[#1E1810]"
+            : "bg-white text-[#242930] border border-[#323842]/15 shadow-[0_2px_8px_rgba(0,0,0,0.06)] hover:border-[#ba8728] hover:text-[#ba8728]"
           }
         `}
         style={isDark ? { backgroundColor: "#ba8728", boxShadow: "0 4px 20px rgba(186,135,40,0.3)" } : {}}
       >
-        <span className={`shrink-0 ${isDark ? "text-[#db5835]" : "text-[#1E1810]/35"}`}>
+        <span className={`shrink-0 ${isDark ? "text-white" : "text-[#ba8728]"}`}>
           {icon}
         </span>
-        <span className="text-[12px] sm:text-[15px] font-semibold leading-none whitespace-nowrap">
+        <span className="text-sm sm:text-base md:text-[17px] font-bold leading-none whitespace-nowrap">
           {value ?? label}
         </span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.15 }}
-          className={`shrink-0 ${isDark ? "text-white/50" : "text-[#1E1810]/25"}`}
+          className={`shrink-0 ${isDark ? "text-white/70" : "text-[#717b8a]"}`}
         >
-          <ChevronDown size={12} strokeWidth={2.5} />
+          <ChevronDown size={14} strokeWidth={2.5} />
         </motion.span>
       </motion.button>
 
@@ -294,17 +294,17 @@ function Sheet({ children, align }: { children: React.ReactNode; align: "left" |
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 3, scale: 0.99 }}
       transition={{ duration: 0.12, ease: "easeOut" }}
-      className={`absolute top-full mt-1.5 z-[60] rounded-2xl overflow-hidden ${align === "right" ? "right-0" : "left-0"}`}
+      className={`absolute top-full mt-2 z-[60] rounded-2xl overflow-hidden ${align === "right" ? "right-0" : "left-0"}`}
       style={{
-        minWidth: "180px",
-        maxWidth: "min(220px, calc(100vw - 2rem))",
+        minWidth: "210px",
+        maxWidth: "min(260px, calc(100vw - 2rem))",
         background: "rgba(255,255,255,0.98)",
         backdropFilter: "blur(24px) saturate(1.6)",
         WebkitBackdropFilter: "blur(24px) saturate(1.6)",
         boxShadow: "0 0 0 0.5px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.12), 0 20px 48px rgba(0,0,0,0.08)",
       }}
     >
-      <div className="py-2">{children}</div>
+      <div className="py-2.5">{children}</div>
     </motion.div>
   );
 }
@@ -316,11 +316,11 @@ function SheetOption({ label, selected, onClick }: { label: string; selected: bo
     <button
       onClick={onClick}
       className={`
-        w-full flex items-center justify-between px-4 py-2.5 text-left
-        text-[14px] leading-none transition-colors duration-75 cursor-pointer
+        w-full flex items-center justify-between px-4 sm:px-5 py-3 text-left
+        text-[15px] sm:text-base leading-none transition-colors duration-75 cursor-pointer
         ${selected
-          ? "text-[#ba8728] font-semibold bg-[#fcebe6]"
-          : "text-[#1E1810]/60 font-medium hover:bg-black/[0.03] hover:text-[#1E1810]/90"
+          ? "text-[#ba8728] font-bold bg-[#ba8728]/10"
+          : "text-[#242930]/75 font-semibold hover:bg-black/[0.04] hover:text-[#242930]"
         }
       `}
     >
@@ -334,7 +334,7 @@ function SheetOption({ label, selected, onClick }: { label: string; selected: bo
             transition={{ duration: 0.1 }}
             className="ml-4 shrink-0"
           >
-            <Check size={14} strokeWidth={2.5} className="text-[#db5835]" />
+            <Check size={16} strokeWidth={2.5} className="text-[#ba8728]" />
           </motion.span>
         )}
       </AnimatePresence>

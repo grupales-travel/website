@@ -17,9 +17,11 @@
   --color-brand-brown: #ba8728;
   --color-brand-gold: #ba8728;
 
-  --color-dark: #1E1810;
-  --color-dark-800: #2d2418;
-  --color-dark-700: #3d3020;
+  --color-dark: #242930;
+  --color-dark-800: #2d3440;
+  --color-dark-700: #3b4452;
+  --color-slate-metallic: #323842;
+  --color-silver-dark: #3f4652;
 
   --color-cream: #f5e6cc;
   --color-cream-light: #fdf6ec;
@@ -48,7 +50,7 @@
    ============================================ */
 :root {
   --background: #fafaf8;
-  --foreground: #1E1810;
+  --foreground: #242930;
   color-scheme: light;
 }
 
@@ -113,7 +115,7 @@ h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1E1810;
+  background: #242930;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -232,13 +234,13 @@ h6 {
   opacity: 0.6;
 }
 
-/* Brand gradient text */
+/* Brand gradient text — puro dorado radiante elegante sin naranja */
 .text-gold-gradient {
-  background: linear-gradient(90deg, #db5835, #ba8728);
+  background: linear-gradient(90deg, #ba8728 0%, #dfb44f 50%, #ba8728 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent;
+  color: #ba8728;
 }
 
 /* Overlay en cards */

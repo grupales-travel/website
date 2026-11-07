@@ -106,9 +106,9 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
     return (
       <>
         {/* ── Hero oscuro — mismo header que Contacto ── */}
-        <section className="relative pt-24 pb-10 px-6 bg-[#1E1810] overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(219,88,53,0.18),transparent)]" />
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#db5835]/50 to-transparent" />
+        <section className="relative pt-24 pb-10 px-6 bg-[#1f242c] overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_100%,rgba(186,135,40,0.15),transparent)]" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#ba8728]/50 to-transparent" />
 
           <div className="max-w-4xl mx-auto relative z-10 text-center">
             <motion.div
@@ -118,7 +118,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
               className="flex items-center justify-center gap-3 mb-4"
             >
               <div className="h-px w-10 bg-[#ba8728]" />
-              <span className="text-[#db5835] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+              <span className="text-[#ba8728] text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                 {allDestinations.length} destinos confirmados
               </span>
               <div className="h-px w-10 bg-[#ba8728]" />
@@ -130,7 +130,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-2xl sm:text-4xl md:text-5xl font-black uppercase leading-tight whitespace-nowrap text-white"
             >
-              Salidas Grupales <span className="text-[#db5835]">Acompañadas</span>
+              Salidas Grupales <span className="text-[#ba8728]">Acompañadas</span>
             </motion.h1>
           </div>
         </section>
@@ -183,7 +183,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="text-center text-[#1E1810]/30 text-sm mt-10"
+              className="text-center text-[#242930]/40 text-sm mt-10"
             >
               {filteredDestinations.length}{" "}
               {filteredDestinations.length === 1 ? "destino encontrado" : "destinos encontrados"}
@@ -225,8 +225,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase leading-[0.87] whitespace-nowrap"
           >
-            <span className="text-[#db5835]">Todos nuestros </span>
-            <span className="text-[#ba8728]">destinos</span>
+            <span className="text-[#ba8728]">Todos nuestros destinos</span>
           </motion.h2>
         </div>
 
@@ -281,7 +280,7 @@ export default function RegionFilter({ limit, pageMode = false, destinations }: 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center text-[#1E1810]/35 text-sm mt-10"
+            className="text-center text-[#242930]/40 text-sm mt-10"
           >
             {filteredDestinations.length}{" "}
             {filteredDestinations.length === 1 ? "destino encontrado" : "destinos encontrados"}

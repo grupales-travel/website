@@ -53,9 +53,9 @@ export default function ExperienceSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.08 }}
-              className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#db5835] leading-[0.88] mb-4 md:mb-7"
+              className="text-3xl sm:text-5xl lg:text-6xl font-black uppercase text-[#ba8728] leading-[0.88] mb-4 md:mb-7"
             >
-              Viví tu experiencia{" "}<span className="text-[#ba8728]">grupal</span>
+              Viví tu experiencia grupal
             </motion.h2>
 
             {/* Ventajas — texto más grande */}
@@ -116,7 +116,7 @@ export default function ExperienceSection() {
                     <span className="text-2xl font-black text-[#72500c] leading-none tabular-nums">
                       {s.value}
                     </span>
-                    <span className="text-[10px] font-semibold text-[#1E1810]/45 uppercase tracking-wider mt-0.5">
+                    <span className="text-[10px] font-semibold text-[#242930]/60 uppercase tracking-wider mt-0.5">
                       {s.label}
                     </span>
                   </div>

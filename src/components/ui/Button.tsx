@@ -22,7 +22,7 @@ const variants = {
   gold: "btn-gold text-white drop-shadow-md",
   outline: "bg-transparent text-[#db5835] border border-[#db5835] hover:bg-[#db5835] hover:text-white",
   ghost: "bg-transparent text-white border border-white/30 hover:bg-white/10 hover:border-white/60",
-  dark: "bg-[#1E1810] text-white border border-[#1E1810] hover:bg-[#2d2418]",
+  dark: "bg-[#242930] text-white border border-[#242930] hover:bg-[#323842]",
 };
 
 const sizes = {

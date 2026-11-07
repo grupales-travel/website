@@ -52,10 +52,10 @@ export default function PartnerDestinationCard({
                     {/* Contenido */}
                     <div className="p-4 flex flex-col justify-between flex-grow">
                         <div>
-                            <h3 className="text-lg font-bold text-[#1e1810] leading-snug mb-1 group-hover:text-[#db5835] transition-colors">
+                            <h3 className="text-lg font-bold text-[#242930] leading-snug mb-1 group-hover:text-[#ba8728] transition-colors">
                                 {destination.title}
                             </h3>
-                            <div className="flex items-center gap-3 text-xs text-[#1e1810]/60 mb-3">
+                            <div className="flex items-center gap-3 text-xs text-[#242930]/70 mb-3">
                                 <span className="flex items-center gap-1">
                                     <Clock size={12} />
                                     {destination.days} días

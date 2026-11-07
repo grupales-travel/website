@@ -66,7 +66,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-[680px] overflow-hidden bg-[#1E1810]"
+      className="relative w-full min-h-[680px] overflow-hidden bg-[#1f242c]"
       style={heroHeight ? { height: heroHeight } : { height: "100svh" }}
     >
       {/* ── Fondo estático + crossfade GPU ── */}
@@ -222,10 +222,14 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
                 </span>
               </div>
             ))}
-            <div className="h-8 w-px bg-white/15 mx-2 hidden sm:block" />
-            <div className="hidden sm:flex flex-col">
-              <span className="text-white/40 text-xs uppercase tracking-widest">Legajo</span>
-              <span className="text-white/60 text-sm font-semibold mt-1">EVyT 19182</span>
+            <div className="h-10 sm:h-12 w-px bg-white/20 mx-1.5 sm:mx-3" />
+            <div className="flex flex-col items-center sm:items-start justify-center bg-white/10 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-white/20 shadow-md">
+              <span className="text-[#c59b3f] text-xs sm:text-sm font-extrabold uppercase tracking-[0.2em] leading-tight">
+                Legajo
+              </span>
+              <span className="text-white text-base sm:text-xl md:text-2xl font-black tracking-wide leading-tight mt-0.5">
+                EVyT 19182
+              </span>
             </div>
           </motion.div>
         </div>
@@ -243,7 +247,7 @@ export default function HeroSection({ initialImages = [] }: { initialImages?: He
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ArrowDown size={18} className="text-[#db5835]" />
+          <ArrowDown size={18} className="text-[#ba8728]" />
         </motion.div>
       </motion.div>
     </section>
