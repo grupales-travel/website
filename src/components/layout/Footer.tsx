@@ -103,6 +103,7 @@ export default function Footer() {
                 { label: "Salidas Grupales", href: "/salidas" },
                 { label: "Bases Sorteo Primavera", href: "/bases-concurso-primavera-circuito-dulce-francia.pdf" },
                 { label: "Condiciones Generales", href: "/condiciones-generales.pdf" },
+                { label: "Portal Operativo (Equipo)", href: "/operaciones" },
               ].map((link) => (
                 <li key={link.label}>
                   <Link

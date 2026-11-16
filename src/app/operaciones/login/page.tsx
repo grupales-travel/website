@@ -6,16 +6,14 @@ import Image from "next/image";
 import { Lock, User, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 
 const TEAM_QUICK_ACCESS = [
-  { username: "andres", name: "Andrés Arellano", role: "Dirección", city: "San Luis" },
-  { username: "marina", name: "Marina Mendoza", role: "Dirección", city: "San Luis" },
-  { username: "nicolas", name: "Nicolás Sánchez", role: "Operaciones", city: "San Luis" },
-  { username: "alejandro", name: "Alejandro Insaurralde", role: "Operaciones", city: "San Luis" },
-  { username: "luz", name: "Luz Sosa", role: "Administración", city: "San Luis" },
-  { username: "ramiro", name: "Ramiro Ferreras", role: "Comercial", city: "San Luis" },
-  { username: "abel", name: "Abel López", role: "Comercial", city: "San Luis" },
-  { username: "patricia", name: "Patricia Maluzan", role: "Comercial", city: "San Luis" },
-  { username: "silvana", name: "Silvana Martínez", role: "CABA", city: "Buenos Aires" },
-  { username: "andresm", name: "Andrés Méndez", role: "Patagonia", city: "Neuquén" },
+  { username: "matias", name: "Matías Amoroso", role: "Sistemas & Operaciones (Acceso Total)", city: "San Luis" },
+  { username: "andres", name: "Andrés Arellano", role: "Dirección General", city: "San Luis" },
+  { username: "marina", name: "Marina Mendoza", role: "Dirección General", city: "San Luis" },
+  { username: "nicolas", name: "Nicolás Sánchez", role: "Administración & Operaciones", city: "San Luis" },
+  { username: "luz", name: "Luz Sosa", role: "Administración & Operaciones", city: "San Luis" },
+  { username: "abel", name: "Abel López", role: "Ventas & Operaciones", city: "San Luis" },
+  { username: "ramiro", name: "Ramiro Ferreras Ribes", role: "Ventas & Operaciones", city: "San Luis" },
+  { username: "patricia", name: "Patricia Maluzan", role: "Ventas & Operaciones", city: "San Luis" },
 ];
 
 export default function OperacionesLoginPage() {

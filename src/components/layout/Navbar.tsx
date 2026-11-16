@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Menu } from "lucide-react";
+import { X, Menu, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { COMPANY } from "@/data/company";
 
@@ -191,26 +191,45 @@ export default function Navbar() {
               <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
               Consultar
             </motion.a>
+
+            {/* Acceso Equipo / Account */}
+            <Link
+              href="/operaciones"
+              title="Portal Operativo (Acceso Equipo)"
+              className="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 flex items-center justify-center text-white hover:scale-105 transition-all shadow-sm"
+            >
+              <User size={16} />
+            </Link>
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full text-white hover:bg-white/10 transition-colors duration-200"
-            aria-label="Menú"
-          >
-            <AnimatePresence mode="wait">
-              {mobileOpen ? (
-                <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <X size={22} />
-                </motion.div>
-              ) : (
-                <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <Menu size={22} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </button>
+          {/* Mobile Right: Account icon + Hamburger */}
+          <div className="lg:hidden flex items-center gap-2">
+            <Link
+              href="/operaciones"
+              title="Portal Operativo (Acceso Equipo)"
+              className="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 flex items-center justify-center text-white"
+            >
+              <User size={16} />
+            </Link>
+
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="w-10 h-10 flex items-center justify-center rounded-full text-white hover:bg-white/10 transition-colors duration-200"
+              aria-label="Menú"
+            >
+              <AnimatePresence mode="wait">
+                {mobileOpen ? (
+                  <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <X size={22} />
+                  </motion.div>
+                ) : (
+                  <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <Menu size={22} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -262,6 +281,15 @@ export default function Navbar() {
                   <img src="/wp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
                   Consultar por WhatsApp
                 </a>
+
+                <Link
+                  href="/operaciones"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-widest border border-white/20 transition-all"
+                >
+                  <User size={15} />
+                  Portal Operativo (Acceso Equipo)
+                </Link>
                 <div className="flex items-center justify-center gap-4 mt-2">
                   <a
                     href={COMPANY.instagram}

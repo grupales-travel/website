@@ -18,12 +18,23 @@ let memoryPassengers: PassengerPax[] | null = null;
 
 export const DEFAULT_USERS: OperatorUser[] = [
   {
+    id: "usr-matias",
+    username: "matias",
+    name: "Matías Amoroso",
+    email: "matias@grupalestravel.com",
+    role: "admin",
+    department: "Sistemas & Operaciones (Acceso Total)",
+    city: "San Luis",
+    active: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
     id: "usr-andres",
     username: "andres",
     name: "Andrés Arellano",
     email: "andres@grupalestravel.com",
     role: "admin",
-    department: "Dirección",
+    department: "Dirección General",
     city: "San Luis",
     active: true,
     createdAt: new Date().toISOString(),
@@ -34,7 +45,7 @@ export const DEFAULT_USERS: OperatorUser[] = [
     name: "Marina Mendoza",
     email: "marina@grupalestravel.com",
     role: "admin",
-    department: "Dirección",
+    department: "Dirección General",
     city: "San Luis",
     active: true,
     createdAt: new Date().toISOString(),
@@ -45,18 +56,7 @@ export const DEFAULT_USERS: OperatorUser[] = [
     name: "Nicolás Sánchez",
     email: "operaciones@grupalestravel.com",
     role: "operaciones",
-    department: "Operaciones",
-    city: "San Luis",
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "usr-alejandro",
-    username: "alejandro",
-    name: "Alejandro Insaurralde",
-    email: "operaciones2@grupalestravel.com",
-    role: "operaciones",
-    department: "Operaciones",
+    department: "Administración y Operaciones",
     city: "San Luis",
     active: true,
     createdAt: new Date().toISOString(),
@@ -67,18 +67,7 @@ export const DEFAULT_USERS: OperatorUser[] = [
     name: "Luz Sosa",
     email: "administracion@grupalestravel.com",
     role: "operaciones",
-    department: "Administración",
-    city: "San Luis",
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "usr-ramiro",
-    username: "ramiro",
-    name: "Ramiro Ferreras",
-    email: "ventas@grupalestravel.com",
-    role: "comercial",
-    department: "Comercial",
+    department: "Administración y Operaciones",
     city: "San Luis",
     active: true,
     createdAt: new Date().toISOString(),
@@ -89,7 +78,18 @@ export const DEFAULT_USERS: OperatorUser[] = [
     name: "Abel López",
     email: "abel@grupalestravel.com",
     role: "comercial",
-    department: "Comercial",
+    department: "Ventas y Operaciones",
+    city: "San Luis",
+    active: true,
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: "usr-ramiro",
+    username: "ramiro",
+    name: "Ramiro Ferreras Ribes",
+    email: "ventas@grupalestravel.com",
+    role: "comercial",
+    department: "Ventas y Operaciones",
     city: "San Luis",
     active: true,
     createdAt: new Date().toISOString(),
@@ -100,40 +100,7 @@ export const DEFAULT_USERS: OperatorUser[] = [
     name: "Patricia Maluzan",
     email: "patricia@grupalestravel.com",
     role: "comercial",
-    department: "Comercial",
-    city: "San Luis",
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "usr-silvana",
-    username: "silvana",
-    name: "Silvana Martínez",
-    email: "caba@grupalestravel.com",
-    role: "comercial",
-    department: "Representantes CABA",
-    city: "Buenos Aires",
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "usr-andresm",
-    username: "andresm",
-    name: "Andrés Méndez",
-    email: "patagonia@grupalestravel.com",
-    role: "comercial",
-    department: "Representantes Patagonia",
-    city: "Neuquén",
-    active: true,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "usr-operaciones-gen",
-    username: "operaciones",
-    name: "Equipo Operaciones",
-    email: "operaciones@grupalestravel.com",
-    role: "operaciones",
-    department: "Operaciones Central",
+    department: "Ventas y Operaciones",
     city: "San Luis",
     active: true,
     createdAt: new Date().toISOString(),
@@ -461,13 +428,13 @@ async function writeJsonToR2<T>(key: string, data: T): Promise<boolean> {
 // ============================================================
 
 export async function getOperationalUsers(): Promise<OperatorUser[]> {
-  if (memoryUsers) return memoryUsers;
+  if (memoryUsers && memoryUsers.some((u) => u.username === "matias")) return memoryUsers;
   const fromR2 = await readJsonFromR2<OperatorUser[]>(USERS_KEY);
-  if (fromR2 && fromR2.length > 0) {
+  if (fromR2 && fromR2.length > 0 && fromR2.some((u) => u.username === "matias")) {
     memoryUsers = fromR2;
     return fromR2;
   }
-  // Inicializar en R2 si no existe
+  // Sincronizar en R2 con la lista oficial autorizada
   memoryUsers = DEFAULT_USERS;
   await writeJsonToR2(USERS_KEY, DEFAULT_USERS);
   return DEFAULT_USERS;

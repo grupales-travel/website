@@ -790,3 +790,4 @@ export default function DepartureDetailClient({
     </div>
   );
 }
+
