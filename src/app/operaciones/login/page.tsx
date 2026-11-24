@@ -43,9 +43,14 @@ export default function OperacionesLoginPage() {
         return;
       }
 
+      // Guardar token en localStorage como respaldo de conectividad
+      if (data.token && typeof window !== "undefined") {
+        localStorage.setItem("operaciones_token", data.token);
+        localStorage.setItem("operaciones_user", JSON.stringify(data.user));
+      }
+
       // Login exitoso -> redirigir al portal operativo
-      router.push("/operaciones");
-      router.refresh();
+      window.location.href = "/operaciones";
     } catch {
       setError("Error de conexión con el servidor. Intente nuevamente.");
       setLoading(false);

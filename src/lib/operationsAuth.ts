@@ -3,7 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { OperatorUser } from "@/types/operations";
 
 export const OPERATIONS_COOKIE_NAME = "operaciones_session";
-const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 días
+export const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 días
+
+export const OPERATIONS_COOKIE_OPTIONS = {
+  name: OPERATIONS_COOKIE_NAME,
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax" as const,
+  maxAge: SESSION_MAX_AGE,
+  path: "/",
+};
 
 const SECRET = process.env.NEXTAUTH_SECRET || process.env.SEED_SECRET || "grupales-operaciones-secret-2026-secure-key";
 
@@ -98,12 +107,33 @@ export async function createOperationsSession(user: OperatorUser): Promise<strin
 }
 
 /**
- * Verifica la sesión de operaciones desde un Server Component o Server Action
+ * Verifica la sesión de operaciones desde un Server Component, Server Action o Route Handler
  */
-export async function getOperationsSessionUser(): Promise<OperatorUser | null> {
+export async function getOperationsSessionUser(req?: NextRequest): Promise<OperatorUser | null> {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get(OPERATIONS_COOKIE_NAME)?.value;
+    let token: string | undefined;
+
+    // 1. Extraer desde NextRequest si fue provisto
+    if (req) {
+      token = req.cookies.get(OPERATIONS_COOKIE_NAME)?.value;
+      if (!token) {
+        const auth = req.headers.get("authorization");
+        if (auth?.startsWith("Bearer ")) {
+          token = auth.substring(7).trim();
+        }
+      }
+    }
+
+    // 2. Fallback a cookies() de next/headers
+    if (!token) {
+      try {
+        const cookieStore = await cookies();
+        token = cookieStore.get(OPERATIONS_COOKIE_NAME)?.value;
+      } catch {
+        // En algunos contextos de API, cookies() puede no estar disponible
+      }
+    }
+
     if (!token) return null;
     return await verify(token, SECRET);
   } catch {
@@ -115,7 +145,13 @@ export async function getOperationsSessionUser(): Promise<OperatorUser | null> {
  * Verifica el token desde una Request de Middleware o API Route
  */
 export async function verifyOperationsTokenFromRequest(req: NextRequest): Promise<OperatorUser | null> {
-  const token = req.cookies.get(OPERATIONS_COOKIE_NAME)?.value;
+  let token = req.cookies.get(OPERATIONS_COOKIE_NAME)?.value;
+  if (!token) {
+    const auth = req.headers.get("authorization");
+    if (auth?.startsWith("Bearer ")) {
+      token = auth.substring(7).trim();
+    }
+  }
   if (!token) return null;
   return await verify(token, SECRET);
 }

@@ -1,8 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { DepartureGroup, OperatorUser, PassengerPax, RoomType } from "@/types/operations";
-import { X, Save, AlertTriangle, User, BedDouble, Bus, Phone, ShieldAlert, Check } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { DepartureGroup, OperatorUser, PassengerPax, RoomType, PaxDocumentCategory, PaxDocumentItem } from "@/types/operations";
+import {
+  X,
+  Save,
+  AlertTriangle,
+  User,
+  BedDouble,
+  Bus,
+  Phone,
+  ShieldAlert,
+  Check,
+  FileText,
+  Upload,
+  ExternalLink,
+  Trash2,
+  Loader2,
+  CheckCircle2,
+  Paperclip,
+} from "lucide-react";
 
 interface Props {
   isOpen: boolean;
@@ -23,9 +40,17 @@ export default function PassengerModal({
   allPassengers,
   currentUser,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<"personal" | "rooming" | "logistica" | "contacto">("personal");
+  const [activeTab, setActiveTab] = useState<"personal" | "documentos" | "rooming" | "logistica" | "contacto">("personal");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [uploadingCategory, setUploadingCategory] = useState<string | null>(null);
+
+  // Referencias a inputs de archivos ocultos
+  const dniInputRef = useRef<HTMLInputElement>(null);
+  const passportInputRef = useRef<HTMLInputElement>(null);
+  const visaInputRef = useRef<HTMLInputElement>(null);
+  const vaccineInputRef = useRef<HTMLInputElement>(null);
+  const otherInputRef = useRef<HTMLInputElement>(null);
 
   // Estado del formulario
   const [formData, setFormData] = useState<Partial<PassengerPax>>({
@@ -51,6 +76,12 @@ export default function PassengerModal({
     hasUsaVisa: false,
     hasYellowFever: false,
     docsStatus: "incompleto",
+    docAttachmentUrl: "",
+    docDniUrl: "",
+    docPassportUrl: "",
+    docVisaUrl: "",
+    docVaccineUrl: "",
+    documents: [],
     roomType: "doble_compartir",
     roomNumber: "",
     roomPartnerId: "",
@@ -68,7 +99,10 @@ export default function PassengerModal({
 
   useEffect(() => {
     if (passenger) {
-      setFormData(passenger);
+      setFormData({
+        ...passenger,
+        documents: passenger.documents || [],
+      });
     } else {
       setFormData({
         id: `pax-${Date.now()}`,
@@ -81,6 +115,12 @@ export default function PassengerModal({
         gender: "M",
         nationality: "Argentina",
         docsStatus: "incompleto",
+        docAttachmentUrl: "",
+        docDniUrl: "",
+        docPassportUrl: "",
+        docVisaUrl: "",
+        docVaccineUrl: "",
+        documents: [],
         roomType: "doble_compartir",
         roomSeekingPartner: true,
         busInbound: false,
@@ -147,6 +187,99 @@ export default function PassengerModal({
     });
   };
 
+  // Función de subida a la nube (R2)
+  const handleUploadFile = async (category: PaxDocumentCategory, file: File) => {
+    if (!file) return;
+
+    try {
+      setUploadingCategory(category);
+      setError("");
+
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("category", category);
+      fd.append("paxId", formData.id || `pax-${Date.now()}`);
+      fd.append("name", file.name);
+
+      const token = typeof window !== "undefined" ? localStorage.getItem("operaciones_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch("/api/operaciones/upload", {
+        method: "POST",
+        headers,
+        credentials: "include",
+        body: fd,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Error al subir el archivo.");
+      }
+
+      setFormData((prev) => {
+        const next = { ...prev };
+        if (category === "dni") next.docDniUrl = data.url;
+        if (category === "pasaporte") next.docPassportUrl = data.url;
+        if (category === "visa") {
+          next.docVisaUrl = data.url;
+          next.hasUsaVisa = true;
+        }
+        if (category === "vacuna") {
+          next.docVaccineUrl = data.url;
+          next.hasYellowFever = true;
+        }
+
+        const newDoc: PaxDocumentItem = {
+          id: `doc-${Date.now()}`,
+          name: file.name,
+          category,
+          url: data.url,
+          size: file.size,
+          uploadedAt: new Date().toISOString(),
+          uploadedBy: currentUser?.name || "Operador",
+        };
+
+        const existingDocs = prev.documents || [];
+        next.documents = [newDoc, ...existingDocs];
+        next.docAttachmentUrl = next.docPassportUrl || next.docDniUrl || data.url;
+
+        if (next.docsStatus === "incompleto" && (next.docPassportUrl || next.docDniUrl)) {
+          next.docsStatus = "completo";
+        }
+
+        return next;
+      });
+    } catch (err: any) {
+      setError(err?.message || "Error al subir el documento a la nube.");
+    } finally {
+      setUploadingCategory(null);
+    }
+  };
+
+  const handleRemoveDocSlot = (category: PaxDocumentCategory) => {
+    setFormData((prev) => {
+      const next = { ...prev };
+      if (category === "dni") next.docDniUrl = "";
+      if (category === "pasaporte") next.docPassportUrl = "";
+      if (category === "visa") next.docVisaUrl = "";
+      if (category === "vacuna") next.docVaccineUrl = "";
+      return next;
+    });
+  };
+
+  const handleRemoveDocumentItem = (docId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      documents: (prev.documents || []).filter((d) => d.id !== docId),
+    }));
+  };
+
+  // Contar documentos cargados
+  const totalUploadedDocs =
+    (formData.documents?.length || 0) +
+    ([formData.docDniUrl, formData.docPassportUrl, formData.docVisaUrl, formData.docVaccineUrl].filter(Boolean).length > 0 && !formData.documents?.length ? 1 : 0);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -182,7 +315,17 @@ export default function PassengerModal({
         hasUsaVisa: Boolean(formData.hasUsaVisa),
         usaVisaExpiry: formData.usaVisaExpiry || "",
         hasYellowFever: Boolean(formData.hasYellowFever),
-        docsStatus: isPassportExpiringSoon() ? "pasaporte_por_vencer" : "completo",
+        docsStatus: isPassportExpiringSoon()
+          ? "pasaporte_por_vencer"
+          : (formData.docPassportUrl || formData.docDniUrl || formData.passportNumber)
+          ? "completo"
+          : "incompleto",
+        docAttachmentUrl: formData.docAttachmentUrl || formData.docPassportUrl || formData.docDniUrl || "",
+        docDniUrl: formData.docDniUrl || "",
+        docPassportUrl: formData.docPassportUrl || "",
+        docVisaUrl: formData.docVisaUrl || "",
+        docVaccineUrl: formData.docVaccineUrl || "",
+        documents: formData.documents || [],
         roomType: formData.roomType || "doble_compartir",
         roomNumber: formData.roomNumber || "",
         roomPartnerId: formData.roomPartnerId || undefined,
@@ -202,14 +345,19 @@ export default function PassengerModal({
         updatedAt: new Date().toISOString(),
       };
 
+      const token = typeof window !== "undefined" ? localStorage.getItem("operaciones_token") : null;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
       const res = await fetch("/api/operaciones/pasajeros", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
-        const errData = await res.json();
+        const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || "Error al guardar pasajero");
       }
 
@@ -256,6 +404,24 @@ export default function PassengerModal({
           >
             <User size={15} />
             Datos & Pasaporte
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("documentos")}
+            className={`py-3 px-3.5 border-b-2 flex items-center gap-2 transition-all ${
+              activeTab === "documentos"
+                ? "border-[#ba8728] text-[#dfb44f]"
+                : "border-transparent text-white/50 hover:text-white"
+            }`}
+          >
+            <FileText size={15} />
+            Documentación Nube
+            {totalUploadedDocs > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[#ba8728] text-white">
+                {totalUploadedDocs}
+              </span>
+            )}
           </button>
 
           <button
@@ -321,39 +487,39 @@ export default function PassengerModal({
                   value={formData.departureId}
                   onChange={(e) => handleChange("departureId", e.target.value)}
                   className="w-full bg-[#14181d] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ba8728]"
-                  required
                 >
                   {departures.map((d) => (
                     <option key={d.id} value={d.id}>
-                      {d.title} ({d.departureDate})
+                      {d.title} ({d.departureDate}) — Coord: {d.coordinator}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Nombre y Apellido */}
+              {/* Nombres y Apellidos */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-1.5">
-                    Apellidos (según documento) *
+                    Apellidos (Exacto según Documento) *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="Ej: GÓMEZ"
+                    placeholder="GÓMEZ"
                     value={formData.lastName}
                     onChange={(e) => handleChange("lastName", e.target.value)}
                     className="w-full bg-[#14181d] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white uppercase placeholder:text-white/30 focus:outline-none focus:border-[#ba8728]"
                   />
                 </div>
+
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-1.5">
-                    Nombres (según documento) *
+                    Nombres (Exacto según Documento) *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="Ej: CARLOS ALBERTO"
+                    placeholder="CARLOS ALBERTO"
                     value={formData.firstName}
                     onChange={(e) => handleChange("firstName", e.target.value)}
                     className="w-full bg-[#14181d] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white uppercase placeholder:text-white/30 focus:outline-none focus:border-[#ba8728]"
@@ -361,11 +527,11 @@ export default function PassengerModal({
                 </div>
               </div>
 
-              {/* Documento y Nacimiento */}
-              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+              {/* Documento, Fecha Nacimiento, Género */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-1.5">
-                    Tipo Doc.
+                    Tipo de Doc.
                   </label>
                   <select
                     value={formData.documentType}
@@ -373,15 +539,27 @@ export default function PassengerModal({
                     className="w-full bg-[#14181d] border border-white/15 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-[#ba8728]"
                   >
                     <option value="Pasaporte">Pasaporte</option>
-                    <option value="DNI">DNI</option>
+                    <option value="DNI">DNI (Mercosur)</option>
                     <option value="Cedula">Cédula</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-1.5">
-                    Nº Documento / DNI
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-bold uppercase tracking-wider text-white/70">
+                      Nº Documento / DNI
+                    </label>
+                    {formData.docDniUrl && (
+                      <a
+                        href={formData.docDniUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[10px] text-emerald-400 hover:underline flex items-center gap-0.5"
+                      >
+                        <Check size={10} /> Ver DNI
+                      </a>
+                    )}
+                  </div>
                   <input
                     type="text"
                     placeholder="12.345.678"
@@ -420,12 +598,33 @@ export default function PassengerModal({
                 </div>
               </div>
 
-              {/* Sección Pasaporte con Semáforo */}
+              {/* Sección Pasaporte con Semáforo y Acceso Rápido a Nube */}
               <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-black uppercase tracking-wider text-[#dfb44f]">
-                    Datos de Pasaporte para Aéreos
-                  </h4>
+                  <div className="flex items-center gap-2">
+                    <h4 className="text-xs font-black uppercase tracking-wider text-[#dfb44f]">
+                      Datos de Pasaporte para Aéreos
+                    </h4>
+                    {formData.docPassportUrl ? (
+                      <a
+                        href={formData.docPassportUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30 flex items-center gap-1 hover:underline"
+                      >
+                        <Check size={10} /> Pasaporte Escaneado en Nube
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => passportInputRef.current?.click()}
+                        className="px-2 py-0.5 rounded-full bg-white/10 text-white/70 text-[10px] font-bold border border-white/20 hover:text-white hover:bg-white/20 flex items-center gap-1"
+                      >
+                        <Upload size={10} /> Subir Escaneo
+                      </button>
+                    )}
+                  </div>
+
                   {isPassportExpiringSoon() && (
                     <span className="px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 text-[10px] font-bold uppercase tracking-wider border border-red-500/40 flex items-center gap-1">
                       <AlertTriangle size={12} />
@@ -487,7 +686,450 @@ export default function PassengerModal({
             </div>
           )}
 
-          {/* ═══════════ PESTAÑA 2: ROOMING & HABITACIÓN ═══════════ */}
+          {/* ═══════════ PESTAÑA 2: DOCUMENTACIÓN EN LA NUBE ═══════════ */}
+          {activeTab === "documentos" && (
+            <div className="space-y-6">
+              <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10">
+                <div className="flex items-center gap-2 mb-1">
+                  <FileText size={16} className="text-[#dfb44f]" />
+                  <h3 className="text-xs font-black uppercase text-white tracking-wider">
+                    Almacenamiento Seguro de Documentación (Cloudflare R2)
+                  </h3>
+                </div>
+                <p className="text-xs text-white/60">
+                  Subí aquí fotos o archivos PDF de los pasaportes, DNI, vacunas y visas. Quedarán archivados automáticamente en la nube y accesibles para todo el equipo operativo desde cualquier lugar.
+                </p>
+              </div>
+
+              {/* Grid de 4 Documentos Principales */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* 1. DNI */}
+                <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10 space-y-3 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+                        <FileText size={15} className="text-[#dfb44f]" />
+                        1. DNI / Documento de Identidad
+                      </span>
+                      {formData.docDniUrl ? (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+                          ✓ En Nube
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full bg-white/5 text-white/40 text-[10px] font-bold">
+                          Pendiente
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-white/50">
+                      Foto frente y dorso o archivo PDF del DNI.
+                    </p>
+                  </div>
+
+                  <input
+                    ref={dniInputRef}
+                    type="file"
+                    accept=".pdf,image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleUploadFile("dni", file);
+                    }}
+                  />
+
+                  {formData.docDniUrl ? (
+                    <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+                      <a
+                        href={formData.docDniUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all"
+                      >
+                        <ExternalLink size={13} />
+                        Ver / Descargar DNI
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => dniInputRef.current?.click()}
+                        disabled={uploadingCategory === "dni"}
+                        className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold transition-all"
+                      >
+                        {uploadingCategory === "dni" ? "Subiendo..." : "Reemplazar"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDocSlot("dni")}
+                        className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs transition-all"
+                        title="Quitar enlace"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => dniInputRef.current?.click()}
+                      disabled={uploadingCategory === "dni"}
+                      className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#ba8728]/20 to-[#dfb44f]/20 hover:from-[#ba8728]/30 hover:to-[#dfb44f]/30 border border-[#ba8728]/40 text-[#dfb44f] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      {uploadingCategory === "dni" ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" />
+                          <span>Subiendo a R2...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload size={14} />
+                          <span>Cargar DNI a la Nube</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                {/* 2. PASAPORTE */}
+                <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10 space-y-3 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+                        <FileText size={15} className="text-[#dfb44f]" />
+                        2. Pasaporte (Hoja de Datos)
+                      </span>
+                      {formData.docPassportUrl ? (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+                          ✓ En Nube
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full bg-white/5 text-white/40 text-[10px] font-bold">
+                          Pendiente
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-white/50">
+                      Escaneo legible de la hoja con foto, nombres y vigencia.
+                    </p>
+                  </div>
+
+                  <input
+                    ref={passportInputRef}
+                    type="file"
+                    accept=".pdf,image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleUploadFile("pasaporte", file);
+                    }}
+                  />
+
+                  {formData.docPassportUrl ? (
+                    <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+                      <a
+                        href={formData.docPassportUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all"
+                      >
+                        <ExternalLink size={13} />
+                        Ver / Descargar Pasaporte
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => passportInputRef.current?.click()}
+                        disabled={uploadingCategory === "pasaporte"}
+                        className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold transition-all"
+                      >
+                        {uploadingCategory === "pasaporte" ? "Subiendo..." : "Reemplazar"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDocSlot("pasaporte")}
+                        className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs transition-all"
+                        title="Quitar enlace"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => passportInputRef.current?.click()}
+                      disabled={uploadingCategory === "pasaporte"}
+                      className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#ba8728]/20 to-[#dfb44f]/20 hover:from-[#ba8728]/30 hover:to-[#dfb44f]/30 border border-[#ba8728]/40 text-[#dfb44f] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      {uploadingCategory === "pasaporte" ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" />
+                          <span>Subiendo a R2...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload size={14} />
+                          <span>Cargar Pasaporte a la Nube</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                {/* 3. CERTIFICADO FIEBRE AMARILLA */}
+                <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10 space-y-3 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+                        <FileText size={15} className="text-[#dfb44f]" />
+                        3. Certificado Fiebre Amarilla
+                      </span>
+                      {formData.docVaccineUrl ? (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+                          ✓ En Nube
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full bg-white/5 text-white/40 text-[10px] font-bold">
+                          Opcional
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-white/50">
+                      Carnet internacional de vacunación contra fiebre amarilla.
+                    </p>
+                  </div>
+
+                  <input
+                    ref={vaccineInputRef}
+                    type="file"
+                    accept=".pdf,image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleUploadFile("vacuna", file);
+                    }}
+                  />
+
+                  {formData.docVaccineUrl ? (
+                    <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+                      <a
+                        href={formData.docVaccineUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all"
+                      >
+                        <ExternalLink size={13} />
+                        Ver Certificado
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => vaccineInputRef.current?.click()}
+                        disabled={uploadingCategory === "vacuna"}
+                        className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold transition-all"
+                      >
+                        {uploadingCategory === "vacuna" ? "Subiendo..." : "Reemplazar"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDocSlot("vacuna")}
+                        className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs transition-all"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => vaccineInputRef.current?.click()}
+                      disabled={uploadingCategory === "vacuna"}
+                      className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white/80 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      {uploadingCategory === "vacuna" ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" />
+                          <span>Subiendo...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload size={14} />
+                          <span>Cargar Certificado Vacuna</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                {/* 4. VISA EEUU / ESPECIAL */}
+                <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10 space-y-3 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+                        <FileText size={15} className="text-[#dfb44f]" />
+                        4. Visa de Estados Unidos / Especial
+                      </span>
+                      {formData.docVisaUrl ? (
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold border border-emerald-500/30">
+                          ✓ En Nube
+                        </span>
+                      ) : (
+                        <span className="px-2 py-0.5 rounded-full bg-white/5 text-white/40 text-[10px] font-bold">
+                          Opcional
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-white/50">
+                      Foto o escaneo del visado B1/B2 o autorización ESTA.
+                    </p>
+                  </div>
+
+                  <input
+                    ref={visaInputRef}
+                    type="file"
+                    accept=".pdf,image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleUploadFile("visa", file);
+                    }}
+                  />
+
+                  {formData.docVisaUrl ? (
+                    <div className="flex items-center gap-2 pt-2 border-t border-white/5">
+                      <a
+                        href={formData.docVisaUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition-all"
+                      >
+                        <ExternalLink size={13} />
+                        Ver Visa
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => visaInputRef.current?.click()}
+                        disabled={uploadingCategory === "visa"}
+                        className="py-2 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-bold transition-all"
+                      >
+                        {uploadingCategory === "visa" ? "Subiendo..." : "Reemplazar"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveDocSlot("visa")}
+                        className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs transition-all"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => visaInputRef.current?.click()}
+                      disabled={uploadingCategory === "visa"}
+                      className="w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white/80 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      {uploadingCategory === "visa" ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" />
+                          <span>Subiendo...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload size={14} />
+                          <span>Cargar Visa de EEUU</span>
+                        </>
+                      )}
+                    </button>
+                  )}
+                </div>
+
+              </div>
+
+              {/* Documentos Adicionales Cargados */}
+              <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-black uppercase text-white tracking-wider flex items-center gap-1.5">
+                      <Paperclip size={14} className="text-[#dfb44f]" />
+                      Documentos Adicionales & Comprobantes ({formData.documents?.length || 0})
+                    </h4>
+                    <p className="text-[11px] text-white/50">
+                      Poderes de menores, fichas médicas o comprobantes anexos.
+                    </p>
+                  </div>
+
+                  <input
+                    ref={otherInputRef}
+                    type="file"
+                    accept=".pdf,image/*,.doc,.docx"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleUploadFile("otro", file);
+                    }}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => otherInputRef.current?.click()}
+                    disabled={uploadingCategory === "otro"}
+                    className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    {uploadingCategory === "otro" ? (
+                      <Loader2 size={13} className="animate-spin" />
+                    ) : (
+                      <Upload size={13} />
+                    )}
+                    <span>Adjuntar Otro Archivo</span>
+                  </button>
+                </div>
+
+                {formData.documents && formData.documents.length > 0 ? (
+                  <div className="space-y-2 pt-2">
+                    {formData.documents.map((doc) => (
+                      <div
+                        key={doc.id}
+                        className="flex items-center justify-between p-2.5 rounded-xl bg-[#1b2027] border border-white/5 text-xs"
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <FileText size={16} className="text-[#dfb44f] shrink-0" />
+                          <div className="min-w-0">
+                            <p className="font-bold text-white truncate max-w-xs sm:max-w-md">
+                              {doc.name}
+                            </p>
+                            <p className="text-[10px] text-white/40">
+                              Tipo: {doc.category.toUpperCase()} · Subido por: {doc.uploadedBy || "Operaciones"}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <a
+                            href={doc.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold flex items-center gap-1"
+                          >
+                            <ExternalLink size={12} />
+                            Ver
+                          </a>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveDocumentItem(doc.id)}
+                            className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400"
+                            title="Eliminar archivo"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-white/40 italic py-2">
+                    No hay documentos adicionales adjuntos para este pasajero.
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ═══════════ PESTAÑA 3: ROOMING & HABITACIÓN ═══════════ */}
           {activeTab === "rooming" && (
             <div className="space-y-5">
               <div>
@@ -519,78 +1161,57 @@ export default function PassengerModal({
                 </div>
               </div>
 
-              {/* Lógica de Doble a Compartir */}
+              {/* Configuración según tipo de habitación */}
               {formData.roomType === "doble_compartir" && (
-                <div className="p-5 rounded-2xl bg-[#14181d] border border-amber-500/30 space-y-4">
-                  <div className="flex items-center gap-2">
-                    <BedDouble size={18} className="text-amber-400" />
-                    <h4 className="text-xs font-black uppercase text-amber-300 tracking-wider">
-                      Emparejamiento de Habitación a Compartir
+                <div className="p-4 rounded-2xl bg-[#14181d] border border-white/10 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-black uppercase text-[#dfb44f] tracking-wider">
+                      Emparejamiento en Doble a Compartir
                     </h4>
-                  </div>
-
-                  <p className="text-xs text-white/70">
-                    Podés seleccionar inmediatamente otro pasajero de esta salida para compartir, o dejarlo como libre en búsqueda de acompañante.
-                  </p>
-
-                  <div className="space-y-3">
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="seekingPartner"
-                        checked={formData.roomSeekingPartner}
-                        onChange={() => {
-                          handleChange("roomSeekingPartner", true);
-                          handleChange("roomPartnerId", "");
-                        }}
-                        className="text-[#ba8728] focus:ring-[#ba8728]"
-                      />
-                      <span className="text-xs font-bold text-white">
-                        Dejar en estado: &quot;Buscando compañero/a de habitación&quot;
+                    {formData.roomSeekingPartner ? (
+                      <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-bold uppercase tracking-wider border border-amber-500/40">
+                        Buscando Compañero/a
                       </span>
-                    </label>
-
-                    <label className="flex items-center gap-3 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="seekingPartner"
-                        checked={!formData.roomSeekingPartner}
-                        onChange={() => handleChange("roomSeekingPartner", false)}
-                        className="text-[#ba8728] focus:ring-[#ba8728]"
-                      />
-                      <span className="text-xs font-bold text-white">
-                        Asignar y emparejar con un compañero ahora:
+                    ) : (
+                      <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/40 flex items-center gap-1">
+                        <Check size={12} />
+                        Habitación Armada
                       </span>
-                    </label>
-
-                    {!formData.roomSeekingPartner && (
-                      <div className="pt-2 pl-6">
-                        <select
-                          value={formData.roomPartnerId || ""}
-                          onChange={(e) => handleChange("roomPartnerId", e.target.value)}
-                          className="w-full bg-[#1b2027] border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#ba8728]"
-                        >
-                          <option value="">-- Seleccionar pasajero para emparejar --</option>
-                          {availablePartners.map((p) => (
-                            <option key={p.id} value={p.id}>
-                              {p.lastName}, {p.firstName} ({p.gender} · {p.city})
-                            </option>
-                          ))}
-                        </select>
-                      </div>
                     )}
                   </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-white/60 mb-1.5">
+                      Seleccionar Compañero/a de la misma salida:
+                    </label>
+                    <select
+                      value={formData.roomPartnerId || ""}
+                      onChange={(e) => handleChange("roomPartnerId", e.target.value)}
+                      className="w-full bg-[#1b2027] border border-white/15 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-[#ba8728]"
+                    >
+                      <option value="">-- Dejar libre en búsqueda de acompañante --</option>
+                      {availablePartners.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.lastName}, {p.firstName} ({p.gender === "M" ? "Hombre" : "Mujer"} - {p.city})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <p className="text-[11px] text-white/50 leading-relaxed">
+                    Si dejas este campo libre, el pasajero figurará en el tablero de Rooming como <strong>&quot;En búsqueda de acompañante&quot;</strong> para que operaciones pueda emparejarlo más adelante con otro cliente del mismo género.
+                  </p>
                 </div>
               )}
 
               {/* Número de Habitación */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-white/70 mb-1.5">
-                  Número / Identificador de Habitación (opcional)
+                  Número de Habitación / Rooming ID (Opcional)
                 </label>
                 <input
                   type="text"
-                  placeholder="Ej: Habitación 201"
+                  placeholder="Ej: Habitación 101 / Cama A"
                   value={formData.roomNumber}
                   onChange={(e) => handleChange("roomNumber", e.target.value)}
                   className="w-full bg-[#14181d] border border-white/15 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#ba8728]"
@@ -599,7 +1220,7 @@ export default function PassengerModal({
             </div>
           )}
 
-          {/* ═══════════ PESTAÑA 3: SERVICIOS PRE Y POST VIAJE ═══════════ */}
+          {/* ═══════════ PESTAÑA 4: SERVICIOS PRE Y POST VIAJE ═══════════ */}
           {activeTab === "logistica" && (
             <div className="space-y-5">
               <p className="text-xs text-white/60">
@@ -738,7 +1359,7 @@ export default function PassengerModal({
             </div>
           )}
 
-          {/* ═══════════ PESTAÑA 4: CONTACTO, SALUD Y VISAS ═══════════ */}
+          {/* ═══════════ PESTAÑA 5: CONTACTO, SALUD Y VISAS ═══════════ */}
           {activeTab === "contacto" && (
             <div className="space-y-5">
               {/* Teléfono, Email y Residencia */}
@@ -914,4 +1535,3 @@ export default function PassengerModal({
     </div>
   );
 }
-

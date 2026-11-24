@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import { GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { r2 } from "@/lib/r2";
 import { DepartureGroup, OperatorUser, PassengerPax } from "@/types/operations";
@@ -7,10 +9,42 @@ const USERS_KEY = "db/operations_users.json";
 const DEPARTURES_KEY = "db/operations_departures.json";
 const PASSENGERS_KEY = "db/operations_passengers.json";
 
-// In-memory fallback si R2 no responde o en entorno de desarrollo local inicial
+// In-memory fallback
 let memoryUsers: OperatorUser[] | null = null;
 let memoryDepartures: DepartureGroup[] | null = null;
 let memoryPassengers: PassengerPax[] | null = null;
+
+// Directorio de persistencia local (evita pérdidas de datos si R2 tiene latencia)
+const LOCAL_DATA_DIR = path.join(process.cwd(), ".tmp", "operations");
+
+function ensureLocalDir() {
+  try {
+    if (!fs.existsSync(LOCAL_DATA_DIR)) {
+      fs.mkdirSync(LOCAL_DATA_DIR, { recursive: true });
+    }
+  } catch {}
+}
+
+function writeJsonToLocal<T>(filename: string, data: T): void {
+  try {
+    ensureLocalDir();
+    const filePath = path.join(LOCAL_DATA_DIR, filename);
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+  } catch (err) {
+    console.error(`[Local DB] Error escribiendo ${filename}:`, err);
+  }
+}
+
+function readJsonFromLocal<T>(filename: string): T | null {
+  try {
+    const filePath = path.join(LOCAL_DATA_DIR, filename);
+    if (!fs.existsSync(filePath)) return null;
+    const content = fs.readFileSync(filePath, "utf-8");
+    return JSON.parse(content) as T;
+  } catch {
+    return null;
+  }
+}
 
 // ============================================================
 // DATOS SEMILLA (INITIAL SEED DATA)
@@ -408,12 +442,14 @@ async function readJsonFromR2<T>(key: string): Promise<T | null> {
 
 async function writeJsonToR2<T>(key: string, data: T): Promise<boolean> {
   try {
+    const jsonStr = JSON.stringify(data, null, 2);
     await r2.send(
       new PutObjectCommand({
         Bucket: BUCKET,
         Key: key,
-        Body: JSON.stringify(data, null, 2),
+        Body: Buffer.from(jsonStr, "utf-8"),
         ContentType: "application/json",
+        CacheControl: "no-cache",
       })
     );
     return true;
@@ -428,15 +464,25 @@ async function writeJsonToR2<T>(key: string, data: T): Promise<boolean> {
 // ============================================================
 
 export async function getOperationalUsers(): Promise<OperatorUser[]> {
-  if (memoryUsers && memoryUsers.some((u) => u.username === "matias")) return memoryUsers;
   const fromR2 = await readJsonFromR2<OperatorUser[]>(USERS_KEY);
   if (fromR2 && fromR2.length > 0 && fromR2.some((u) => u.username === "matias")) {
     memoryUsers = fromR2;
+    writeJsonToLocal("users.json", fromR2);
     return fromR2;
   }
-  // Sincronizar en R2 con la lista oficial autorizada
+
+  const fromLocal = readJsonFromLocal<OperatorUser[]>("users.json");
+  if (fromLocal && fromLocal.length > 0 && fromLocal.some((u) => u.username === "matias")) {
+    memoryUsers = fromLocal;
+    return fromLocal;
+  }
+
+  if (memoryUsers && memoryUsers.some((u) => u.username === "matias")) return memoryUsers;
+
+  // Sincronizar en R2 y local con la lista oficial autorizada
   memoryUsers = DEFAULT_USERS;
   await writeJsonToR2(USERS_KEY, DEFAULT_USERS);
+  writeJsonToLocal("users.json", DEFAULT_USERS);
   return DEFAULT_USERS;
 }
 
@@ -450,14 +496,30 @@ export async function findUserByUsername(username: string): Promise<OperatorUser
 // ============================================================
 
 export async function getDepartures(): Promise<DepartureGroup[]> {
-  if (memoryDepartures) return memoryDepartures;
+  // 1. Intentar R2
   const fromR2 = await readJsonFromR2<DepartureGroup[]>(DEPARTURES_KEY);
   if (fromR2 && fromR2.length > 0) {
     memoryDepartures = fromR2;
+    writeJsonToLocal("departures.json", fromR2);
     return fromR2;
   }
+
+  // 2. Intentar local
+  const fromLocal = readJsonFromLocal<DepartureGroup[]>("departures.json");
+  if (fromLocal && fromLocal.length > 0) {
+    memoryDepartures = fromLocal;
+    return fromLocal;
+  }
+
+  // 3. Fallback en memoria si ya fue modificado
+  if (memoryDepartures && memoryDepartures.length > 0) {
+    return memoryDepartures;
+  }
+
+  // 4. Semilla por defecto
   memoryDepartures = DEFAULT_DEPARTURES;
   await writeJsonToR2(DEPARTURES_KEY, DEFAULT_DEPARTURES);
+  writeJsonToLocal("departures.json", DEFAULT_DEPARTURES);
   return DEFAULT_DEPARTURES;
 }
 
@@ -471,26 +533,33 @@ export async function saveDeparture(departure: DepartureGroup): Promise<Departur
   const index = departures.findIndex((d) => d.id === departure.id);
   const now = new Date().toISOString();
 
+  let savedItem: DepartureGroup;
   if (index >= 0) {
-    departures[index] = { ...departure, updatedAt: now };
+    savedItem = { ...departures[index], ...departure, updatedAt: now };
+    departures[index] = savedItem;
   } else {
-    departures.unshift({
+    savedItem = {
       ...departure,
-      createdAt: now,
+      createdAt: departure.createdAt || now,
       updatedAt: now,
-    });
+    };
+    departures.unshift(savedItem);
   }
 
   memoryDepartures = departures;
   await writeJsonToR2(DEPARTURES_KEY, departures);
-  return departures[index >= 0 ? index : 0];
+  writeJsonToLocal("departures.json", departures);
+
+  return savedItem;
 }
 
 export async function deleteDeparture(id: string): Promise<boolean> {
   const departures = await getDepartures();
   const filtered = departures.filter((d) => d.id !== id);
   memoryDepartures = filtered;
-  return await writeJsonToR2(DEPARTURES_KEY, filtered);
+  await writeJsonToR2(DEPARTURES_KEY, filtered);
+  writeJsonToLocal("departures.json", filtered);
+  return true;
 }
 
 // ============================================================
@@ -498,14 +567,30 @@ export async function deleteDeparture(id: string): Promise<boolean> {
 // ============================================================
 
 export async function getPassengers(): Promise<PassengerPax[]> {
-  if (memoryPassengers) return memoryPassengers;
+  // 1. Intentar R2
   const fromR2 = await readJsonFromR2<PassengerPax[]>(PASSENGERS_KEY);
   if (fromR2 && fromR2.length > 0) {
     memoryPassengers = fromR2;
+    writeJsonToLocal("passengers.json", fromR2);
     return fromR2;
   }
+
+  // 2. Intentar local
+  const fromLocal = readJsonFromLocal<PassengerPax[]>("passengers.json");
+  if (fromLocal && fromLocal.length > 0) {
+    memoryPassengers = fromLocal;
+    return fromLocal;
+  }
+
+  // 3. Fallback en memoria si ya fue modificado
+  if (memoryPassengers && memoryPassengers.length > 0) {
+    return memoryPassengers;
+  }
+
+  // 4. Semilla por defecto
   memoryPassengers = DEFAULT_PASSENGERS;
   await writeJsonToR2(PASSENGERS_KEY, DEFAULT_PASSENGERS);
+  writeJsonToLocal("passengers.json", DEFAULT_PASSENGERS);
   return DEFAULT_PASSENGERS;
 }
 
@@ -530,23 +615,29 @@ export async function savePassenger(pax: PassengerPax): Promise<PassengerPax> {
     }
   }
 
-  const updatedPax: PassengerPax = {
-    ...pax,
-    docsStatus,
-    updatedAt: now,
-  };
-
+  let updatedPax: PassengerPax;
   if (index >= 0) {
+    updatedPax = {
+      ...passengers[index],
+      ...pax,
+      docsStatus,
+      updatedAt: now,
+    };
     passengers[index] = updatedPax;
   } else {
-    passengers.unshift({
-      ...updatedPax,
-      createdAt: now,
-    });
+    updatedPax = {
+      ...pax,
+      docsStatus,
+      createdAt: pax.createdAt || now,
+      updatedAt: now,
+    };
+    passengers.unshift(updatedPax);
   }
 
   memoryPassengers = passengers;
   await writeJsonToR2(PASSENGERS_KEY, passengers);
+  writeJsonToLocal("passengers.json", passengers);
+
   return updatedPax;
 }
 
@@ -565,7 +656,9 @@ export async function deletePassenger(id: string): Promise<boolean> {
 
   const filtered = passengers.filter((p) => p.id !== id);
   memoryPassengers = filtered;
-  return await writeJsonToR2(PASSENGERS_KEY, filtered);
+  await writeJsonToR2(PASSENGERS_KEY, filtered);
+  writeJsonToLocal("passengers.json", filtered);
+  return true;
 }
 
 // ============================================================

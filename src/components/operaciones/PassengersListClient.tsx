@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { DepartureGroup, OperatorUser, PassengerPax } from "@/types/operations";
 import {
   Users2,
@@ -14,8 +15,12 @@ import {
   Compass,
   AlertTriangle,
   BedDouble,
+  UploadCloud,
+  FileText,
+  ExternalLink,
 } from "lucide-react";
 import PassengerModal from "./PassengerModal";
+import QuickDocUploadModal from "./QuickDocUploadModal";
 
 interface Props {
   user: OperatorUser | null;
@@ -28,6 +33,7 @@ export default function PassengersListClient({
   initialDepartures,
   initialPassengers,
 }: Props) {
+  const router = useRouter();
   const [departures] = useState<DepartureGroup[]>(initialDepartures);
   const [passengers, setPassengers] = useState<PassengerPax[]>(initialPassengers);
   const [search, setSearch] = useState("");
@@ -35,6 +41,7 @@ export default function PassengersListClient({
   const [roomFilter, setRoomFilter] = useState<string>("todos");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPax, setEditingPax] = useState<PassengerPax | null>(null);
+  const [uploadingDocPax, setUploadingDocPax] = useState<PassengerPax | null>(null);
 
   // Filtrado
   const filteredPax = passengers.filter((p) => {
@@ -65,17 +72,29 @@ export default function PassengersListClient({
     });
     setIsModalOpen(false);
     setEditingPax(null);
+    router.refresh();
   };
 
   const handlePaxDelete = async (id: string, name: string) => {
     if (!confirm(`¿Eliminar al pasajero ${name}?`)) return;
 
     try {
-      const res = await fetch(`/api/operaciones/pasajeros?id=${id}`, { method: "DELETE" });
+      const token = typeof window !== "undefined" ? localStorage.getItem("operaciones_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch(`/api/operaciones/pasajeros?id=${id}`, {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+      });
+
       if (res.ok) {
         setPassengers((prev) => prev.filter((p) => p.id !== id));
+        router.refresh();
       } else {
-        alert("No se pudo eliminar el pasajero.");
+        const errData = await res.json().catch(() => ({}));
+        alert(errData.error || "No se pudo eliminar el pasajero.");
       }
     } catch {
       alert("Error al conectar con el servidor.");
@@ -247,6 +266,59 @@ export default function PassengersListClient({
                           {p.passportNumber || p.documentNumber || "Sin doc"}
                         </p>
                         <p className="text-[10px] text-white/50">{p.documentType}</p>
+                        
+                        {/* Chips de Documentos en la Nube */}
+                        <div className="flex flex-wrap items-center gap-1 mt-1">
+                          {p.docPassportUrl && (
+                            <a
+                              href={p.docPassportUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                              title="Ver Pasaporte en la Nube"
+                            >
+                              📘 Pasaporte
+                            </a>
+                          )}
+                          {p.docDniUrl && (
+                            <a
+                              href={p.docDniUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                              title="Ver DNI en la Nube"
+                            >
+                              📄 DNI
+                            </a>
+                          )}
+                          {p.docVaccineUrl && (
+                            <a
+                              href={p.docVaccineUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                              title="Ver Fiebre Amarilla"
+                            >
+                              💉 Vacuna
+                            </a>
+                          )}
+                          {p.docVisaUrl && (
+                            <a
+                              href={p.docVisaUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                              title="Ver Visa EEUU"
+                            >
+                              🇺🇸 Visa
+                            </a>
+                          )}
+                          {p.documents && p.documents.length > 0 && !p.docPassportUrl && !p.docDniUrl && (
+                            <span className="px-1.5 py-0.5 rounded bg-white/10 text-white/80 text-[9px] font-bold">
+                              📎 {p.documents.length} doc{p.documents.length > 1 ? "s" : ""}
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="py-3 px-4">
                         <span className="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-white/5 text-[#dfb44f]">
@@ -276,6 +348,15 @@ export default function PassengersListClient({
                       </td>
                       <td className="py-3 px-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
+                          {/* Botón rápido para subir documentos a la nube */}
+                          <button
+                            onClick={() => setUploadingDocPax(p)}
+                            className="p-1.5 rounded-lg hover:bg-[#ba8728]/20 text-[#dfb44f] hover:text-white transition-colors"
+                            title="Subir / Ver Documentos en la Nube (R2)"
+                          >
+                            <UploadCloud size={15} />
+                          </button>
+
                           <button
                             onClick={() => {
                               setEditingPax(p);
@@ -323,6 +404,19 @@ export default function PassengersListClient({
           departures={departures}
           allPassengers={passengers}
           currentUser={user}
+        />
+      )}
+
+      {/* Modal Rápido de Carga de Documentos en la Nube */}
+      {uploadingDocPax && (
+        <QuickDocUploadModal
+          isOpen={!!uploadingDocPax}
+          onClose={() => setUploadingDocPax(null)}
+          pax={uploadingDocPax}
+          onUploaded={(updated) => {
+            handlePaxSaved(updated);
+            setUploadingDocPax(updated);
+          }}
         />
       )}
     </div>

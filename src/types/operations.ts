@@ -50,6 +50,18 @@ export type RoomType = "single" | "doble_matrimonial" | "doble_twin" | "doble_co
 export type DocumentType = "DNI" | "Pasaporte" | "Cedula";
 export type DocsStatus = "completo" | "incompleto" | "pendiente_pasaporte" | "pendiente_visa" | "pasaporte_por_vencer";
 
+export type PaxDocumentCategory = "dni" | "pasaporte" | "visa" | "vacuna" | "otro";
+
+export interface PaxDocumentItem {
+  id: string;
+  name: string;
+  category: PaxDocumentCategory;
+  url: string;
+  size?: number;
+  uploadedAt: string;
+  uploadedBy?: string;
+}
+
 export interface PassengerPax {
   id: string;
   departureId: string; // Salida a la que pertenece
@@ -80,12 +92,17 @@ export interface PassengerPax {
   // 4. Salud y Alimentación
   medicalNotes?: string; // Celiaquía, vegetariano, hipertensión, etc.
 
-  // 5. Documentación Especial
+  // 5. Documentación Especial & Almacenamiento en la Nube
   hasUsaVisa?: boolean;
   usaVisaExpiry?: string;
   hasYellowFever?: boolean;
   docsStatus: DocsStatus;
-  docAttachmentUrl?: string; // Enlace a foto/PDF de DNI o Pasaporte
+  docAttachmentUrl?: string; // Enlace a foto/PDF principal (retrocompatibilidad)
+  docDniUrl?: string; // Enlace directo en la nube a foto o PDF del DNI
+  docPassportUrl?: string; // Enlace directo en la nube a foto o PDF del Pasaporte
+  docVisaUrl?: string; // Enlace directo en la nube a foto o PDF de la Visa EEUU
+  docVaccineUrl?: string; // Enlace directo en la nube a Certificado Fiebre Amarilla
+  documents?: PaxDocumentItem[]; // Historial y archivos adjuntos en la nube (R2)
 
   // 6. Rooming (Habitación)
   roomType: RoomType;

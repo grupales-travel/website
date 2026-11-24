@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { DepartureGroup, OperatorUser, PassengerPax, RoomType } from "@/types/operations";
 import {
   Compass,
@@ -24,8 +25,11 @@ import {
   Sparkles,
   Link as LinkIcon,
   Unlink,
+  UploadCloud,
 } from "lucide-react";
 import PassengerModal from "./PassengerModal";
+import QuickDocUploadModal from "./QuickDocUploadModal";
+import DepartureModal from "./DepartureModal";
 
 interface Props {
   user: OperatorUser | null;
@@ -44,11 +48,15 @@ export default function DepartureDetailClient({
   allPassengers,
   initialTab = "pasajeros",
 }: Props) {
+  const router = useRouter();
+  const [currentDeparture, setCurrentDeparture] = useState<DepartureGroup>(departure);
   const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [passengers, setPassengers] = useState<PassengerPax[]>(initialPassengers);
   const [search, setSearch] = useState("");
   const [isPaxModalOpen, setIsPaxModalOpen] = useState(false);
   const [editingPax, setEditingPax] = useState<PassengerPax | null>(null);
+  const [isEditDepModalOpen, setIsEditDepModalOpen] = useState(false);
+  const [uploadingDocPax, setUploadingDocPax] = useState<PassengerPax | null>(null);
   const [copiedNotification, setCopiedNotification] = useState<string | null>(null);
 
   // Filtrado de pasajeros
@@ -75,17 +83,29 @@ export default function DepartureDetailClient({
     });
     setIsPaxModalOpen(false);
     setEditingPax(null);
+    router.refresh();
   };
 
   const handlePaxDelete = async (id: string, name: string) => {
     if (!confirm(`¿Eliminar al pasajero ${name} de esta salida?`)) return;
 
     try {
-      const res = await fetch(`/api/operaciones/pasajeros?id=${id}`, { method: "DELETE" });
+      const token = typeof window !== "undefined" ? localStorage.getItem("operaciones_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch(`/api/operaciones/pasajeros?id=${id}`, {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+      });
+
       if (res.ok) {
         setPassengers((prev) => prev.filter((p) => p.id !== id));
+        router.refresh();
       } else {
-        alert("No se pudo eliminar el pasajero.");
+        const errData = await res.json().catch(() => ({}));
+        alert(errData.error || "No se pudo eliminar el pasajero.");
       }
     } catch {
       alert("Error al conectar con el servidor.");
@@ -278,7 +298,15 @@ export default function DepartureDetailClient({
         </div>
 
         {/* Acciones Rápidas del Header */}
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex flex-wrap items-center gap-3 shrink-0">
+          <button
+            onClick={() => setIsEditDepModalOpen(true)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer border border-white/10"
+          >
+            <Edit size={14} />
+            Editar Salida
+          </button>
+
           <button
             onClick={() => {
               setEditingPax(null);
@@ -416,6 +444,59 @@ export default function DepartureDetailClient({
                             {p.passportNumber || p.documentNumber || "Sin doc"}
                           </p>
                           <p className="text-[10px] text-white/50">{p.documentType} ({p.nationality})</p>
+
+                          {/* Chips de Documentos en la Nube */}
+                          <div className="flex flex-wrap items-center gap-1 mt-1">
+                            {p.docPassportUrl && (
+                              <a
+                                href={p.docPassportUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                                title="Ver Pasaporte en la Nube"
+                              >
+                                📘 Pasaporte
+                              </a>
+                            )}
+                            {p.docDniUrl && (
+                              <a
+                                href={p.docDniUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-1.5 py-0.5 rounded bg-sky-500/20 text-sky-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                                title="Ver DNI en la Nube"
+                              >
+                                📄 DNI
+                              </a>
+                            )}
+                            {p.docVaccineUrl && (
+                              <a
+                                href={p.docVaccineUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                                title="Ver Fiebre Amarilla"
+                              >
+                                💉 Vacuna
+                              </a>
+                            )}
+                            {p.docVisaUrl && (
+                              <a
+                                href={p.docVisaUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[9px] font-bold inline-flex items-center gap-0.5 hover:underline"
+                                title="Ver Visa EEUU"
+                              >
+                                🇺🇸 Visa
+                              </a>
+                            )}
+                            {p.documents && p.documents.length > 0 && !p.docPassportUrl && !p.docDniUrl && (
+                              <span className="px-1.5 py-0.5 rounded bg-white/10 text-white/80 text-[9px] font-bold">
+                                📎 {p.documents.length} doc{p.documents.length > 1 ? "s" : ""}
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td className="py-3 px-4 text-white/80">
                           {p.birthDate || "-"} ({p.gender})
@@ -449,6 +530,14 @@ export default function DepartureDetailClient({
                         </td>
                         <td className="py-3 px-4 text-right">
                           <div className="flex items-center justify-end gap-1.5">
+                            <button
+                              onClick={() => setUploadingDocPax(p)}
+                              className="p-1.5 rounded-lg hover:bg-[#ba8728]/20 text-[#dfb44f] hover:text-white transition-colors"
+                              title="Subir / Ver Documentos en la Nube (R2)"
+                            >
+                              <UploadCloud size={15} />
+                            </button>
+
                             <button
                               onClick={() => {
                                 setEditingPax(p);
@@ -785,6 +874,33 @@ export default function DepartureDetailClient({
           departures={allDepartures}
           allPassengers={passengers}
           currentUser={user}
+        />
+      )}
+
+      {/* Modal Rápido de Documentos en la Nube */}
+      {uploadingDocPax && (
+        <QuickDocUploadModal
+          isOpen={!!uploadingDocPax}
+          onClose={() => setUploadingDocPax(null)}
+          pax={uploadingDocPax}
+          onUploaded={(updated) => {
+            handlePaxSaved(updated);
+            setUploadingDocPax(updated);
+          }}
+        />
+      )}
+
+      {/* Modal Editar Salida Grupal */}
+      {isEditDepModalOpen && (
+        <DepartureModal
+          isOpen={isEditDepModalOpen}
+          onClose={() => setIsEditDepModalOpen(false)}
+          onSave={(updated) => {
+            setCurrentDeparture(updated);
+            setIsEditDepModalOpen(false);
+            router.refresh();
+          }}
+          departure={currentDeparture}
         />
       )}
     </div>

@@ -4,9 +4,9 @@ import { assignRoomPair, unpairRoom } from "@/lib/operationsDb";
 
 export async function POST(req: NextRequest) {
   try {
-    const user = await getOperationsSessionUser();
+    const user = await getOperationsSessionUser(req);
     if (!user) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+      return NextResponse.json({ error: "Sesión no válida o expirada. Por favor vuelva a iniciar sesión." }, { status: 401 });
     }
 
     const { action, pax1Id, pax2Id, roomNumber, paxId } = await req.json();

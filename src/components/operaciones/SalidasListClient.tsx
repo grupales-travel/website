@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { DepartureGroup, OperatorUser, PassengerPax } from "@/types/operations";
 import {
   Compass,
@@ -28,6 +29,7 @@ export default function SalidasListClient({
   initialDepartures,
   initialPassengers,
 }: Props) {
+  const router = useRouter();
   const [departures, setDepartures] = useState<DepartureGroup[]>(initialDepartures);
   const [passengers, setPassengers] = useState<PassengerPax[]>(initialPassengers);
   const [search, setSearch] = useState("");
@@ -56,17 +58,29 @@ export default function SalidasListClient({
     });
     setIsModalOpen(false);
     setEditingDep(null);
+    router.refresh();
   };
 
   const handleDelete = async (id: string, title: string) => {
     if (!confirm(`¿Estás seguro de eliminar la salida "${title}"?`)) return;
 
     try {
-      const res = await fetch(`/api/operaciones/salidas?id=${id}`, { method: "DELETE" });
+      const token = typeof window !== "undefined" ? localStorage.getItem("operaciones_token") : null;
+      const headers: Record<string, string> = {};
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch(`/api/operaciones/salidas?id=${id}`, {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+      });
+
       if (res.ok) {
         setDepartures((prev) => prev.filter((d) => d.id !== id));
+        router.refresh();
       } else {
-        alert("No se pudo eliminar la salida.");
+        const errData = await res.json().catch(() => ({}));
+        alert(errData.error || "No se pudo eliminar la salida.");
       }
     } catch {
       alert("Error al conectar con el servidor.");

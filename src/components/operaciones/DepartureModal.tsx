@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DepartureGroup, DepartureStatus } from "@/types/operations";
 import { X, Save, Compass } from "lucide-react";
 
@@ -12,35 +12,61 @@ interface Props {
 }
 
 export default function DepartureModal({ isOpen, onClose, onSave, departure }: Props) {
-  const [formData, setFormData] = useState<Partial<DepartureGroup>>(
-    departure || {
-      id: `dep-${Date.now()}`,
-      slug: "",
-      title: "",
-      departureDate: "",
-      returnDate: "",
-      coordinator: "",
-      capacity: 25,
-      status: "abierta",
-      requiresUsaVisa: false,
-      requiresYellowFever: false,
-      specialRequirementsNotes: "",
-      busRoutesAvailable: ["San Luis -> Buenos Aires", "Villa Mercedes -> Buenos Aires"],
-      hotelsPreAvailable: ["Hotel Sheraton Libertador (Bs As)"],
-      hotelsPostAvailable: ["Hotel Sheraton Libertador (Bs As)"],
-      notes: "",
-    }
-  );
+  const [formData, setFormData] = useState<Partial<DepartureGroup>>({
+    id: `dep-${Date.now()}`,
+    slug: "",
+    title: "",
+    departureDate: "",
+    returnDate: "",
+    coordinator: "",
+    capacity: 25,
+    status: "abierta",
+    requiresUsaVisa: false,
+    requiresYellowFever: false,
+    specialRequirementsNotes: "",
+    busRoutesAvailable: ["San Luis -> Buenos Aires", "Villa Mercedes -> Buenos Aires"],
+    hotelsPreAvailable: ["Hotel Sheraton Libertador (Bs As)"],
+    hotelsPostAvailable: ["Hotel Sheraton Libertador (Bs As)"],
+    notes: "",
+  });
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (isOpen) {
+      if (departure) {
+        setFormData(departure);
+      } else {
+        setFormData({
+          id: `dep-${Date.now()}`,
+          slug: "",
+          title: "",
+          departureDate: "",
+          returnDate: "",
+          coordinator: "",
+          capacity: 25,
+          status: "abierta",
+          requiresUsaVisa: false,
+          requiresYellowFever: false,
+          specialRequirementsNotes: "",
+          busRoutesAvailable: ["San Luis -> Buenos Aires", "Villa Mercedes -> Buenos Aires"],
+          hotelsPreAvailable: ["Hotel Sheraton Libertador (Bs As)"],
+          hotelsPostAvailable: ["Hotel Sheraton Libertador (Bs As)"],
+          notes: "",
+        });
+      }
+      setError("");
+      setSaving(false);
+    }
+  }, [isOpen, departure]);
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.departureDate) {
-      setError("Completá el título y la fecha de salida.");
+    if (!formData.title?.trim() || !formData.departureDate?.trim()) {
+      setError("Completá el título del viaje y la fecha de salida.");
       return;
     }
 
@@ -71,17 +97,26 @@ export default function DepartureModal({ isOpen, onClose, onSave, departure }: P
         updatedAt: new Date().toISOString(),
       };
 
+      const token = typeof window !== "undefined" ? localStorage.getItem("operaciones_token") : null;
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch("/api/operaciones/salidas", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
-        throw new Error("Error al guardar la salida");
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || "Error al guardar la salida grupal");
       }
 
       const saved = await res.json();
+      setSaving(false);
       onSave(saved);
     } catch (err: any) {
       setError(err.message || "Error al conectar con la base de datos");

@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getOperationsSessionUser } from "@/lib/operationsAuth";
 import { deletePassenger, getPassengers, getPassengersByDeparture, savePassenger } from "@/lib/operationsDb";
 import { PassengerPax } from "@/types/operations";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
@@ -23,9 +26,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const user = await getOperationsSessionUser();
+    const user = await getOperationsSessionUser(req);
     if (!user) {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+      return NextResponse.json({ error: "Sesión no válida o expirada. Por favor vuelva a iniciar sesión." }, { status: 401 });
     }
 
     const body = (await req.json()) as PassengerPax;
@@ -42,16 +45,25 @@ export async function POST(req: NextRequest) {
     }
 
     const saved = await savePassenger(body);
+
+    revalidatePath("/operaciones");
+    revalidatePath("/operaciones/salidas");
+    revalidatePath("/operaciones/pasajeros");
+    revalidatePath(`/operaciones/salidas/${saved.departureId}`);
+    revalidatePath("/operaciones/rooming");
+    revalidatePath("/operaciones/aereos");
+    revalidatePath("/operaciones/logistica");
+
     return NextResponse.json(saved);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error al guardar pasajero:", error);
-    return NextResponse.json({ error: "Error al guardar los datos del pasajero" }, { status: 500 });
+    return NextResponse.json({ error: error?.message || "Error al guardar los datos del pasajero" }, { status: 500 });
   }
 }
 
 export async function DELETE(req: NextRequest) {
   try {
-    const user = await getOperationsSessionUser();
+    const user = await getOperationsSessionUser(req);
     if (!user) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
@@ -63,6 +75,14 @@ export async function DELETE(req: NextRequest) {
     }
 
     const ok = await deletePassenger(id);
+
+    revalidatePath("/operaciones");
+    revalidatePath("/operaciones/salidas");
+    revalidatePath("/operaciones/pasajeros");
+    revalidatePath("/operaciones/rooming");
+    revalidatePath("/operaciones/aereos");
+    revalidatePath("/operaciones/logistica");
+
     return NextResponse.json({ ok });
   } catch (error) {
     console.error("Error al eliminar pasajero:", error);
